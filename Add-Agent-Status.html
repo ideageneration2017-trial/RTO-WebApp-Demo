@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B600%3B700&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<title>Stitch Design</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+      :root {
+        --checkbox-tick-svg: url('data:image/svg+xml,%3csvg viewBox=%270 0 16 16%27 fill=%27white%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3cpath d=%27M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z%27/%3e%3c/svg%3e');
+        --radio-dot-svg: url('data:image/svg+xml,%3csvg viewBox=%270 0 16 16%27 fill=%27%230b73da%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3ccircle cx=%278%27 cy=%278%27 r=%273.5%27/%3e%3c/svg%3e');
+      }
+      .form-radio:checked {
+        background-image: var(--radio-dot-svg) !important;
+      }
+    </style>
+</head>
+<body class="bg-gray-100">
+<div class="flex min-h-screen items-center justify-center bg-black bg-opacity-50 font-sans" style='font-family: Inter, "Noto Sans", sans-serif;'>
+<div class="m-4 w-full max-w-lg rounded-lg bg-white shadow-xl">
+<div class="border-b border-gray-200 p-6">
+<h1 class="text-2xl font-bold text-gray-900">Add Custom Status</h1>
+<p class="mt-1 text-sm text-gray-500">Create a new status for your team's internal operational use.</p>
+</div>
+<div class="space-y-6 p-6">
+<div>
+<label class="block text-sm font-medium text-gray-700" for="status-name">Status Name <span class="text-red-500">*</span></label>
+<input class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" id="status-name" placeholder="Enter status name" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700" for="description">Description</label>
+<textarea class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" id="description" placeholder="Enter description" rows="4"></textarea>
+</div>
+<div>
+<h3 class="text-lg font-semibold text-gray-900">Automated Rules</h3>
+<div class="mt-4 space-y-3">
+<label class="flex items-center">
+<input class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 checked:bg-blue-600 checked:bg-[image:--checkbox-tick-svg] focus:ring-blue-500" type="checkbox"/>
+<span class="ml-3 text-sm text-gray-600">Allow new application submissions</span>
+</label>
+<label class="flex items-center">
+<input class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 checked:bg-blue-600 checked:bg-[image:--checkbox-tick-svg] focus:ring-blue-500" type="checkbox"/>
+<span class="ml-3 text-sm text-gray-600">Allow system access</span>
+</label>
+<label class="flex items-center">
+<input class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 checked:bg-blue-600 checked:bg-[image:--checkbox-tick-svg] focus:ring-blue-500" type="checkbox"/>
+<span class="ml-3 text-sm text-gray-600">Allow commission payments</span>
+</label>
+<label class="flex items-center">
+<input class="h-4 w-4 cursor-not-allowed rounded border-gray-300 bg-gray-200 text-blue-600 focus:ring-blue-500" disabled="" type="checkbox"/>
+<span class="ml-3 text-sm text-gray-400">Publish to RTO public website</span>
+</label>
+</div>
+</div>
+</div>
+<div class="flex justify-end gap-3 rounded-b-lg bg-gray-50 px-6 py-4">
+<button class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" type="button">
+            Cancel
+          </button>
+<button class="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-blue-300"  type="button">
+            Add Status
+          </button>
+</div>
+</div>
+</div>
+
+</body></html>

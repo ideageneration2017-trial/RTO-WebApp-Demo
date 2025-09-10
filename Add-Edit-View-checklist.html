@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Edit Checklist</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .sidebar {
+            background-color: #3b82f6;
+        }
+        .sidebar .nav-item {
+            color: #dbeafe;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .sidebar .nav-item:hover, .sidebar .nav-item.active {
+            background-color: #ffffff;
+            color: #3b82f6;
+            border-radius: 0.375rem;
+        }
+        .sidebar .nav-item .material-icons {
+            font-size: 20px;
+        }
+        .sidebar .nav-item.active .material-icons {
+            color: #3b82f6;
+        }
+        .sidebar .nav-item.active .dropdown-icon {
+            transform: rotate(0deg);
+        }
+        .sidebar .nav-item .dropdown-icon {
+            transition: transform 0.2s ease;
+            transform: rotate(-90deg);
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        .form-input, .form-select, .form-textarea {
+            border-color: #d1d5db;
+            border-radius: 0.375rem;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #34d399;
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            border-radius: 0.375rem;
+            padding: 0.625rem 1.25rem;
+            font-weight: 500;
+        }
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #374151;
+            border-radius: 0.375rem;
+            padding: 0.625rem 1.25rem;
+            font-weight: 500;
+        }
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+        .btn-add-item {
+            background-color: #edf2f7;
+            color: #4a5568;
+            border: 1px dashed #cbd5e0;
+        }
+        .btn-add-item:hover {
+            background-color: #e2e8f0;
+        }
+        .icon-btn {
+            color: #6b7280;
+        }
+        .icon-btn:hover {
+            color: #374151;
+        }
+        .group:hover .group-hover\:block {
+            display: block;
+        }
+    </style>
+</head>
+<body class="flex">
+<aside class="sidebar w-64 p-4 min-h-screen">
+<h1 class="text-2xl font-bold text-white mb-8">Navigation</h1>
+<nav class="space-y-2">
+<a class="nav-item flex items-center p-2 space-x-3" href="#">
+<span class="material-icons">dashboard</span>
+<span>Dashboard</span>
+</a>
+<div x-data="{ open: true }">
+<button @click="open = !open" class="nav-item flex items-center justify-between w-full p-2 space-x-3 text-left">
+<div class="flex items-center space-x-3">
+<span class="material-icons">settings</span>
+<span>Setup Hub</span>
+</div>
+<span :class="{'rotate-0': open, '-rotate-90': !open}" class="material-icons dropdown-icon">expand_more</span>
+</button>
+<div class="pt-2 pl-14 space-y-2" x-show="open">
+<a class="block text-white hover:text-white/80" href="#">College Info</a>
+<a class="block font-semibold text-black bg-gra-500/50 rounded p-2" href="#">Checklist Setup</a>
+</div>
+</div>
+<a class="nav-item flex items-center p-2 space-x-3" href="#">
+<span class="material-icons">person</span>
+<span>User Access</span>
+</a>
+<a class="nav-item flex items-center p-2 space-x-3" href="#">
+<span class="material-icons">work</span>
+<span>Talent Hub</span>
+</a>
+<a class="nav-item flex items-center p-2 space-x-3" href="#">
+<span class="material-icons">school</span>
+<span>Learning Ecosystem</span>
+</a>
+<a class="nav-item flex items-center p-2 space-x-3" href="#">
+<span class="material-icons">trending_up</span>
+<span>Enrollment Journey</span>
+</a>
+<a class="nav-item flex items-center p-2 space-x-3" href="#">
+<span class="material-icons">account_balance</span>
+<span>Finance Center</span>
+</a>
+<a class="nav-item flex items-center p-2 space-x-3" href="#">
+<span class="material-icons">bar_chart</span>
+<span>Performance Insights</span>
+</a>
+<a class="nav-item flex items-center p-2 space-x-3" href="#">
+<span class="material-icons">search</span>
+<span>Prospect Engine</span>
+</a>
+</nav>
+</aside>
+<main class="flex-1 p-8">
+<div class="max-w-7xl mx-auto">
+<h1 class="text-3xl font-bold text-gray-800 mb-8">Edit Checklist: Student Application Documents</h1>
+<div class="card p-8">
+<div class="mb-8">
+<h2 class="text-xl font-semibold text-gray-700 mb-4 pb-2 border-b">Checklist Details</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1" for="checklistName">Checklist Name</label>
+<input class="form-input w-full p-2 border" id="checklistName" name="checklistName" type="text" value="Student Application Documents"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1" for="appliesTo">Applies To</label>
+<select class="form-select w-full p-2 border bg-white" id="appliesTo" name="appliesTo">
+<option>Overseas Student</option>
+<option>Overseas Student in Australia</option>
+<option>Resident Student</option>
+<option>Agent</option>
+<option>Course</option>
+<option>Application Stage</option>
+<option>Payment</option>
+</select>
+</div>
+<div class="md:col-span-2">
+<label class="block text-sm font-medium text-gray-700 mb-1" for="description">Description</label>
+<textarea class="form-textarea w-full p-2 border" id="description" name="description" rows="3"></textarea>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1" for="status">Status</label>
+<div class="flex items-center space-x-3">
+<label class="toggle-switch">
+<input checked="" type="checkbox"/>
+<span class="slider"></span>
+</label>
+<span class="text-gray-600">Active</span>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-4 pb-2 border-b">
+<h2 class="text-xl font-semibold text-gray-700">Checklist Items</h2>
+<button class="btn-add-item flex items-center space-x-2 py-2 px-4 rounded-md text-sm font-medium">
+<span class="material-icons text-base">add</span>
+<span>Add Item</span>
+</button>
+</div>
+<div class="space-y-4">
+<div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-md">
+<span class="material-icons cursor-move icon-btn">drag_indicator</span>
+<div class="flex-1 grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+<div class="md:col-span-1">
+<label class="text-xs text-gray-400">Item Name</label>
+<input class="form-input w-full p-2 border mt-1" type="text" value="Passport"/>
+</div>
+<div class="md:col-span-1">
+<label class="text-xs text-gray-400">Type</label>
+<select class="form-select w-full p-2 border bg-white mt-1">
+<option selected="">Document</option>
+<option>Process</option>
+<option>Payment</option>
+</select>
+</div>
+<div class="md:col-span-1">
+<label class="text-xs text-gray-400">When</label>
+<select class="form-select w-full p-2 border bg-white mt-1">
+<option selected="">Pre-Submission</option>
+<option>Post-Submission</option>
+</select>
+</div>
+<div class="flex items-center gap-4 md:col-span-1">
+    <div class="flex items-center space-x-4">
+        <div class="flex items-center">
+            <input checked="" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" id="mandatory1" type="checkbox"/>
+            <label class="ml-2 block text-sm text-gray-900" for="mandatory1">Mandatory</label>
+        </div>
+        <div class="flex items-center">
+            <input checked="" class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500" id="active1" type="checkbox"/>
+            <label class="ml-2 block text-sm text-gray-900" for="active1">Active</label>
+        </div>
+    </div>
+    <div class="relative group">
+        <button class="icon-btn">
+            <span class="material-icons">more_vert</span>
+        </button>
+        <div class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
+            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" href="#">Edit</a>
+            <a class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100" href="#">Delete</a>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-md">
+<span class="material-icons cursor-move icon-btn">drag_indicator</span>
+<div class="flex-1 grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+<div class="md:col-span-1">
+<label class="text-xs text-gray-500">Item Name</label>
+<input class="form-input w-full p-2 border mt-1" type="text" value="Academic Transcripts"/>
+</div>
+<div class="md:col-span-1">
+<label class="text-xs text-gray-500">Type</label>
+<select class="form-select w-full p-2 border bg-white mt-1">
+<option selected="">Document</option>
+<option>Process</option>
+<option>Payment</option>
+</select>
+</div>
+<div class="md:col-span-1">
+<label class="text-xs text-gray-500">When</label>
+<select class="form-select w-full p-2 border bg-white mt-1">
+<option selected="">Pre-Submission</option>
+<option>Post-Submission</option>
+</select>
+</div>
+<div class="flex flex-wrap md:flex-nowrap md:col-span-1 items-center space-x-4">
+<div class="flex items-center space-x-4">
+    <div class="flex items-center">
+        <input class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" id="mandatory2" type="checkbox"/>
+        <label class="ml-2 block text-sm text-gray-900" for="mandatory2">Mandatory</label>
+    </div>
+    <div class="flex items-center">
+        <input checked="" class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500" id="active2" type="checkbox"/>
+        <label class="ml-2 block text-sm text-gray-900" for="active2">Active</label>
+    </div>
+</div>
+<div class="relative group md:col-span-1">
+    <button class="icon-btn">
+        <span class="material-icons">more_vert</span>
+    </button>
+    <div class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
+        <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" href="#">Edit</a>
+        <a class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100" href="#">Delete</a>
+    </div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-md">
+<span class="material-icons cursor-move icon-btn">drag_indicator</span>
+<div class="flex-1 grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+<div class="md:col-span-1">
+<label class="text-xs text-gray-500">Item Name</label>
+<input class="form-input w-full p-2 border mt-1" type="text" value="Pay Application Fee"/>
+</div>
+<div class="md:col-span-1">
+<label class="text-xs text-gray-500">Type</label>
+<select class="form-select w-full p-2 border bg-white mt-1">
+<option>Document</option>
+<option>Process</option>
+<option selected="">Payment</option>
+</select>
+</div>
+<div class="md:col-span-1">
+<label class="text-xs text-gray-500">When</label>
+<select class="form-select w-full p-2 border bg-white mt-1">
+<option selected="">Post-Submission</option>
+<option>Pre-Submission</option>
+</select>
+</div>
+<div class="flex flex-wrap md:flex-nowrap md:col-span-1 items-center space-x-4">
+<div class="flex items-center space-x-4">
+    <div class="flex items-center">
+        <input checked="" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" id="mandatory3" type="checkbox"/>
+        <label class="ml-2 block text-sm text-gray-900" for="mandatory3">Mandatory</label>
+    </div>
+    <div class="flex items-center">
+        <input checked="" class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500" id="active3" type="checkbox"/>
+        <label class="ml-2 block text-sm text-gray-900" for="active3">Active</label>
+    </div>
+</div>
+<div class="relative group md:col-span-1">
+    <button class="icon-btn">
+        <span class="material-icons">more_vert</span>
+    </button>
+    <div class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
+        <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" href="#">Edit</a>
+        <a class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100" href="#">Delete</a>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-10 pt-6 border-t flex justify-end space-x-4">
+<button class="btn-secondary">Cancel</button>
+<button class="btn-primary">Save Changes</button>
+</div>
+</div>
+<div class="text-sm text-gray-600 mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+<h3 class="font-bold text-yellow-800">Dynamic State Notes:</h3>
+<ul class="list-disc list-inside mt-2 space-y-1">
+<li><span class="font-semibold">Add Mode:</span> Title is "Add New Checklist". All fields are empty. Buttons are "Save" and "Cancel".</li>
+<li><span class="font-semibold">Edit Mode (Current View):</span> Title is "Edit Checklist: [Name]". All fields are populated and editable. Buttons are "Save Changes" and "Cancel". The "Edit" option in the kebab menu enables inline editing for that row.</li>
+<li><span class="font-semibold">View Mode:</span> Title is "View Checklist: [Name]". All fields are read-only/disabled. "+ Add Item" button and item action icons are hidden. A single "Back to Checklist Setup" button is shown.</li>
+<li><span class="font-semibold">Delete Action:</span> Clicking "Delete" in the kebab menu should open a confirmation modal before removing the item.</li>
+</ul>
+</div>
+</div>
+</main>
+<script defer="" src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
+
+</body></html>

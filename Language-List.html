@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Language List</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+<div class="flex h-screen">
+<aside class="w-64 bg-blue-600 text-white flex flex-col">
+<div class="p-6 text-2xl font-bold">Navigation</div>
+<nav class="flex-1 px-4 space-y-2">
+<a class="flex items-center px-4 py-2 text-gray-200 hover:bg-blue-700 rounded-md" href="#">
+<span class="material-icons mr-3">dashboard</span>
+                Dashboard
+            </a>
+<div>
+<button class="w-full flex items-center justify-between px-4 py-2 text-white hover:bg-blue-700 rounded-md">
+<div class="flex items-center">
+<span class="material-icons mr-3">settings</span>
+<span>Setup Hub</span>
+</div>
+<span class="material-icons">expand_less</span>
+</button>
+<div class="mt-1 ml-7 space-y-1">
+<a class="block px-4 py-2 text-sm text-gray-200 hover:bg-blue-700 rounded-md" href="#">College Info</a>
+<a class="block px-4 py-2 text-sm text-gray-200 hover:bg-blue-700 rounded-md" href="#">Country List</a>
+<a class="block px-4 py-2 text-sm text-gray-200 hover:bg-blue-700 rounded-md" href="#">Document Checklist</a>
+<a class="block px-4 py-2 text-sm bg-white text-blue-600 font-semibold rounded-md" href="#">Language List</a>
+</div>
+</div>
+<a class="flex items-center px-4 py-2 text-gray-200 hover:bg-blue-700 rounded-md" href="#">
+<span class="material-icons mr-3">group</span>
+                User Access
+            </a>
+<a class="flex items-center px-4 py-2 text-gray-200 hover:bg-blue-700 rounded-md" href="#">
+<span class="material-icons mr-3">lan</span>
+                Talent Hub
+            </a>
+<a class="flex items-center px-4 py-2 text-gray-200 hover:bg-blue-700 rounded-md" href="#">
+<span class="material-icons mr-3">school</span>
+                Learning Ecosystem
+            </a>
+<a class="flex items-center px-4 py-2 text-gray-200 hover:bg-blue-700 rounded-md" href="#">
+<span class="material-icons mr-3">dynamic_feed</span>
+                Enrollment Journey
+            </a>
+<a class="flex items-center px-4 py-2 text-gray-200 hover:bg-blue-700 rounded-md" href="#">
+<span class="material-icons mr-3">account_balance</span>
+                Finance Center
+            </a>
+<a class="flex items-center px-4 py-2 text-gray-200 hover:bg-blue-700 rounded-md" href="#">
+<span class="material-icons mr-3">insights</span>
+                Performance Insights
+            </a>
+<a class="flex items-center px-4 py-2 text-gray-200 hover:bg-blue-700 rounded-md" href="#">
+<span class="material-icons mr-3">manage_search</span>
+                Prospect Engine
+            </a>
+</nav>
+</aside>
+<main class="flex-1 p-8 overflow-y-auto">
+<div class="flex justify-between items-center mb-2">
+<div>
+<h1 class="text-3xl font-bold text-gray-800">Language List</h1>
+<p class="text-gray-500 mt-1">This is a list of all languages available on the platform.</p>
+</div>
+<button class="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center font-semibold hover:bg-blue-700 transition" id="addLanguageBtn">
+<span class="material-icons mr-2">add</span>
+                Add Language
+            </button>
+</div>
+<div class="mt-6 bg-white p-6 rounded-lg shadow">
+<div class="flex justify-between items-center mb-4">
+<div class="relative w-full max-w-sm">
+<span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+<input class="pl-10 pr-4 py-2 border rounded-md w-full focus:ring-blue-500 focus:border-blue-500" placeholder="Search by language name..." type="text"/>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left text-gray-500">
+<thead class="text-xs text-gray-700 uppercase bg-gray-50">
+<tr>
+<th class="px-6 py-3 font-medium" scope="col">Language Name</th>
+<th class="px-6 py-3 font-medium text-center" scope="col">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="bg-white border-b">
+<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">English</td>
+<td class="px-6 py-4 text-center">
+<button class="text-red-500 hover:text-red-700">
+<span class="material-icons">delete</span>
+</button>
+</td>
+</tr>
+<tr class="bg-white border-b">
+<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">Spanish</td>
+<td class="px-6 py-4 text-center">
+<button class="text-red-500 hover:text-red-700">
+<span class="material-icons">delete</span>
+</button>
+</td>
+</tr>
+<tr class="bg-white border-b">
+<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">French</td>
+<td class="px-6 py-4 text-center">
+<button class="text-red-500 hover:text-red-700">
+<span class="material-icons">delete</span>
+</button>
+</td>
+</tr>
+<tr class="bg-white border-b">
+<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">German</td>
+<td class="px-6 py-4 text-center">
+<button class="text-red-500 hover:text-red-700">
+<span class="material-icons">delete</span>
+</button>
+</td>
+</tr>
+<tr class="bg-white">
+<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">Mandarin Chinese</td>
+<td class="px-6 py-4 text-center">
+<button class="text-red-500 hover:text-red-700">
+<span class="material-icons">delete</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+<div class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center" id="addLanguageModal">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+<div class="p-6 border-b flex justify-between items-center">
+<h2 class="text-2xl font-semibold text-gray-800">Add Languages</h2>
+<button class="text-gray-400 hover:text-gray-600" id="closeModalBtn">
+<span class="material-icons">close</span>
+</button>
+</div>
+<div class="p-6">
+<div class="relative mb-4">
+<span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+<input class="pl-10 pr-4 py-2 border rounded-md w-full focus:ring-blue-500 focus:border-blue-500" placeholder="Search languages..." type="text"/>
+</div>
+<div class="h-96 overflow-y-auto pr-2">
+<ul class="space-y-2">
+<li class="flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
+<div>
+<p class="font-medium text-gray-800">English</p>
+<p class="text-sm text-gray-500">en-US</p>
+</div>
+<input checked="" class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer" disabled="" type="checkbox"/>
+</li>
+<li class="flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
+<div>
+<p class="font-medium text-gray-800">Spanish</p>
+<p class="text-sm text-gray-500">es-ES</p>
+</div>
+<input class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer" type="checkbox"/>
+</li>
+<li class="flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
+<div>
+<p class="font-medium text-gray-800">French</p>
+<p class="text-sm text-gray-500">fr-FR</p>
+</div>
+<input checked="" class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer" disabled="" type="checkbox"/>
+</li>
+<li class="flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
+<div>
+<p class="font-medium text-gray-800">German</p>
+<p class="text-sm text-gray-500">de-DE</p>
+</div>
+<input class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer" type="checkbox"/>
+</li>
+<li class="flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
+<div>
+<p class="font-medium text-gray-800">Mandarin Chinese</p>
+<p class="text-sm text-gray-500">zh-CN</p>
+</div>
+<input checked="" class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer" disabled="" type="checkbox"/>
+</li>
+<li class="flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
+<div>
+<p class="font-medium text-gray-800">Japanese</p>
+<p class="text-sm text-gray-500">ja-JP</p>
+</div>
+<input class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer" type="checkbox"/>
+</li>
+<li class="flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
+<div>
+<p class="font-medium text-gray-800">Russian</p>
+<p class="text-sm text-gray-500">ru-RU</p>
+</div>
+<input class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer" type="checkbox"/>
+</li>
+<li class="flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
+<div>
+<p class="font-medium text-gray-800">Portuguese</p>
+<p class="text-sm text-gray-500">pt-BR</p>
+</div>
+<input class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer" type="checkbox"/>
+</li>
+<li class="flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
+<div>
+<p class="font-medium text-gray-800">Hindi</p>
+<p class="text-sm text-gray-500">hi-IN</p>
+</div>
+<input class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer" type="checkbox"/>
+</li>
+</ul>
+</div>
+</div>
+<div class="p-6 bg-gray-50 border-t rounded-b-lg flex justify-end space-x-4">
+<button class="px-4 py-2 bg-white border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 font-semibold" id="cancelBtn">Cancel</button>
+<button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-semibold">Add Selected</button>
+</div>
+</div>
+</div>
+<script>
+    const addLanguageBtn = document.getElementById('addLanguageBtn');
+    const addLanguageModal = document.getElementById('addLanguageModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const openModal = () => {
+        addLanguageModal.classList.remove('hidden');
+        addLanguageModal.classList.add('flex');
+    };
+    const closeModal = () => {
+        addLanguageModal.classList.add('hidden');
+        addLanguageModal.classList.remove('flex');
+    };
+    addLanguageBtn.addEventListener('click', openModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+    // Close modal if clicking outside of it
+    addLanguageModal.addEventListener('click', (event) => {
+        if (event.target === addLanguageModal) {
+            closeModal();
+        }
+    });
+</script>
+
+</body></html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manage Countries</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+<div class="min-h-screen flex flex-col">
+<main class="flex-grow p-4 sm:p-6 lg:p-8">
+<div class="max-w-screen-2xl mx-auto">
+<header class="mb-8">
+<h1 class="text-3xl font-bold text-gray-900">Manage Countries</h1>
+</header>
+<div class="bg-white rounded-xl shadow-md p-6">
+<div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+<div class="relative w-full sm:max-w-xs">
+<span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+<input class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Search country..." type="text"/>
+</div>
+<button class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-transform transform hover:scale-105">
+<span class="material-icons">add_circle_outline</span>
+<span>Add New Country</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="border-b-2 border-gray-200">
+<tr>
+<th class="p-4 font-semibold text-gray-600 cursor-pointer hover:bg-gray-100 rounded-tl-lg">
+<div class="flex items-center gap-2">
+<span>Country Flag</span>
+</div>
+</th>
+<th class="p-4 font-semibold text-gray-600 cursor-pointer hover:bg-gray-100">
+<div class="flex items-center gap-2">
+<span>Country Name</span>
+<span class="material-icons text-sm text-gray-400">arrow_upward</span>
+</div>
+</th>
+<th class="p-4 font-semibold text-gray-600 cursor-pointer hover:bg-gray-100">
+<div class="flex items-center gap-2">
+<span>Country Code</span>
+</div>
+</th>
+<th class="p-4 font-semibold text-gray-600 cursor-pointer hover:bg-gray-100">
+<div class="flex items-center gap-2">
+<span>Nationality</span>
+</div>
+</th>
+<th class="p-4 font-semibold text-gray-600 cursor-pointer hover:bg-gray-100">
+<div class="flex items-center gap-2">
+<span>Country Level</span>
+</div>
+</th>
+<th class="p-4 font-semibold text-gray-600 cursor-pointer hover:bg-gray-100">
+<div class="flex items-center gap-2">
+<span>Region</span>
+</div>
+</th>
+<th class="p-4 font-semibold text-gray-600 cursor-pointer hover:bg-gray-100">
+<div class="flex items-center gap-2">
+<span>ABS Value</span>
+</div>
+</th>
+<th class="p-4 font-semibold text-gray-600 text-center rounded-tr-lg">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-200">
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="p-4"><img alt="United States flag" class="w-8 h-auto rounded" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTygsqAsQpolsioCzXjCcAgAriJqhvj96WqGlaR89ZIKHPoOs3TnWP8BRyFFQWXxQ_Qbt4rdP1WQYj1rywHXvYNKfQZUzM8m5WPTjmBw44EkPVti28YgfWazOpyr3KGQFTTYN70KG-Kt0vsFgsEAM3fWtPLdiXrjVK4BH_SWEnIu7d5OtgkOcioJ8JQyJGhlm7dyKtXmEpGwo4lfWhArXfvt0gllehoQhuLnJCrEhc3_hFI_0YVQd0_moxK8-evKor7k7EbV0d3smH"/></td>
+<td class="p-4 font-medium text-gray-900">United States</td>
+<td class="p-4 text-gray-500">+1</td>
+<td class="p-4 text-gray-500">American</td>
+<td class="p-4 text-gray-500">1</td>
+<td class="p-4 text-gray-500">North America</td>
+<td class="p-4 text-gray-500">ABS-12345</td>
+<td class="p-4 text-center">
+<button class="text-gray-500 hover:text-gray-700 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+<span class="material-icons">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="bg-gray-50 hover:bg-gray-100 transition-colors">
+<td class="p-4"><img alt="Canada flag" class="w-8 h-auto rounded" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeb-JndisEo9f35P7r4qaGlkxoiCgeUe-rbql3k7r6tjOzKwstg4gKjEqoz8HUo4q3su7ovuYAo62IWi3cqiVgLYZ3ulkp4CMUcpgc1wTyu51dY0L2RD4apMlaDxbfDr8xN-D-2f02ubfi414l4CmqK8b8QOV2iQcOvDXC7ZANPj_tQ_7A4OnREZtPxzn6Vdr5yuPW38smDv24Ah57kFH8e61VFCx96huHOjlUo3QHs5MNL03ROOSZ7LkvfD9P2ta4eE0RMbDnz2cx"/></td>
+<td class="p-4 font-medium text-gray-900">Canada</td>
+<td class="p-4 text-gray-500">+1</td>
+<td class="p-4 text-gray-500">Canadian</td>
+<td class="p-4 text-gray-500">1</td>
+<td class="p-4 text-gray-500">North America</td>
+<td class="p-4 text-gray-500">ABS-12346</td>
+<td class="p-4 text-center">
+<button class="text-gray-500 hover:text-gray-700 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+<span class="material-icons">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="p-4"><img alt="United Kingdom flag" class="w-8 h-auto rounded" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAj-VTUOcFsi-0gNIkwEz1EMu5qVVIBnd7eHdrTh6syPGZmYofYND3E8du7QNAGboE_qc0t_9O4CC1L-XYVdDD4BWtwnq_kAj9K7eD0n50Hsy_xDX9KyB6Kce60lcRBx1B-5W0z3quPYiuGx5TawDqyvQ4WRcYG02lEJ4ZfjQLrd80rwQzSS0C-3oOkT9XTUpPnJ2pb4VpG3R6PuD-9GQ_9JJsjrOqDisgff0MVOQSd0OXUnoFjN_mN0dyJgxJeDaayH4LQO_zP5tW"/></td>
+<td class="p-4 font-medium text-gray-900">United Kingdom</td>
+<td class="p-4 text-gray-500">+44</td>
+<td class="p-4 text-gray-500">British</td>
+<td class="p-4 text-gray-500">1</td>
+<td class="p-4 text-gray-500">Europe</td>
+<td class="p-4 text-gray-500">ABS-12347</td>
+<td class="p-4 text-center">
+<button class="text-gray-500 hover:text-gray-700 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+<span class="material-icons">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="bg-gray-50 hover:bg-gray-100 transition-colors">
+<td class="p-4"><img alt="Australia flag" class="w-8 h-auto rounded" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWJyGWxDa43STORMYbSSAA6zCSXIB1LnoA8t8NX31SyIA_NLMe0OG8TCjMNvv5EMIGNftnnY7jXDlDBQLVU8DW3lbwtxImMoS6SXhz5rwbcq2OXfM-22KoZo4Ls-Qi_Fb5SJK8-S9BJYPKY4lc-sDjRAoxPmD1EGXjuND8fucWZBvLHunD_5fI5uOxEfltz5PY4Qc-WwN_VEhoL63aIy0yYnkLHDzusrjVAnLK2IlKudrJGiiPN-D3hPyf-j6sD_R3Zw_lE_TsPnm4"/></td>
+<td class="p-4 font-medium text-gray-900">Australia</td>
+<td class="p-4 text-gray-500">+61</td>
+<td class="p-4 text-gray-500">Australian</td>
+<td class="p-4 text-gray-500">2</td>
+<td class="p-4 text-gray-500">Oceania</td>
+<td class="p-4 text-gray-500">ABS-12348</td>
+<td class="p-4 text-center">
+<button class="text-gray-500 hover:text-gray-700 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+<span class="material-icons">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="p-4"><img alt="Germany flag" class="w-8 h-auto rounded" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSlVz4uKnkqViKlH969HT55aISbggs5NIiT3ng4gQ-nEX3iP6ELMZkn3znZMGqitAiPOy0Xy8IBlCBrQ6zoBQH_bphghL8LY5o3H5GQ3DGbDdzyM5jlAvLw8GjRfYPzFx10tdP1QGMhBNFLoeBlG96GCraupHSwse13oB_i3katqYKxO90qYJE0w81-EwVMhQPnbfTpNR8uXUbESrtnHR-rje6c_TFpiUYubYuGBkOuvObNgkd7UUKZTwXqwuWhZ_nxT8WnZB_uSAG"/></td>
+<td class="p-4 font-medium text-gray-900">Germany</td>
+<td class="p-4 text-gray-500">+49</td>
+<td class="p-4 text-gray-500">German</td>
+<td class="p-4 text-gray-500">2</td>
+<td class="p-4 text-gray-500">Europe</td>
+<td class="p-4 text-gray-500">ABS-12349</td>
+<td class="p-4 text-center">
+<button class="text-gray-500 hover:text-gray-700 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+<span class="material-icons">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="bg-gray-50 hover:bg-gray-100 transition-colors">
+<td class="p-4"><img alt="France flag" class="w-8 h-auto rounded" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC20Uxv95E-HztI8HzExLVnB5WBCYIw4ERukJcaXF9DV1QQHpT30VoibDP2_GdWyvMO40ZVWFcZHhUUhhk7HyiBvDkaR-K66KgUMMIOqMBt2jCNd8W1hDGRR39mFHmEc7U1v_nkaG-OVh5tkEcB5gFROFC0PHCAejVFR6zebqvglir3I30cQbIFciLzAtz4FwR_kqkgKiY-swDc6fYqO9LDx1hPxHH8OpP5I10ghUEzCN8qPBc4UaEXGNSphFKbCTiLX0cclbxUj3rc"/></td>
+<td class="p-4 font-medium text-gray-900">France</td>
+<td class="p-4 text-gray-500">+33</td>
+<td class="p-4 text-gray-500">French</td>
+<td class="p-4 text-gray-500">2</td>
+<td class="p-4 text-gray-500">Europe</td>
+<td class="p-4 text-gray-500">ABS-12350</td>
+<td class="p-4 text-center">
+<button class="text-gray-500 hover:text-gray-700 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+<span class="material-icons">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex flex-col sm:flex-row justify-between items-center mt-6 pt-4 border-t border-gray-200">
+<span class="text-sm text-gray-500 mb-4 sm:mb-0">Showing 1 to 6 of 250 entries</span>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed" disabled="">
+<span class="material-icons">chevron_left</span>
+</button>
+<button class="px-4 py-2 text-sm rounded-md bg-blue-600 text-white">1</button>
+<button class="px-4 py-2 text-sm rounded-md hover:bg-gray-100">2</button>
+<button class="px-4 py-2 text-sm rounded-md hover:bg-gray-100">3</button>
+<span class="text-gray-500">...</span>
+<button class="px-4 py-2 text-sm rounded-md hover:bg-gray-100">42</button>
+<button class="p-2 rounded-md hover:bg-gray-100">
+<span class="material-icons">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden" id="edit-modal">
+<div class="glassmorphism rounded-xl shadow-2xl p-8 w-full max-w-md m-4 transform transition-all duration-300 scale-95 opacity-0" id="modal-content">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-2xl font-bold text-gray-900">Edit Country</h2>
+<button class="text-gray-500 hover:text-gray-800" id="close-modal">
+<span class="material-icons">close</span>
+</button>
+</div>
+<form>
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1" for="countryName">Country Name</label>
+<input class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" id="countryName" type="text" value="United States"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1" for="countryFlag">Country Flag URL</label>
+<input class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" id="countryFlag" type="text" value="https://flagcdn.com/w40/us.png"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1" for="countryCode">Country Code (Non-editable)</label>
+<input class="w-full px-4 py-2 border border-gray-200 bg-gray-100 text-gray-500 rounded-lg cursor-not-allowed" id="countryCode" readonly="" type="text" value="+1"/>
+</div>
+</div>
+<div class="mt-8 flex justify-end gap-4">
+<button class="px-6 py-2 text-sm font-semibold text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-lg transition" id="cancel-button" type="button">Cancel</button>
+<button class="px-6 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition" type="submit">Save Changes</button>
+</div>
+</form>
+</div>
+</div>
+<script>
+        const editModal = document.getElementById('edit-modal');
+        const modalContent = document.getElementById('modal-content');
+        const closeModal = document.getElementById('close-modal');
+        const cancelButton = document.getElementById('cancel-button');
+        // Mock opening the modal, in a real app this would be tied to the kebab menu buttons
+        const moreButtons = document.querySelectorAll('.text-gray-500.hover\\:text-gray-700');
+        moreButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                editModal.classList.remove('hidden');
+                setTimeout(() => {
+                    modalContent.classList.remove('scale-95', 'opacity-0');
+                }, 10);
+            });
+        });
+        const hideModal = () => {
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                editModal.classList.add('hidden');
+            }, 300);
+        }
+        closeModal.addEventListener('click', hideModal);
+        cancelButton.addEventListener('click', hideModal);
+        editModal.addEventListener('click', (e) => {
+            if (e.target === editModal) {
+                hideModal();
+            }
+        });
+    </script>
+</body></html>
