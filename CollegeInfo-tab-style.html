@@ -35,15 +35,16 @@
         body, html {
             overflow-x: hidden;
         }
-    </style>
+<style>
+</style>
 </head>
 <body class="bg-gray-50 antialiased">
     <div class="flex h-screen">
-        <!-- Sidebar Navigation -->
         <aside class="w-64 bg-sky-100 text-gray-900 flex flex-col shadow-lg rounded-r-2xl">
-            <div class="p-6 text-2xl font-bold text-sky-700">Navigation</div>
+            <div class="p-6"> <img src="isoft.jpg" alt="ISoft Logo" class="w-full h-auto object-contain">
+            </div>
             <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
-                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+            <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
                     <span class="material-icons mr-3">dashboard</span>
                     Dashboard
                 </a>
@@ -57,26 +58,16 @@
                         <span class="material-icons transition-transform duration-300" :class="open ? 'rotate-180' : ''" x-text="open ? 'expand_less' : 'expand_more'">expand_less</span>
                     </button>
                     <div x-show="open" x-collapse.duration.300ms class="pl-8 mt-1 space-y-1">
-                        <a href="#" class="block px-4 py-2 text-sm font-medium rounded-xl current-page-link">
+                        <a href="CollegeInfo-tab-style.html" class="block px-4 py-2 text-sm font-medium rounded-xl current-page-link">
                             Edit College Information
                         </a>
                     </div>
                 </div>
                 <!-- Other Navigation Links -->
-                <div x-data="{ open: false }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200 focus:outline-none">
-                        <div class="flex items-center">
-                            <span class="material-icons mr-3">people</span>
-                            <span>User Access</span>
-                        </div>
-                        <span class="material-icons transition-transform duration-300" :class="open ? 'rotate-180' : ''" x-text="open ? 'expand_less' : 'expand_more'">expand_more</span>
-                    </button>
-                    <div x-show="open" x-collapse.duration.300ms class="pl-8 mt-1 space-y-1">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 rounded-xl hover:bg-sky-200">User Management</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 rounded-xl hover:bg-sky-200">Role Management</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 rounded-xl hover:bg-sky-200">Role Assignment</a>
-                    </div>
-                </div>
+                <a href="UserList.html" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">people</span>
+                    Users
+                </a>
                 <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
                     <span class="material-icons mr-3">work</span>
                     Talent Hub
@@ -118,7 +109,72 @@
 
         <!-- Main Content Area -->
         <main class="flex-1 p-8 overflow-y-auto">
-            <h1 class="text-3xl font-bold text-blue-800 mb-8">Edit College Information</h1>
+		<header class="flex justify-end items-center mb-8">
+    <div class="relative flex items-center space-x-6">
+        <span class="material-icons text-gray-600">notifications</span>
+        
+        <!-- Profile Dropdown Container -->
+        <div class="relative">
+            <div id="profile-menu-button" class="flex items-center space-x-3 cursor-pointer select-none">
+                <img alt="Udit Mahajan profile picture" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyeCKpduKSxEW66SNZkF1IC0hNdlNZEjOU4xXSXq1N_mREcX2fkt_nNPVPju-reZP_QsNwzwxM-ps9GY01kvP3O7V154jxzxcpjnyP3NSs_3qiY2U9znLjxRYwE3H38lKabYMLBUdgXh2Os5PMlxOXz8JxLacJN40IIog0fqACNPgQeFrs-Yi7_K68O1n9yfo3tQJPUnBUUAJGsap1Q-dtsrSWzD49eRCKcPKXFMnlut4282_9l93QFP54NozSwO5-T7UHFTImGOc"/>
+                <div>
+                    <div class="font-semibold">Edtech Admin</div>
+                </div>
+                <span id="dropdown-arrow" class="material-icons text-gray-400 transform transition-transform duration-200">expand_more</span>
+            </div>
+            
+            <!-- Dropdown Menu -->
+            <div id="profile-dropdown-menu" class="hidden absolute right-0 mt-3 w-60 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                <div class="p-4 border-b border-gray-200">
+                    <div class="font-bold text-gray-800">Hi, Admin</div>
+                    <div class="text-sm text-gray-500">admin@isoftanz.com.au</div>
+                </div>
+                <ul class="py-2">
+                    <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">person</span>Edit Profile</a></li>
+                    <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">settings</span>Account settings</a></li>
+                    <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">help_outline</span>Support</a></li>
+                    <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 border-t border-gray-200 mt-2 pt-2"><span class="material-icons mr-3">logout</span>Sign out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script>
+    const profileMenuButton = document.getElementById('profile-menu-button');
+    const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+    const dropdownArrow = document.getElementById('dropdown-arrow');
+
+    profileMenuButton.addEventListener('click', () => {
+        const isHidden = profileDropdownMenu.classList.toggle('hidden');
+        if (isHidden) {
+            dropdownArrow.classList.remove('rotate-180');
+        } else {
+            dropdownArrow.classList.add('rotate-180');
+        }
+    });
+
+    // Close the dropdown if the user clicks outside of it
+    window.addEventListener('click', (event) => {
+        if (!profileMenuButton.contains(event.target) && !profileDropdownMenu.contains(event.target)) {
+            profileDropdownMenu.classList.add('hidden');
+            dropdownArrow.classList.remove('rotate-180');
+        }
+    });
+</script>
+	<main class="flex-1 p-8">
+		<div class="flex justify-between items-center mb-6">
+			<div class="flex items-center">
+			<span class="material-icons text-gray-600">arrow_back</span>
+				<h1 class="text-2xl font-semibold ml-2">Edit College Information</h1>
+			</div>
+			<div class="text-sm text-gray-500">
+    			<a href="Dashboard.html" class="hover:text-blue-500">
+        		<span>Home</span>
+    			</a> &gt; <span>Setup Hub</span>
+			</div>
+		</div>
+        
 
             <!-- Tabbed Interface Section -->
             <div x-data="{ activeTab: 'general', regulator: 'ASQA', sameAsStreet: false, selectedStates: [], message: '', showMessage: false, saveData(tabName) { console.log(`Saving data for tab: ${tabName}`); this.message = `Data for ${tabName} saved successfully!`; this.showMessage = true; setTimeout(() => { this.showMessage = false; this.message = ''; }, 3000); } }" class="bg-white border border-gray-200 rounded-lg shadow-sm">
@@ -541,7 +597,5 @@
             </div>
         </main>
     </div>
-	<script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </body>
 </html>
-
