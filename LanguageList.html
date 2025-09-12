@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manage Languages</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+</style>
+</head>
+<body class="bg-gray-50 antialiased">
+<div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-sky-100 text-gray-900 flex flex-col shadow-lg rounded-r-2xl">
+        <div class="p-6">
+            <img src="isoft.jpg" alt="ISoft Logo" class="w-full h-auto object-contain">
+        </div>
+        <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+            <a href="Dashboard.html" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                <span class="material-icons mr-3">dashboard</span>
+                Dashboard
+            </a>
+            <div x-data="{ open: true }">
+                <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200 focus:outline-none">
+                    <div class="flex items-center">
+                        <span class="material-icons mr-3">build_circle</span>
+                        <span>Setup Hub</span>
+                    </div>
+                    <span class="material-icons transition-transform duration-300" :class="open ? 'rotate-180' : ''">expand_less</span>
+                </button>
+                <div x-show="open" x-collapse.duration.300ms class="pl-8 mt-1 space-y-1">
+                    <a href="CollegeInfo-tab-style.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200">College Info</a>
+                    <a href="CountryList.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200">Manage Countries</a>
+                    <a href="LanguageList.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200 bg-sky-200">Manage Languages</a>
+                    <a href="StudentID.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200">Student ID Format</a>
+                </div>
+            </div>
+            <a href="UserList.html" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                <span class="material-icons mr-3">people</span>
+                Users
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-8 overflow-y-auto">
+        <!-- Header -->
+        <header class="flex justify-end items-center mb-8">
+            <div class="relative flex items-center space-x-6">
+                <span class="material-icons text-gray-600">notifications</span>
+                <div class="relative">
+                    <div id="profile-menu-button" class="flex items-center space-x-3 cursor-pointer select-none">
+                        <img alt="user logo" class="w-10 h-10 rounded-full" src="owner.jpg"/>
+                        <div>
+                            <div class="font-semibold">Edtech Admin</div>
+                        </div>
+                        <span id="dropdown-arrow" class="material-icons text-gray-400 transform transition-transform duration-200">expand_more</span>
+                    </div>
+                    <div id="profile-dropdown-menu" class="hidden absolute right-0 mt-3 w-60 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                        <div class="p-4 border-b border-gray-200">
+                            <div class="font-bold text-gray-800">Hi, Admin</div>
+                            <div class="text-sm text-gray-500">admin@isoftanz.com.au</div>
+                        </div>
+                        <ul class="py-2">
+                            <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">person</span>Edit Profile</a></li>
+                            <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">settings</span>Account settings</a></li>
+                            <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">help_outline</span>Support</a></li>
+                            <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 border-t border-gray-200 mt-2 pt-2"><span class="material-icons mr-3">logout</span>Sign out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Breadcrumb -->
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center">
+                <span class="material-icons text-gray-600">arrow_back</span>
+                <h1 class="text-2xl font-semibold ml-2">Manage Languages</h1>
+            </div>
+            <div class="text-sm text-gray-500">
+                <a href="Dashboard.html" class="hover:text-blue-500">Home</a> &gt; <span>Setup Hub</span> &gt; <span>Languages</span>
+            </div>
+        </div>
+
+        <!-- Card -->
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-xl font-semibold">Manage Languages</h2>
+                    <p class="text-gray-500 mt-1">You can manage languages here</p>
+                </div>
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center font-semibold hover:bg-blue-700 transition" id="addLanguageBtn">
+                    <span class="material-icons mr-2">add</span>
+                    Add Language
+                </button>
+            </div>
+
+            <!-- Search -->
+            <div class="flex justify-between items-center mb-4">
+                <div class="relative w-full max-w-sm">
+                    <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+                    <input class="pl-10 pr-4 py-2 border rounded-md w-full focus:ring-blue-500 focus:border-blue-500" placeholder="Search by language name..." type="text"/>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 font-medium">Language Name</th>
+                            <th class="px-6 py-3 font-medium text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-white border-b hover:bg-gray-50">
+                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">English</td>
+                            <td class="px-6 py-4 text-center">
+                                <div class="relative inline-block text-left" x-data="{ open: false }">
+                                    <button @click="open = !open" class="p-2 rounded-full hover:bg-gray-100">
+                                        <span class="material-icons">more_vert</span>
+                                    </button>
+                                    <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                                        <ul class="py-1">
+                                            <li><a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="bg-gray-50 border-b hover:bg-gray-100">
+                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">Spanish</td>
+                            <td class="px-6 py-4 text-center">
+                                <div class="relative inline-block text-left" x-data="{ open: false }">
+                                    <button @click="open = !open" class="p-2 rounded-full hover:bg-gray-100">
+                                        <span class="material-icons">more_vert</span>
+                                    </button>
+                                    <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                                        <ul class="py-1">
+                                            <li><a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+						<tr class="bg-gray-50 border-b hover:bg-gray-100">
+                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">French</td>
+                            <td class="px-6 py-4 text-center">
+                                <div class="relative inline-block text-left" x-data="{ open: false }">
+                                    <button @click="open = !open" class="p-2 rounded-full hover:bg-gray-100">
+                                        <span class="material-icons">more_vert</span>
+                                    </button>
+                                    <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                                        <ul class="py-1">
+                                            <li><a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+						<tr class="bg-gray-50 border-b hover:bg-gray-100">
+                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">Hindi</td>
+                            <td class="px-6 py-4 text-center">
+                                <div class="relative inline-block text-left" x-data="{ open: false }">
+                                    <button @click="open = !open" class="p-2 rounded-full hover:bg-gray-100">
+                                        <span class="material-icons">more_vert</span>
+                                    </button>
+                                    <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                                        <ul class="py-1">
+                                            <li><a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+						<tr class="bg-gray-50 border-b hover:bg-gray-100">
+                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">German</td>
+                            <td class="px-6 py-4 text-center">
+                                <div class="relative inline-block text-left" x-data="{ open: false }">
+                                    <button @click="open = !open" class="p-2 rounded-full hover:bg-gray-100">
+                                        <span class="material-icons">more_vert</span>
+                                    </button>
+                                    <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                                        <ul class="py-1">
+                                            <li><a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- More rows -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination Footer -->
+            <div class="flex flex-col sm:flex-row justify-between items-center mt-6 pt-4 border-t border-gray-200">
+                <span class="text-sm text-gray-500 mb-4 sm:mb-0">Showing 1 to 5 of 50 entries</span>
+                <div class="flex items-center gap-2">
+                    <button class="p-2 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        <span class="material-icons">chevron_left</span>
+                    </button>
+                    <button class="px-4 py-2 text-sm rounded-md bg-blue-600 text-white">1</button>
+                    <button class="px-4 py-2 text-sm rounded-md hover:bg-gray-100">2</button>
+                    <button class="px-4 py-2 text-sm rounded-md hover:bg-gray-100">3</button>
+                    <span class="text-gray-500">...</span>
+                    <button class="px-4 py-2 text-sm rounded-md hover:bg-gray-100">10</button>
+                    <button class="p-2 rounded-md hover:bg-gray-100">
+                        <span class="material-icons">chevron_right</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Modal (same as before) -->
+<div class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center" id="addLanguageModal">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+        <div class="p-6 border-b flex justify-between items-center">
+            <h2 class="text-2xl font-semibold text-gray-800">Add Languages</h2>
+            <button class="text-gray-400 hover:text-gray-600" id="closeModalBtn">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        <div class="p-6">
+            <div class="relative mb-4">
+                <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+                <input class="pl-10 pr-4 py-2 border rounded-md w-full focus:ring-blue-500 focus:border-blue-500" placeholder="Search languages..." type="text"/>
+            </div>
+            <div class="h-96 overflow-y-auto pr-2">
+                <ul class="space-y-2">
+                    <li class="flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
+                        <div>
+                            <p class="font-medium text-gray-800">English</p>
+                            <p class="text-sm text-gray-500">en-US</p>
+                        </div>
+                        <input type="checkbox" checked disabled class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"/>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="p-6 bg-gray-50 border-t rounded-b-lg flex justify-end space-x-4">
+            <button class="px-4 py-2 bg-white border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 font-semibold" id="cancelBtn">Cancel</button>
+            <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-semibold">Add Selected</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Profile menu
+    const profileMenuButton = document.getElementById('profile-menu-button');
+    const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+    const dropdownArrow = document.getElementById('dropdown-arrow');
+    profileMenuButton.addEventListener('click', () => {
+        const isHidden = profileDropdownMenu.classList.toggle('hidden');
+        if (isHidden) dropdownArrow.classList.remove('rotate-180');
+        else dropdownArrow.classList.add('rotate-180');
+    });
+    window.addEventListener('click', (event) => {
+        if (!profileMenuButton.contains(event.target) && !profileDropdownMenu.contains(event.target)) {
+            profileDropdownMenu.classList.add('hidden');
+            dropdownArrow.classList.remove('rotate-180');
+        }
+    });
+
+    // Modal toggle
+    const addLanguageBtn = document.getElementById('addLanguageBtn');
+    const addLanguageModal = document.getElementById('addLanguageModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const openModal = () => { addLanguageModal.classList.remove('hidden'); addLanguageModal.classList.add('flex'); };
+    const closeModal = () => { addLanguageModal.classList.add('hidden'); addLanguageModal.classList.remove('flex'); };
+    addLanguageBtn.addEventListener('click', openModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+    addLanguageModal.addEventListener('click', (event) => { if (event.target === addLanguageModal) closeModal(); });
+</script>
+</body>
+</html>
