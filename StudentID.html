@@ -35,49 +35,12 @@
                     <a href="StudentID.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200 bg-sky-200">Student ID Format</a>
                 </div>
             </div>
-        
-				<a href="UserList.html" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
-                    <span class="material-icons mr-3">people</span>
-                    Users
-                </a>
-                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
-                    <span class="material-icons mr-3">work</span>
-                    Talent Hub
-                </a>
-                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
-                    <span class="material-icons mr-3">school</span>
-                    Learning Ecosystem
-                </a>
-                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
-                    <span class="material-icons mr-3">dynamic_form</span>
-                    Enrollment Journey
-                </a>
-                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
-                    <span class="material-icons mr-3">account_balance_wallet</span>
-                    Finance Center
-                </a>
-                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
-                    <span class="material-icons mr-3">insights</span>
-                    Performance Insights
-                </a>
-                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
-                    <span class="material-icons mr-3">find_in_page</span>
-                    Prospect Engine
-                </a>
-                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
-                    <span class="material-icons mr-3">assignment_ind</span>
-                    Training Coordinator
-                </a>
-                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
-                    <span class="material-icons mr-3">fact_check</span>
-                    Assessment Suite
-                </a>
-                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
-                    <span class="material-icons mr-3">gavel</span>
-                    Compliance Center
-                </a>
-            </nav>
-        </aside>
+            <a href="UserList.html" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                <span class="material-icons mr-3">people</span> Users
+            </a>
+        </nav>
+    </aside>
+
     <!-- Main -->
     <main class="flex-1 p-8 overflow-y-auto">
         <!-- Header -->
@@ -92,18 +55,6 @@
                         </div>
                         <span id="dropdown-arrow" class="material-icons text-gray-400 transform transition-transform duration-200">expand_more</span>
                     </div>
-                    <div id="profile-dropdown-menu" class="hidden absolute right-0 mt-3 w-60 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-                        <div class="p-4 border-b border-gray-200">
-                            <div class="font-bold text-gray-800">Hi, Admin</div>
-                            <div class="text-sm text-gray-500">admin@isoftanz.com.au</div>
-                        </div>
-                        <ul class="py-2">
-                            <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">person</span>Edit Profile</a></li>
-                            <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">settings</span>Account settings</a></li>
-                            <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">help_outline</span>Support</a></li>
-                            <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 border-t border-gray-200 mt-2 pt-2"><span class="material-icons mr-3">logout</span>Sign out</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </header>
@@ -115,9 +66,8 @@
                 <h1 class="text-2xl font-semibold ml-2">Setup Student ID Format</h1>
             </div>
             <div class="text-sm text-gray-500">
-  				<a href="Dashboard.html" class="hover:text-blue-500">Home</a> 
-  				&gt; <span>Setup Hub</span> &gt; <span>Student ID Format</span>
-			</div>
+              <a href="Dashboard.html" class="hover:text-blue-500">Home</a> &gt; <span>Setup Hub</span> &gt; <span>Student ID Format</span>
+            </div>
         </div>
 
         <!-- Card -->
@@ -137,103 +87,70 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 text-sm">
-    <tr>
-        <td class="p-3 font-medium">Institution Code</td>
-        <td class="p-3">
-            <select name="institution_order" class="border rounded-lg px-2 py-1 w-32">
-                <option>Not Used</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </select>
-        </td>
-        <td class="p-3">
-            <input id="institution_val" type="text" class="border rounded-lg px-3 py-1 w-32" maxlength="5" value="AST">
-        </td>
-        <td class="p-3 text-gray-500">Max 3 chars (e.g., institution short code)</td>
-    </tr>
-
-    <tr>
-        <td class="p-3 font-medium">Campus Code</td>
-        <td class="p-3">
-            <select name="campus_order" class="border rounded-lg px-2 py-1 w-32">
-                <option>Not Used</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </select>
-        </td>
-        <td class="p-3">
-            <input id="campus_val" type="text" class="border rounded-lg px-3 py-1 w-24" maxlength="3" value="SYD">
-        </td>
-        <td class="p-3 text-gray-500">Max 3 chars (alphabet only)</td>
-    </tr>
-
-    <tr>
-        <td class="p-3 font-medium">Country Code</td>
-        <td class="p-3">
-            <select name="country_order" class="border rounded-lg px-2 py-1 w-32">
-                <option>Not Used</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </select>
-        </td>
-        <td class="p-3"><input id="country_val" type="text" class="border rounded-lg px-3 py-1 w-24" value="061"></td>
-        <td class="p-3 text-gray-500">Auto-fills from student’s country.</td>
-    </tr>
-
-    <tr>
-        <td class="p-3 font-medium">Year Digit</td>
-        <td class="p-3">
-            <select name="year_order" class="border rounded-lg px-2 py-1 w-32">
-                <option>Not Used</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </select>
-        </td>
-        <td class="p-3">
-            <div class="flex space-x-4">
-                <label><input type="radio" name="year_digit" value="2" class="mr-1">2 digit</label>
-				<label><input type="radio" name="year_digit" value="4" class="mr-1" checked>4 digit</label>
-            </div>
-        </td>
-        <td class="p-3 text-gray-500">Choose 2 (25) or 4 digits (2025).</td>
-    </tr>
-
-    <tr>
-        <td class="p-3 font-medium">Auto Number</td>
-        <td class="p-3">
-            <select name="auto_order" class="border rounded-lg px-2 py-1 w-32">
-                <option>Not Used</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </select>
-        </td>
-        <td class="p-3"><input id ="auto_val" type="text" class="border rounded-lg px-3 py-1 w-24" value="0001" maxlength="5"></td>
-        <td class="p-3 text-gray-500">Auto increment sequence, max 5 digits.</td>
-    </tr>
-</tbody>
-
+                        <tr>
+                            <td class="p-3 font-medium">Institution Code</td>
+                            <td class="p-3">
+                                <select name="institution_order" class="border rounded-lg px-2 py-1 w-32">
+                                    <option>Not Used</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                                </select>
+                            </td>
+                            <td class="p-3"><input id="institution_val" type="text" maxlength="5" class="border rounded-lg px-3 py-1 w-32" value="AST"></td>
+                            <td class="p-3 text-gray-500">Max 5 chars (e.g., institution short code)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-medium">Campus Code</td>
+                            <td class="p-3">
+                                <select name="campus_order" class="border rounded-lg px-2 py-1 w-32">
+                                    <option>Not Used</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                                </select>
+                            </td>
+                            <td class="p-3"><input id="campus_val" type="text" maxlength="3" class="border rounded-lg px-3 py-1 w-24" value="SYD"></td>
+                            <td class="p-3 text-gray-500">Max 3 chars (alphabet only)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-medium">Country Code</td>
+                            <td class="p-3">
+                                <select name="country_order" class="border rounded-lg px-2 py-1 w-32">
+                                    <option>Not Used</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                                </select>
+                            </td>
+                            <td class="p-3"><input id="country_val" type="text" class="border rounded-lg px-3 py-1 w-24" value="061"></td>
+                            <td class="p-3 text-gray-500">Auto-fills from student’s country.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-medium">Year Digit</td>
+                            <td class="p-3">
+                                <select name="year_order" class="border rounded-lg px-2 py-1 w-32">
+                                    <option>Not Used</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                                </select>
+                            </td>
+                            <td class="p-3">
+                                <div class="flex space-x-4">
+                                    <label><input type="radio" name="year_digit" value="2" class="mr-1">2 digit</label>
+                                    <label><input type="radio" name="year_digit" value="4" class="mr-1" checked>4 digit</label>
+                                </div>
+                            </td>
+                            <td class="p-3 text-gray-500">Choose 2 (25) or 4 digits (2025).</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-medium">Auto Number</td>
+                            <td class="p-3">
+                                <select name="auto_order" class="border rounded-lg px-2 py-1 w-32">
+                                    <option>Not Used</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                                </select>
+                            </td>
+                            <td class="p-3"><input id="auto_val" type="text" maxlength="5" class="border rounded-lg px-3 py-1 w-24" value="0001"></td>
+                            <td class="p-3 text-gray-500">Auto increment sequence, max 5 digits.</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
 
             <!-- Buttons -->
             <div class="mt-6 flex space-x-4">
                 <button id="previewBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">Preview</button>
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Setup</button>
+                <button id="setupBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Setup</button>
+                <button id="editBtn" class="hidden px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Edit</button>
             </div>
 
             <!-- Preview box -->
@@ -249,6 +166,8 @@
     const btn = document.getElementById('previewBtn');
     const previewBox = document.getElementById('previewBox');
     const previewList = document.getElementById('previewList');
+    const setupBtn = document.getElementById('setupBtn');
+    const editBtn = document.getElementById('editBtn');
 
     function pad(num, size) {
         num = num.toString();
@@ -256,11 +175,11 @@
         return num;
     }
 
+    // --- Preview logic ---
     btn.addEventListener('click', () => {
         previewBox.classList.remove('hidden');
         previewList.innerHTML = '';
 
-        // Collect values
         const rows = [
             { key: "institution", order: document.querySelector('[name="institution_order"]').value, value: document.getElementById('institution_val').value.trim().toUpperCase() },
             { key: "campus", order: document.querySelector('[name="campus_order"]').value, value: document.getElementById('campus_val').value.trim().toUpperCase() },
@@ -298,8 +217,27 @@
             previewList.appendChild(chip);
         });
     });
+
+    // --- Setup logic ---
+    setupBtn.addEventListener('click', () => {
+        alert("Student ID Format saved!");
+
+        // Disable all inputs
+        document.querySelectorAll('input, select').forEach(el => el.disabled = true);
+
+        // Toggle buttons
+        setupBtn.classList.add('hidden');
+        editBtn.classList.remove('hidden');
+    });
+
+    // --- Edit logic ---
+    editBtn.addEventListener('click', () => {
+        document.querySelectorAll('input, select').forEach(el => el.disabled = false);
+
+        // Toggle buttons
+        setupBtn.classList.remove('hidden');
+        editBtn.classList.add('hidden');
+    });
 </script>
-<</body>
+</body>
 </html>
-
-
