@@ -101,6 +101,60 @@
                 </a>
             </nav>
         </aside>
+<main class="flex-1 p-8 overflow-y-auto">
+		<header class="flex justify-end items-center mb-8">
+    <div class="relative flex items-center space-x-6">
+        <span class="material-icons text-gray-600">notifications</span>
+        
+        <!-- Profile Dropdown Container -->
+        <div class="relative">
+            <div id="profile-menu-button" class="flex items-center space-x-3 cursor-pointer select-none">
+                <img alt="user logo" class="w-10 h-10 rounded-full" src="owner.jpg"/>
+                <div>
+                    <div class="font-semibold">Edtech Admin</div>
+                </div>
+                <span id="dropdown-arrow" class="material-icons text-gray-400 transform transition-transform duration-200">expand_more</span>
+            </div>
+            
+            <!-- Dropdown Menu -->
+            <div id="profile-dropdown-menu" class="hidden absolute right-0 mt-3 w-60 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                <div class="p-4 border-b border-gray-200">
+                    <div class="font-bold text-gray-800">Hi, Admin</div>
+                    <div class="text-sm text-gray-500">admin@isoftanz.com.au</div>
+                </div>
+                <ul class="py-2">
+                    <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">person</span>Edit Profile</a></li>
+                    <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">settings</span>Account settings</a></li>
+                    <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">help_outline</span>Support</a></li>
+                    <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 border-t border-gray-200 mt-2 pt-2"><span class="material-icons mr-3">logout</span>Sign out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script>
+    const profileMenuButton = document.getElementById('profile-menu-button');
+    const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+    const dropdownArrow = document.getElementById('dropdown-arrow');
+
+    profileMenuButton.addEventListener('click', () => {
+        const isHidden = profileDropdownMenu.classList.toggle('hidden');
+        if (isHidden) {
+            dropdownArrow.classList.remove('rotate-180');
+        } else {
+            dropdownArrow.classList.add('rotate-180');
+        }
+    });
+
+    // Close the dropdown if the user clicks outside of it
+    window.addEventListener('click', (event) => {
+        if (!profileMenuButton.contains(event.target) && !profileDropdownMenu.contains(event.target)) {
+            profileDropdownMenu.classList.add('hidden');
+            dropdownArrow.classList.remove('rotate-180');
+        }
+    });
+</script>
 <main class="flex-1 p-8">
 	<div class="flex justify-between items-center mb-6">
 		<div class="flex items-center">
@@ -325,4 +379,5 @@
 </div>
 </body>
 </html>
+
 
