@@ -204,12 +204,39 @@
     const previewList = document.getElementById('previewList');
     const setupBtn = document.getElementById('setupBtn');
     const editBtn = document.getElementById('editBtn');
+    const orderDropdowns = document.querySelectorAll('select[name$="_order"]');
 
     function pad(num, size) {
         num = num.toString();
         while (num.length < size) num = "0" + num;
         return num;
     }
+
+    // --- Dropdown Validation ---
+    function updateDropdownOptions() {
+        // Collect selected values except "Not Used"
+        const selectedValues = Array.from(orderDropdowns)
+            .map(dd => dd.value)
+            .filter(val => val !== "Not Used");
+
+        orderDropdowns.forEach(dd => {
+            const currentValue = dd.value;
+            Array.from(dd.options).forEach(opt => {
+                if (opt.value !== "Not Used") {
+                    // Disable if already used in another dropdown
+                    opt.disabled = selectedValues.includes(opt.value) && opt.value !== currentValue;
+                }
+            });
+        });
+    }
+
+    // Attach change listener
+    orderDropdowns.forEach(dd => {
+        dd.addEventListener("change", updateDropdownOptions);
+    });
+
+    // Initialize once on page load
+    updateDropdownOptions();
 
     // --- Preview logic ---
     btn.addEventListener('click', () => {
@@ -257,11 +284,7 @@
     // --- Setup logic ---
     setupBtn.addEventListener('click', () => {
         alert("Student ID Format saved!");
-
-        // Disable all inputs
         document.querySelectorAll('input, select').forEach(el => el.disabled = true);
-
-        // Toggle buttons
         setupBtn.classList.add('hidden');
         editBtn.classList.remove('hidden');
     });
@@ -269,12 +292,12 @@
     // --- Edit logic ---
     editBtn.addEventListener('click', () => {
         document.querySelectorAll('input, select').forEach(el => el.disabled = false);
-
-        // Toggle buttons
         setupBtn.classList.remove('hidden');
         editBtn.classList.add('hidden');
+        updateDropdownOptions(); // reapply validation after enabling
     });
 </script>
 </body>
 </html>
+
 
