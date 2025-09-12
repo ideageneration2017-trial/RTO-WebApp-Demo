@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Setup Student ID Format</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+</head>
+<body class="bg-gray-50 antialiased">
+<div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-sky-100 text-gray-900 flex flex-col shadow-lg rounded-r-2xl">
+        <div class="p-6">
+            <img src="isoft.jpg" alt="ISoft Logo" class="w-full h-auto object-contain">
+        </div>
+        <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+            <a href="Dashboard.html" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                <span class="material-icons mr-3">dashboard</span>
+                Dashboard
+            </a>
+            <div x-data="{ open: true }">
+                <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200 focus:outline-none">
+                    <div class="flex items-center">
+                        <span class="material-icons mr-3">build_circle</span>
+                        <span>Setup Hub</span>
+                    </div>
+                    <span class="material-icons transition-transform duration-300" :class="open ? 'rotate-180' : ''">expand_less</span>
+                </button>
+                <div x-show="open" x-collapse.duration.300ms class="pl-8 mt-1 space-y-1">
+                    <a href="CollegeInfo-tab-style.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200">College Info</a>
+                    <a href="CountryList.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200">Manage Countries</a>
+                    <a href="StudentID.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200 bg-sky-200">Student ID Format</a>
+                </div>
+            </div>
+        
+				<a href="UserList.html" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">people</span>
+                    Users
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">work</span>
+                    Talent Hub
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">school</span>
+                    Learning Ecosystem
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">dynamic_form</span>
+                    Enrollment Journey
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">account_balance_wallet</span>
+                    Finance Center
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">insights</span>
+                    Performance Insights
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">find_in_page</span>
+                    Prospect Engine
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">assignment_ind</span>
+                    Training Coordinator
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">fact_check</span>
+                    Assessment Suite
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">gavel</span>
+                    Compliance Center
+                </a>
+            </nav>
+        </aside>
+    <!-- Main -->
+    <main class="flex-1 p-8 overflow-y-auto">
+        <!-- Header -->
+        <header class="flex justify-end items-center mb-8">
+            <div class="relative flex items-center space-x-6">
+                <span class="material-icons text-gray-600">notifications</span>
+                <div class="relative">
+                    <div id="profile-menu-button" class="flex items-center space-x-3 cursor-pointer select-none">
+                        <img alt="user logo" class="w-10 h-10 rounded-full" src="owner.jpg"/>
+                        <div>
+                            <div class="font-semibold">Edtech Admin</div>
+                        </div>
+                        <span id="dropdown-arrow" class="material-icons text-gray-400 transform transition-transform duration-200">expand_more</span>
+                    </div>
+                    <div id="profile-dropdown-menu" class="hidden absolute right-0 mt-3 w-60 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                        <div class="p-4 border-b border-gray-200">
+                            <div class="font-bold text-gray-800">Hi, Admin</div>
+                            <div class="text-sm text-gray-500">admin@isoftanz.com.au</div>
+                        </div>
+                        <ul class="py-2">
+                            <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">person</span>Edit Profile</a></li>
+                            <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">settings</span>Account settings</a></li>
+                            <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">help_outline</span>Support</a></li>
+                            <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 border-t border-gray-200 mt-2 pt-2"><span class="material-icons mr-3">logout</span>Sign out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page content -->
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center">
+                <span class="material-icons text-gray-600">arrow_back</span>
+                <h1 class="text-2xl font-semibold ml-2">Setup Student ID Format</h1>
+            </div>
+            <div class="text-sm text-gray-500">
+                <span>Home</span> &gt; <span>Setup Hub</span> &gt; <span>Student ID Format</span>
+            </div>
+        </div>
+
+        <!-- Card -->
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h2 class="text-xl font-semibold mb-2">Student ID Format</h2>
+            <p class="text-gray-500 mb-6">Define how student IDs should be automatically generated.</p>
+
+            <!-- Format table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border">
+                    <thead class="bg-gray-50 border-b">
+                        <tr>
+                            <th class="p-3 font-semibold text-gray-600">Format Type</th>
+                            <th class="p-3 font-semibold text-gray-600">Order Set</th>
+                            <th class="p-3 font-semibold text-gray-600">Values</th>
+                            <th class="p-3 font-semibold text-gray-600">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 text-sm">
+    <tr>
+        <td class="p-3 font-medium">Institution Code</td>
+        <td class="p-3">
+            <select name="institution_order" class="border rounded-lg px-2 py-1 w-32">
+                <option>Not Used</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </td>
+        <td class="p-3">
+            <input id="institution_val" type="text" class="border rounded-lg px-3 py-1 w-32" maxlength="5" value="AST">
+        </td>
+        <td class="p-3 text-gray-500">Max 3 chars (e.g., institution short code)</td>
+    </tr>
+
+    <tr>
+        <td class="p-3 font-medium">Campus Code</td>
+        <td class="p-3">
+            <select name="campus_order" class="border rounded-lg px-2 py-1 w-32">
+                <option>Not Used</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </td>
+        <td class="p-3">
+            <input id="campus_val" type="text" class="border rounded-lg px-3 py-1 w-24" maxlength="3" value="SYD">
+        </td>
+        <td class="p-3 text-gray-500">Max 3 chars (alphabet only)</td>
+    </tr>
+
+    <tr>
+        <td class="p-3 font-medium">Country Code</td>
+        <td class="p-3">
+            <select name="country_order" class="border rounded-lg px-2 py-1 w-32">
+                <option>Not Used</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </td>
+        <td class="p-3"><input id="country_val" type="text" class="border rounded-lg px-3 py-1 w-24" value="061"></td>
+        <td class="p-3 text-gray-500">Auto-fills from student’s country.</td>
+    </tr>
+
+    <tr>
+        <td class="p-3 font-medium">Year Digit</td>
+        <td class="p-3">
+            <select name="year_order" class="border rounded-lg px-2 py-1 w-32">
+                <option>Not Used</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </td>
+        <td class="p-3">
+            <div class="flex space-x-4">
+                <label><input type="radio" name="year_digit" value="2" class="mr-1">2 digit</label>
+				<label><input type="radio" name="year_digit" value="4" class="mr-1" checked>4 digit</label>
+            </div>
+        </td>
+        <td class="p-3 text-gray-500">Choose 2 (25) or 4 digits (2025).</td>
+    </tr>
+
+    <tr>
+        <td class="p-3 font-medium">Auto Number</td>
+        <td class="p-3">
+            <select name="auto_order" class="border rounded-lg px-2 py-1 w-32">
+                <option>Not Used</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </td>
+        <td class="p-3"><input id ="auto_val" type="text" class="border rounded-lg px-3 py-1 w-24" value="0001" maxlength="5"></td>
+        <td class="p-3 text-gray-500">Auto increment sequence, max 5 digits.</td>
+    </tr>
+</tbody>
+
+                </table>
+            </div>
+
+            <!-- Buttons -->
+            <div class="mt-6 flex space-x-4">
+                <button id="previewBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">Preview</button>
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Setup</button>
+            </div>
+
+            <!-- Preview box -->
+            <div id="previewBox" class="mt-4 hidden bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                <p class="font-medium text-blue-800">Preview of generated Student IDs:</p>
+                <div id="previewList" class="mt-2 flex flex-wrap gap-2 text-sm"></div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    const btn = document.getElementById('previewBtn');
+    const previewBox = document.getElementById('previewBox');
+    const previewList = document.getElementById('previewList');
+
+    function pad(num, size) {
+        num = num.toString();
+        while (num.length < size) num = "0" + num;
+        return num;
+    }
+
+    btn.addEventListener('click', () => {
+        previewBox.classList.remove('hidden');
+        previewList.innerHTML = '';
+
+        // Collect values
+        const rows = [
+            { key: "institution", order: document.querySelector('[name="institution_order"]').value, value: document.getElementById('institution_val').value.trim().toUpperCase() },
+            { key: "campus", order: document.querySelector('[name="campus_order"]').value, value: document.getElementById('campus_val').value.trim().toUpperCase() },
+            { key: "country", order: document.querySelector('[name="country_order"]').value, value: document.getElementById('country_val').value.trim() },
+            { key: "year", order: document.querySelector('[name="year_order"]').value, value: (document.querySelector('input[name="year_digit"]:checked')?.value || "4") },
+            { key: "auto", order: document.querySelector('[name="auto_order"]').value, value: document.getElementById('auto_val').value.trim() }
+        ];
+
+        const active = rows.filter(r => r.order !== "Not Used").sort((a, b) => parseInt(a.order) - parseInt(b.order));
+
+        let samples = [];
+        let startNum = parseInt(rows.find(r => r.key === "auto")?.value || "1", 10);
+        let padLength = rows.find(r => r.key === "auto")?.value.length || 4;
+        let yearFull = new Date().getFullYear();
+        let yearShort = yearFull.toString().slice(2);
+
+        for (let i = 0; i < 5; i++) {
+            let parts = [];
+            active.forEach(r => {
+                if (r.key === "year") {
+                    parts.push(r.value === "2" ? yearShort : yearFull);
+                } else if (r.key === "auto") {
+                    parts.push(pad(startNum + i, padLength));
+                } else {
+                    parts.push(r.value);
+                }
+            });
+            samples.push(parts.join(""));
+        }
+
+        samples.forEach(id => {
+            const chip = document.createElement('div');
+            chip.className = "px-3 py-1 bg-white border rounded-lg";
+            chip.textContent = id;
+            previewList.appendChild(chip);
+        });
+    });
+</script>
+<</body>
+</html>
