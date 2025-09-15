@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Add a New Country</title>
@@ -31,101 +32,83 @@
     .custom-scrollbar::-webkit-scrollbar-thumb:hover {
       background: #a8a8a8;
     }
-  </style>
+</style>
 <style>
     body {
       min-height: max(884px, 100dvh);
     }
-  </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
+</style>
+</head>
 <body class="bg-gray-100">
 <div class="modal-overlay">
-<div class="bg-white rounded-lg shadow-xl p-8 max-w-xl w-[85%]" id="countryModal">
-<div class="flex justify-between items-start mb-4">
-<div>
-<h2 class="text-2xl font-bold text-gray-800">Add a New Country</h2>
-<p class="text-gray-500 mt-1">Add a new country to the list of countries.</p>
-</div>
-<button class="bg-gray-200 rounded-full p-2 hover:bg-gray-300">
-<span class="material-icons text-gray-600">close</span>
-</button>
-</div>
-<div class="flex justify-between items-center mb-6">
-<div class="relative w-[56.666667%]">
-<span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
-<input class="border border-gray-300 rounded-lg pl-10 pr-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search..." type="text"/>
-</div>
-<div class="relative">
-<select class="border border-gray-300 rounded-lg appearance-none pl-4 pr-10 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-<option>Country Name</option>
-<option>Country Code</option>
-<option>Nationality</option>
-<option>Region</option>
-</select>
-<span class="material-icons absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">expand_more</span>
-</div>
-</div>
-<div class="h-64 overflow-y-auto custom-scrollbar pr-2 space-y-3">
-<div class="flex items-center bg-gray-100 p-3 rounded-lg opacity-50">
-<input checked="" class="form-checkbox h-5 w-5 text-gray-400 rounded border-gray-300 cursor-not-allowed" disabled="" type="checkbox"/>
-<img alt="Flag of Afghanistan" class="w-6 h-auto mx-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuCPKuIX-x65ZRZqLSQrvIfB28G6oQIRzPs2a7ZgL3vVOgR2fsQZFL0yGm4bpp8W_zmEijvolPzcl3S82rfdGOdjo9bta0Fw-QjfZx--zyTUeCEI0Av-3eKhmiKy7gZ7FtktEu-xA0qvSY4NxBSdLupSbImkKesWrzCgKx0Aoznmn4kyducr830SoX8i-Bf_GZM09UaHxN9FvhBmFc3Jho-KvZxC1drCFZaUjf7CEj0xkZlvpEAC8yGDBOZXVN4sRDFHOL47RPH7Y"/>
-<span class="flex-grow text-gray-600">Afghanistan</span>
-<span class="text-gray-500">+93</span>
-</div>
-<div class="flex items-center bg-white p-3 rounded-lg border border-gray-200">
-<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" onchange="updateButtonState()" type="checkbox"/>
-<img alt="Flag of Aland Islands" class="w-6 h-auto mx-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtellaRyl_TWNph2nq1RykTEdfwZMSxV_vpQGMWjFaZIrHwD6hj0iDSi0_mBeaKPy3yqDXPAfyVMaSqm-lb2tKL0_20bPAzCjsaDlUC-oCjyoe0ja1ng-z2ypBbwQyihOLwdARaQsQKf-EymJr0YPTKPviI04FM5SmS1zf0m4Z3LaE-qRUq6eqxHoSeZ-t9sUE_iwU4KGF8EEpaH0tmrx6AZqaT-Nau0iEQleDwbCztpmmoRXEBckxNhMZvrK2n0sifEXf0LAtmJ4"/>
-<span class="flex-grow text-gray-800">Aland Islands</span>
-<span class="text-gray-500">+358</span>
-</div>
-<div class="flex items-center bg-white p-3 rounded-lg border border-gray-200">
-<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" onchange="updateButtonState()" type="checkbox"/>
-<img alt="Flag of Albania" class="w-6 h-auto mx-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7kALsl0RmFEQuH061lylMCQCxS6_DZQ1itEcwcBZ5SwFZkiJOykrGM0yYMaZNcgUwpVqf7RouIxoCNwx2RHmZeyp5q_xMYC3PXCV4FMiKBqC3jYtKonlEPKjSoYgdcV1RvI6B-MBM_HkOjh4m8mXS1GHMrvHqd9usLMUf8-bOu2T4J8Q-6RJ97OAJFQQvHVhwMtXlnxXdf0ctze4orDWDm7vyeOnUYHmsREdfgc0eb1BMbn0HL6Bz0ZsFLb-23eLAr5X_D6TX0fk"/>
-<span class="flex-grow text-gray-800">Albania</span>
-<span class="text-gray-500">+355</span>
-</div>
-<div class="flex items-center bg-white p-3 rounded-lg border border-gray-200">
-<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" onchange="updateButtonState()" type="checkbox"/>
-<img alt="Flag of Algeria" class="w-6 h-auto mx-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEVmBbArvplf8Gw8-Z0CIB6MaiNHWwzi1VEpI2DofAk1snKCTjEpLbYfUrGKspY3UiBKdn_ol15Qz8DX8xrxpCX_nBt3Y9Z9tZG0TOn2orK9RUzg4iqUOHqWSuJ2PGwyt6y0zXfoevcYa9A5Z1dsy6odp-4_eReWwwtnCiVbsswomIakSzKwz1xEkYoJ77RZy0uteXQXtAVtnqrIKJBs8YkFx1KYxoIVpl4Z8S6AivYSgh2NAgdcMPHuEinR1AdhE_xF6ywCHby04"/>
-<span class="flex-grow text-gray-800">Algeria</span>
-<span class="text-gray-500">+213</span>
-</div>
-<div class="flex items-center bg-gray-100 p-3 rounded-lg opacity-50">
-<input checked="" class="form-checkbox h-5 w-5 text-gray-400 rounded border-gray-300 cursor-not-allowed" disabled="" type="checkbox"/>
-<img alt="Flag of American Samoa" class="w-6 h-auto mx-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFFsvFlOVtF7hzAOFTbPw5yxbLP0_p6vbk1PyKKMno0WvxQQkEN4w_pcO0RgO2r_ruYXdgk4LurrYqdYcXXT-OUttHyplgoAn9ot-QoszXHGjz0RhAh5MQh6KaDNeD0UvDKd9GaDegISLKWL1H79FTEOEEoh6HiGn1H-wkmHacOgQtlZWcdMtAHWc2fBxqjT0-_GcAiJpgwN6zcuKuy-yzmp1uRyKEN4SIRREv8_JR8-LWyV20Y0ASbVcLZqBrgMvCrDwheCKyU3g"/>
-<span class="flex-grow text-gray-600">American Samoa</span>
-<span class="text-gray-500">+1</span>
-</div>
-<div class="flex items-center bg-white p-3 rounded-lg border border-gray-200">
-<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" onchange="updateButtonState()" type="checkbox"/>
-<img alt="Flag of Andorra" class="w-6 h-auto mx-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcjLdDo9SZ2iN1vl3gKm2Szq4eB4Z5YwKXxuxr1FNUtDwET3MtwLSz-R4w8MWz9nX4vzdNmxsxrFaWmpnzwHcc3bsKj_1EFjUGqkEkfPFePDwAkHraYvl8zUEeN6gE81_9f_bEHUks5WA3E5SpOVawTDhhm8F_-hrgplWObjq4W-ByEDwekMvLmYqBxevcXIrTCl-5ca2jdifPZqm0bkOIeSF4VtQQkidhtEzjr0EfWX-BmYOUvQvkBNRgDYO2INnp_ZDnAUtNhek"/>
-<span class="flex-grow text-gray-800">Andorra</span>
-<span class="text-gray-500">+376</span>
-</div>
-</div>
-<div class="flex justify-end items-center mt-8 space-x-4">
-<button class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300">Close</button>
-<button class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-blue-300 disabled:cursor-not-allowed" disabled="" id="addCountryBtn">Add Selected Country</button>
-</div>
-</div>
-</div>
-<script>
-    function updateButtonState() {
-      const checkboxes = document.querySelectorAll('.form-checkbox:not(:disabled)');
-      const addButton = document.getElementById('addCountryBtn');
-      let isAnyChecked = false;
-      checkboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-          isAnyChecked = true;
-        }
-      });
-      addButton.disabled = !isAnyChecked;
-    }
-  </script>
+  <div class="bg-white rounded-lg shadow-xl p-8 max-w-xl w-[85%]" id="countryModal">
+    <!-- Header -->
+    <div class="flex justify-between items-start mb-4">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">Add a New Country</h2>
+        <p class="text-gray-500 mt-1">Add a new country to the list of countries.</p>
+      </div>
+      <!-- X button -->
+      <button onclick="window.location.href='CountryList.html'" class="bg-gray-200 rounded-full p-2 hover:bg-gray-300">
+        <span class="material-icons text-gray-600">close</span>
+      </button>
+    </div>
 
-</body></html>
+    <!-- Search + Filter -->
+    <div class="flex justify-between items-center mb-6">
+      <div class="relative w-[56.666667%]">
+        <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+        <input class="border border-gray-300 rounded-lg pl-10 pr-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search..." type="text"/>
+      </div>
+      <div class="relative">
+        <select class="border border-gray-300 rounded-lg appearance-none pl-4 pr-10 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option>Country Name</option>
+          <option>Country Code</option>
+          <option>Nationality</option>
+          <option>Region</option>
+        </select>
+        <span class="material-icons absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">expand_more</span>
+      </div>
+    </div>
+
+    <!-- List -->
+    <div class="h-64 overflow-y-auto custom-scrollbar pr-2 space-y-3">
+      <div class="flex items-center bg-gray-100 p-3 rounded-lg opacity-50">
+        <input checked class="form-checkbox h-5 w-5 text-gray-400 rounded border-gray-300 cursor-not-allowed" disabled type="checkbox"/>
+        <img alt="Flag of Afghanistan" class="w-6 h-auto mx-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuCPKuIX-x65ZRZqLSQrvIfB28G6oQIRzPs2a7ZgL3vVOgR2fsQZFL0yGm4bpp8W_zmEijvolPzcl3S82rfdGOdjo9bta0Fw-QjfZx--zyTUeCEI0Av-3eKhmiKy7gZ7FtktEu-xA0qvSY4NxBSdLupSbImkKesWrzCgKx0Aoznmn4kyducr830SoX8i-Bf_GZM09UaHxN9FvhBmFc3Jho-KvZxC1drCFZaUjf7CEj0xkZlvpEAC8yGDBOZXVN4sRDFHOL47RPH7Y"/>
+        <span class="flex-grow text-gray-600">Afghanistan</span>
+        <span class="text-gray-500">+93</span>
+      </div>
+      <div class="flex items-center bg-white p-3 rounded-lg border border-gray-200">
+        <input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" onchange="updateButtonState()" type="checkbox"/>
+        <img alt="Flag of Aland Islands" class="w-6 h-auto mx-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtellaRyl_TWNph2nq1RykTEdfwZMSxV_vpQGMWjFaZIrHwD6hj0iDSi0_mBeaKPy3yqDXPAfyVMaSqm-lb2tKL0_20bPAzCjsaDlUC-oCjyoe0ja1ng-z2ypBbwQyihOLwdARaQsQKf-EymJr0YPTKPviI04FM5SmS1zf0m4Z3LaE-qRUq6eqxHoSeZ-t9sUE_iwU4KGF8EEpaH0tmrx6AZqaT-Nau0iEQleDwbCztpmmoRXEBckxNhMZvrK2n0sifEXf0LAtmJ4"/>
+        <span class="flex-grow text-gray-800">Aland Islands</span>
+        <span class="text-gray-500">+358</span>
+      </div>
+      <!-- ... other list items ... -->
+    </div>
+
+    <!-- Footer -->
+    <div class="flex justify-end items-center mt-8 space-x-4">
+      <!-- Close button -->
+      <button onclick="window.location.href='CountryList.html'" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300">Close</button>
+      <button class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-blue-300 disabled:cursor-not-allowed" disabled id="addCountryBtn">Add Selected Country</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateButtonState() {
+    const checkboxes = document.querySelectorAll('.form-checkbox:not(:disabled)');
+    const addButton = document.getElementById('addCountryBtn');
+    let isAnyChecked = false;
+    checkboxes.forEach(checkbox => {
+      if (checkbox.checked) {
+        isAnyChecked = true;
+      }
+    });
+    addButton.disabled = !isAnyChecked;
+  }
+</script>
+</body>
+</html>
