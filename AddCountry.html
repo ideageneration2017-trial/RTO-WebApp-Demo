@@ -1,48 +1,49 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Add a New Country</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
 <style type="text/tailwindcss">
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 10px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #c1c1c1;
-      border-radius: 10px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: #a8a8a8;
-    }
-  </style>
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+  </style>
 <style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
 <style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
 <body class="bg-gray-100">
 <div class="modal-overlay">
 <div class="bg-white rounded-lg shadow-xl p-8 max-w-xl w-[85%]" id="countryModal">
@@ -51,7 +52,7 @@
 <h2 class="text-2xl font-bold text-gray-800">Add a New Country</h2>
 <p class="text-gray-500 mt-1">Add a new country to the list of countries.</p>
 </div>
-<button class="bg-gray-200 rounded-full p-2 hover:bg-gray-300">
+<button onclick="window.location.href='CountryList.html'" class="bg-gray-200 rounded-full p-2 hover:bg-gray-300">
 <span class="material-icons text-gray-600">close</span>
 </button>
 </div>
@@ -109,24 +110,23 @@
 </div>
 </div>
 <div class="flex justify-end items-center mt-8 space-x-4">
-<button class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300 onclick="window.location.href='CountryList.html'">Close</button>
+<button onclick="window.location.href='CountryList.html'" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300">Close</button>
 <button class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-blue-300 disabled:cursor-not-allowed" disabled="" id="addCountryBtn">Add Selected Country</button>
 </div>
 </div>
 </div>
 <script>
-    function updateButtonState() {
-      const checkboxes = document.querySelectorAll('.form-checkbox:not(:disabled)');
-      const addButton = document.getElementById('addCountryBtn');
-      let isAnyChecked = false;
-      checkboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-          isAnyChecked = true;
-        }
-      });
-      addButton.disabled = !isAnyChecked;
-    }
-  </script>
-
-
-</body></html>
+    function updateButtonState() {
+      const checkboxes = document.querySelectorAll('.form-checkbox:not(:disabled)');
+      const addButton = document.getElementById('addCountryBtn');
+      let isAnyChecked = false;
+      checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+          isAnyChecked = true;
+        }
+      });
+      addButton.disabled = !isAnyChecked;
+    }
+</script>
+</body>
+</html>
