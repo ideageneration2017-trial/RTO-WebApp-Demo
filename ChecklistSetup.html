@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Checklist Setup</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 antialiased">
+<div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-sky-100 text-gray-900 flex flex-col shadow-lg rounded-r-2xl">
+        <div class="p-6">
+            <img src="isoft.jpg" alt="ISoft Logo" class="w-full h-auto object-contain">
+        </div>
+        <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+            <a href="Dashboard.html" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                <span class="material-icons mr-3">dashboard</span>
+                Dashboard
+            </a>
+            <div x-data="{ open: true }">
+                <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200 focus:outline-none">
+                    <div class="flex items-center">
+                        <span class="material-icons mr-3">build_circle</span>
+                        <span>Setup Hub</span>
+                    </div>
+                    <span class="material-icons transition-transform duration-300" :class="open ? 'rotate-180' : ''">expand_less</span>
+                </button>
+                <div x-show="open" x-collapse.duration.300ms class="pl-8 mt-1 space-y-1">
+                    <a href="CollegeInfo-tab-style.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200">College Info</a>
+					<a href="ChecklistSetup.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200  bg-sky-200">Checklist Setup</a>
+                    <a href="CountryList.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200">Manage Countries</a>
+					<a href="LanguageList.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200">Manage Languages</a>
+                    <a href="StudentID.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200">Student ID Format</a>
+                </div>
+            </div>
+            <a href="UserList.html" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                <span class="material-icons mr-3">people</span> Users
+            </a>
+			<a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">work</span>
+                    Talent Hub
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">school</span>
+                    Learning Ecosystem
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">dynamic_form</span>
+                    Enrollment Journey
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">account_balance_wallet</span>
+                    Finance Center
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">insights</span>
+                    Performance Insights
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">find_in_page</span>
+                    Prospect Engine
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">assignment_ind</span>
+                    Training Coordinator
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">fact_check</span>
+                    Assessment Suite
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">gavel</span>
+                    Compliance Center
+                </a>
+        </nav>
+    </aside>
+
+  <!-- Main -->
+  <main class="flex-1 p-8 overflow-y-auto">
+		<header class="flex justify-end items-center mb-8">
+    <div class="relative flex items-center space-x-6">
+        <span class="material-icons text-gray-600">notifications</span>
+        
+        <!-- Profile Dropdown Container -->
+        <div class="relative">
+            <div id="profile-menu-button" class="flex items-center space-x-3 cursor-pointer select-none">
+                <img alt="user logo" class="w-10 h-10 rounded-full" src="owner.jpg"/>
+                <div>
+                    <div class="font-semibold">Edtech Admin</div>
+                </div>
+                <span id="dropdown-arrow" class="material-icons text-gray-400 transform transition-transform duration-200">expand_more</span>
+            </div>
+            
+            <!-- Dropdown Menu -->
+            <div id="profile-dropdown-menu" class="hidden absolute right-0 mt-3 w-60 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                <div class="p-4 border-b border-gray-200">
+                    <div class="font-bold text-gray-800">Hi, Admin</div>
+                    <div class="text-sm text-gray-500">admin@isoftanz.com.au</div>
+                </div>
+                <ul class="py-2">
+                    <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">person</span>Edit Profile</a></li>
+                    <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">settings</span>Account settings</a></li>
+                    <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"><span class="material-icons mr-3">help_outline</span>Support</a></li>
+                    <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 border-t border-gray-200 mt-2 pt-2"><span class="material-icons mr-3">logout</span>Sign out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script>
+    const profileMenuButton = document.getElementById('profile-menu-button');
+    const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+    const dropdownArrow = document.getElementById('dropdown-arrow');
+
+    profileMenuButton.addEventListener('click', () => {
+        const isHidden = profileDropdownMenu.classList.toggle('hidden');
+        if (isHidden) {
+            dropdownArrow.classList.remove('rotate-180');
+        } else {
+            dropdownArrow.classList.add('rotate-180');
+        }
+    });
+
+    // Close the dropdown if the user clicks outside of it
+    window.addEventListener('click', (event) => {
+        if (!profileMenuButton.contains(event.target) && !profileDropdownMenu.contains(event.target)) {
+            profileDropdownMenu.classList.add('hidden');
+            dropdownArrow.classList.remove('rotate-180');
+        }
+    });
+</script>
+  <main class="flex-1 p-8">
+	<div class="flex justify-between items-center mb-6">
+		<div class="flex items-center">
+			<span class="material-icons text-gray-600">arrow_back</span>
+			<h1 class="text-2xl font-semibold ml-2">Manage Checklists</h1>
+		</div>
+		<div class="text-sm text-gray-500">
+			<a href="Dashboard.html" class="hover:text-blue-500">
+        		<span>Home</span>
+    		</a> &gt; <span>Checklists</span>
+		</div>
+	</div>
+    <div class="bg-white p-8 rounded-lg shadow-md">
+      <!-- Header -->
+      <div class="flex justify-between items-center mb-4">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">Checklist Setup</h2>
+          <p class="text-sm text-gray-500 mt-1">Manage and configure all checklist templates for students, agents, courses, and application processes.</p>
+        </div>
+        <button class="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300">
+          <span class="material-icons mr-2">add</span>
+          Add Checklist
+        </button>
+      </div>
+
+      <!-- Search + Filter row -->
+      <div class="flex justify-between items-center mb-6">
+        <!-- Search -->
+        <div class="w-1/2">
+          <input id="searchInput" type="text" placeholder="Search checklists..." class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        </div>
+        <!-- Filter -->
+        <div class="relative">
+          <button id="filterBtn" aria-expanded="false" class="flex items-center bg-white border border-gray-200 px-3 py-2 rounded-md hover:bg-gray-50 focus:outline-none">
+            <span class="material-icons">filter_alt</span>
+          </button>
+          <div id="filterPanel" class="hidden absolute right-0 mt-2 w-72 bg-white border border-gray-200 rounded-lg panel-shadow p-4 z-30">
+            <div class="mb-4">
+              <label for="statusSelect" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <select id="statusSelect" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="All">All</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label for="appliesSelect" class="block text-sm font-medium text-gray-700 mb-1">Applies To</label>
+              <select id="appliesSelect" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="All">All</option>
+                <option>Overseas Student</option>
+                <option>Overseas Student in Australia</option>
+                <option>Resident Student</option>
+                <option>Agent</option>
+                <option>Course</option>
+                <option>Application Stage</option>
+                <option>Payment</option>
+              </select>
+            </div>
+            <div class="flex space-x-2">
+              <button id="applyFilterBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Apply</button>
+              <button id="resetFilterBtn" class="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left text-gray-500">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+            <tr>
+              <th class="px-6 py-3">Template Name</th>
+              <th class="px-6 py-3 text-center">Applies To</th>
+              <th class="px-6 py-3 text-center">Status</th>
+              <th class="px-6 py-3 text-center">Last Updated</th>
+              <th class="px-6 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Example row -->
+            <tr class="row-item bg-white border-b hover:bg-gray-50" data-status="Active" data-appliesto="Student">
+              <td class="px-6 py-4 font-medium text-gray-900">Student Application Documents (UG)</td>
+              <td class="px-6 py-4 text-center">Student</td>
+              <td class="px-6 py-4 text-center"><span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Active</span></td>
+              <td class="px-6 py-4 text-center">Sep 01, 2025</td>
+              <td class="px-6 py-4 text-right relative">
+                <button class="actionBtn"><span class="material-icons">more_vert</span></button>
+                <div class="actionMenu hidden absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-40">
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 toggleStatus">Deactivate</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Delete</a>
+                </div>
+              </td>
+            </tr>
+            <tr class="row-item bg-white hover:bg-gray-50" data-status="Inactive" data-appliesto="Course">
+              <td class="px-6 py-4 font-medium text-gray-900">Course Pre-requisites</td>
+              <td class="px-6 py-4 text-center">Course</td>
+              <td class="px-6 py-4 text-center"><span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Inactive</span></td>
+              <td class="px-6 py-4 text-center">Jul 15, 2025</td>
+              <td class="px-6 py-4 text-right relative">
+                <button class="actionBtn"><span class="material-icons">more_vert</span></button>
+                <div class="actionMenu hidden absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-40">
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 toggleStatus">Activate</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Delete</a>
+                </div>
+              </td>
+            </tr>
+			
+			<tr class="row-item bg-white border-b hover:bg-gray-50" data-status="Inactive" data-appliesto="Agent">
+			  <td class="px-6 py-4 font-medium text-gray-900">Agent Onboarding Checklist</td>
+			  <td class="px-6 py-4 text-center">Agent</td>
+			  <td class="px-6 py-4 text-center"><span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Inactive</span></td>
+			  <td class="px-6 py-4 text-center">Aug 15, 2025</td>
+			  <td class="px-6 py-4 text-right relative">
+				<button class="actionBtn"><span class="material-icons">more_vert</span></button>
+				<div class="actionMenu hidden absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-40">
+				  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</a>
+				  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+				  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 toggleStatus">Activate</a>
+				  <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Delete</a>
+				</div>
+			  </td>
+			</tr>
+
+			<tr class="row-item bg-white border-b hover:bg-gray-50" data-status="Active" data-appliesto="Course">
+			  <td class="px-6 py-4 font-medium text-gray-900">Course Enrollment Prerequisites</td>
+			  <td class="px-6 py-4 text-center">Course</td>
+			  <td class="px-6 py-4 text-center"><span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Active</span></td>
+			  <td class="px-6 py-4 text-center">Sep 05, 2025</td>
+			  <td class="px-6 py-4 text-right relative">
+				<button class="actionBtn"><span class="material-icons">more_vert</span></button>
+				<div class="actionMenu hidden absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-40">
+				  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</a>
+				  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+				  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 toggleStatus">Deactivate</a>
+				  <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Delete</a>
+				</div>
+			  </td>
+			</tr>
+
+			<tr class="row-item bg-white border-b hover:bg-gray-50" data-status="Inactive" data-appliesto="Payment">
+			  <td class="px-6 py-4 font-medium text-gray-900">Initial Tuition Fee Checklist</td>
+			  <td class="px-6 py-4 text-center">Payment</td>
+			  <td class="px-6 py-4 text-center"><span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Inactive</span></td>
+			  <td class="px-6 py-4 text-center">Jul 28, 2025</td>
+			  <td class="px-6 py-4 text-right relative">
+				<button class="actionBtn"><span class="material-icons">more_vert</span></button>
+				<div class="actionMenu hidden absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-40">
+				  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</a>
+				  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+				  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 toggleStatus">Activate</a>
+				  <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Delete</a>
+				</div>
+			  </td>
+			</tr>
+
+            <tr id="noResultsRow" class="hidden">
+              <td colspan="5" class="px-6 py-12 text-center text-gray-500">No matching records found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  // Filter toggle
+  const filterBtn = document.getElementById('filterBtn');
+  const filterPanel = document.getElementById('filterPanel');
+  filterBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    filterPanel.classList.toggle('hidden');
+  });
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#filterPanel') && !e.target.closest('#filterBtn')) {
+      filterPanel.classList.add('hidden');
+    }
+  });
+
+  // Action menus
+  document.querySelectorAll('.actionBtn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const menu = btn.nextElementSibling;
+      document.querySelectorAll('.actionMenu').forEach((m) => {
+        if (m !== menu) m.classList.add('hidden');
+      });
+      menu.classList.toggle('hidden');
+    });
+  });
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.actionMenu').forEach((m) => m.classList.add('hidden'));
+  });
+
+  // Toggle status (activate/deactivate)
+  document.querySelectorAll('.toggleStatus').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const row = e.target.closest('tr');
+      const statusCell = row.querySelector('[data-status], td:nth-child(3)');
+      const badge = row.querySelector('td:nth-child(3) span');
+      if (row.dataset.status === 'Active') {
+        row.dataset.status = 'Inactive';
+        badge.textContent = 'Inactive';
+        badge.className = 'bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-full';
+        e.target.textContent = 'Activate';
+      } else {
+        row.dataset.status = 'Active';
+        badge.textContent = 'Active';
+        badge.className = 'bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full';
+        e.target.textContent = 'Deactivate';
+      }
+    });
+  });
+
+  // Search functionality
+  const searchInput = document.getElementById('searchInput');
+  const rows = document.querySelectorAll('.row-item');
+  const noResultsRow = document.getElementById('noResultsRow');
+  searchInput.addEventListener('keyup', () => {
+    const term = searchInput.value.toLowerCase();
+    let visibleCount = 0;
+    rows.forEach((row) => {
+      const text = row.innerText.toLowerCase();
+      if (text.includes(term)) {
+        row.classList.remove('hidden');
+        visibleCount++;
+      } else {
+        row.classList.add('hidden');
+      }
+    });
+    noResultsRow.classList.toggle('hidden', visibleCount !== 0);
+  });
+</script>
+</body>
+</html>
