@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Setup Student ID Format</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+</head>
+<body class="bg-gray-50 antialiased">
+<div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-sky-100 text-gray-900 flex flex-col shadow-lg rounded-r-2xl">
+        <div class="p-6">
+            <img src="isoft.jpg" alt="ISoft Logo" class="w-full h-auto object-contain">
+        </div>
+        <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+            <a href="Dashboard.html" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                <span class="material-icons mr-3">dashboard</span>
+                Dashboard
+            </a>
+            <div x-data="{ open: true }">
+                <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200 focus:outline-none">
+                    <div class="flex items-center">
+                        <span class="material-icons mr-3">build_circle</span>
+                        <span>Setup Hub</span>
+                    </div>
+                    <span class="material-icons transition-transform duration-300" :class="open ? 'rotate-180' : ''">expand_less</span>
+                </button>
+                <div x-show="open" x-collapse.duration.300ms class="pl-8 mt-1 space-y-1">
+                    <a href="CollegeInfo-tab-style.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200">College Info</a>
+                    <a href="CountryList.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200">Manage Countries</a>
+                    <a href="StudentID.html" class="block px-4 py-2 text-sm font-medium rounded-xl hover:bg-sky-200 bg-sky-200">Student ID Format</a>
+                </div>
+            </div>
+            <a href="UserList.html" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                <span class="material-icons mr-3">people</span> Users
+            </a>
+			<a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">work</span>
+                    Talent Hub
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">school</span>
+                    Learning Ecosystem
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">dynamic_form</span>
+                    Enrollment Journey
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">account_balance_wallet</span>
+                    Finance Center
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">insights</span>
+                    Performance Insights
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">find_in_page</span>
+                    Prospect Engine
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">assignment_ind</span>
+                    Training Coordinator
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">fact_check</span>
+                    Assessment Suite
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 text-gray-700 rounded-xl hover:bg-sky-200">
+                    <span class="material-icons mr-3">gavel</span>
+                    Compliance Center
+                </a>
+        </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-8 overflow-y-auto">
+        <!-- Header -->
+        <header class="flex justify-end items-center mb-8">
+            <div class="relative flex items-center space-x-6">
+                <span class="material-icons text-gray-600">notifications</span>
+                <div class="relative">
+                    <div id="profile-menu-button" class="flex items-center space-x-3 cursor-pointer select-none">
+                        <img alt="user logo" class="w-10 h-10 rounded-full" src="owner.jpg"/>
+                        <div>
+                            <div class="font-semibold">Edtech Admin</div>
+                        </div>
+                        <span id="dropdown-arrow" class="material-icons text-gray-400 transform transition-transform duration-200">expand_more</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page content -->
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center">
+                <span class="material-icons text-gray-600">arrow_back</span>
+                <h1 class="text-2xl font-semibold ml-2">Setup Student ID Format</h1>
+            </div>
+            <div class="text-sm text-gray-500">
+              <a href="Dashboard.html" class="hover:text-blue-500">Home</a> &gt; <span>Setup Hub</span> &gt; <span>Student ID Format</span>
+            </div>
+        </div>
+
+        <!-- Format Cards -->
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h2 class="text-xl font-semibold mb-4">Student ID Format</h2>
+
+            <div id="cardsContainer" class="space-y-3">
+                <!-- Example cards (draggable) -->
+                <div class="card bg-gray-50 border rounded-lg p-3 flex flex-col" data-key="institution">
+                    <div class="flex items-center mb-2">
+                        <span class="material-icons cursor-move mr-2 text-gray-500">unfold_more</span>
+                        <h3 class="font-semibold flex-1">Institution Code</h3>
+                        <label class="flex items-center space-x-1 text-sm">
+                            <input type="checkbox" checked class="rounded"> <span>Include</span>
+                        </label>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <input type="text" value="AST" maxlength="5" class="border rounded-lg px-3 py-1 w-32">
+                        <span class="text-gray-500 text-sm">Max 5 chars</span>
+                    </div>
+                </div>
+
+                <div class="card bg-gray-50 border rounded-lg p-3 flex flex-col" data-key="campus">
+                    <div class="flex items-center mb-2">
+                        <span class="material-icons cursor-move mr-2 text-gray-500">unfold_more</span>
+                        <h3 class="font-semibold flex-1">Campus Code</h3>
+                        <label class="flex items-center space-x-1 text-sm">
+                            <input type="checkbox" checked class="rounded"> <span>Include</span>
+                        </label>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <input type="text" value="SYD" maxlength="3" class="border rounded-lg px-3 py-1 w-24">
+                        <span class="text-gray-500 text-sm">Max 3 chars</span>
+                    </div>
+                </div>
+
+                <div class="card bg-gray-50 border rounded-lg p-3 flex flex-col" data-key="country">
+                    <div class="flex items-center mb-2">
+                        <span class="material-icons cursor-move mr-2 text-gray-500">unfold_more</span>
+                        <h3 class="font-semibold flex-1">Country Code</h3>
+                        <label class="flex items-center space-x-1 text-sm">
+                            <input type="checkbox" checked class="rounded"> <span>Include</span>
+                        </label>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <input type="text" value="061" class="border rounded-lg px-3 py-1 w-24">
+                        <span class="text-gray-500 text-sm">Auto-fills from country</span>
+                    </div>
+                </div>
+
+                <div class="card bg-gray-50 border rounded-lg p-3 flex flex-col" data-key="year">
+                    <div class="flex items-center mb-2">
+                        <span class="material-icons cursor-move mr-2 text-gray-500">unfold_more</span>
+                        <h3 class="font-semibold flex-1">Year Digit</h3>
+                        <label class="flex items-center space-x-1 text-sm">
+                            <input type="checkbox" checked class="rounded"> <span>Include</span>
+                        </label>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <label class="flex items-center space-x-1 text-sm"><input type="radio" name="year_digit" value="2"> <span>2 digit</span></label>
+                        <label class="flex items-center space-x-1 text-sm"><input type="radio" name="year_digit" value="4" checked> <span>4 digit</span></label>
+                        <span class="text-gray-500 text-sm">Year format</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auto Number Card (fixed, not draggable) -->
+            <div class="card bg-gray-100 border rounded-lg p-3 flex flex-col mt-3" data-key="auto">
+                <div class="flex items-center mb-2">
+                    <h3 class="font-semibold flex-1">Auto Number</h3>
+                    <span class="text-sm text-gray-500">Include</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <input id="autoLength" type="number" min="1" max="5" value="4" class="border rounded-lg px-3 py-1 w-20">
+                    <input id="autoSample" type="text" class="border rounded-lg px-3 py-1 w-24 bg-gray-50 text-gray-700" value="0001" readonly>
+                    <span class="text-gray-500 text-sm">Auto increment</span>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="mt-6 flex space-x-4">
+                <button id="previewBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">Preview</button>
+                <button id="setupBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Setup</button>
+                <button id="editBtn" class="hidden px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Edit</button>
+            </div>
+
+            <!-- Preview box -->
+            <div id="previewBox" class="mt-4 hidden bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                <p class="font-medium text-blue-800">Preview of generated Student IDs:</p>
+                <div id="previewList" class="mt-2 flex flex-wrap gap-2 text-sm"></div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    new Sortable(document.getElementById('cardsContainer'), {
+        handle: '.material-icons',
+        animation: 150
+    });
+
+    const autoLength = document.getElementById('autoLength');
+    const autoSample = document.getElementById('autoSample');
+
+    autoLength.addEventListener('input', () => {
+        let len = parseInt(autoLength.value, 10);
+        if (isNaN(len) || len < 1) len = 1;
+        if (len > 5) len = 5;
+        autoLength.value = len;
+        autoSample.value = "1".padStart(len, "0");
+    });
+
+    const previewBtn = document.getElementById('previewBtn');
+    const previewBox = document.getElementById('previewBox');
+    const previewList = document.getElementById('previewList');
+
+    previewBtn.addEventListener('click', () => {
+        previewBox.classList.remove('hidden');
+        previewList.innerHTML = '';
+
+        const cards = document.querySelectorAll('#cardsContainer .card');
+        let samples = [];
+        let padLength = parseInt(autoLength.value, 10);
+        let yearFull = new Date().getFullYear();
+        let yearShort = yearFull.toString().slice(2);
+
+        for (let i = 0; i < 5; i++) {
+            let parts = [];
+            cards.forEach(card => {
+                const key = card.dataset.key;
+                if (!card.querySelector('input[type="checkbox"]').checked) return;
+                if (key === "year") {
+                    const val = card.querySelector('input[name="year_digit"]:checked')?.value || "4";
+                    parts.push(val === "2" ? yearShort : yearFull);
+                } else {
+                    parts.push(card.querySelector('input[type="text"]').value.trim().toUpperCase());
+                }
+            });
+            parts.push(String(i + 1).padStart(padLength, "0"));
+            samples.push(parts.join(""));
+        }
+
+        samples.forEach(id => {
+            const chip = document.createElement('div');
+            chip.className = "px-3 py-1 bg-white border rounded-lg";
+            chip.textContent = id;
+            previewList.appendChild(chip);
+        });
+    });
+</script>
+</body>
+</html>
