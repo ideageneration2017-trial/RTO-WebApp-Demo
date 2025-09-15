@@ -2,87 +2,130 @@
 <html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Add New Country</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<title>Add a New Country</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style type="text/tailwindcss">
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+  </style>
 <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
-</head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-<div class="bg-white rounded-xl shadow-lg w-full max-w-4xl m-4">
-<div class="p-6 border-b border-gray-200">
-<h1 class="text-xl font-semibold text-gray-800">Add a New Country</h1>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-gray-100">
+<div class="modal-overlay">
+<div class="bg-white rounded-lg shadow-xl p-8 max-w-xl w-[85%]" id="countryModal">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h2 class="text-2xl font-bold text-gray-800">Add a New Country</h2>
+<p class="text-gray-500 mt-1">Add a new country to the list of countries.</p>
 </div>
-<div class="p-6">
-<div class="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0 mb-6">
-<div class="relative flex-grow">
+<button class="bg-gray-200 rounded-full p-2 hover:bg-gray-300">
+<span class="material-icons text-gray-600">close</span>
+</button>
+</div>
+<div class="flex justify-between items-center mb-6">
+<div class="relative w-[56.666667%]">
 <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
-<input class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Search by name, code, nationality..." type="text"/>
+<input class="border border-gray-300 rounded-lg pl-10 pr-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search..." type="text"/>
 </div>
 <div class="relative">
-<select class="appearance-none bg-white border border-gray-300 rounded-lg py-2 pl-4 pr-10 text-gray-700 w-full md:w-auto focus:ring-2 focus:ring-blue-500 focus:outline-none">
-<option>Filter by Region</option>
-<option>North America</option>
-<option>Europe</option>
-<option>Oceania</option>
-<option>Asia</option>
-<option>Africa</option>
-<option>South America</option>
+<select class="border border-gray-300 rounded-lg appearance-none pl-4 pr-10 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+<option>Country Name</option>
+<option>Country Code</option>
+<option>Nationality</option>
+<option>Region</option>
 </select>
 <span class="material-icons absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">expand_more</span>
 </div>
 </div>
-<div class="space-y-3 max-h-80 overflow-y-auto pr-2">
-<label class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-blue-50 hover:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:border-blue-500 transition-colors" for="us">
-<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="us" type="checkbox"/>
-<img alt="Flag of United States" class="w-10 h-6 ml-4 object-cover rounded-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBM3oUw3_jLsOyvbP7G18knAZ02XpsMVxG-nilOx2hbrc6DfGFh6gqtCeV6Ih9UJmoBWCqmZ9WTFGKrWeaLRkF_vr40IPuGTj4dnfc4eZ0hfDEG5OMGYuGyBCu2qMEYijZkCyW1VZeP9rHDqG-xCLs-A9ZRQpjwOYhTJVBgXOLhcbuCogytr73alDNkA8HklR4rOWd6F5mUcpwHzzp0XYZpDTXPy8pPIHQ2GlNeIHy3ZJt52jXRbnqtQr3MAoppICu-BF2xLbPIIaz9"/>
-<span class="ml-4 font-medium text-gray-800 flex-grow">United States</span>
+<div class="h-64 overflow-y-auto custom-scrollbar pr-2 space-y-3">
+<div class="flex items-center bg-gray-100 p-3 rounded-lg opacity-50">
+<input checked="" class="form-checkbox h-5 w-5 text-gray-400 rounded border-gray-300 cursor-not-allowed" disabled="" type="checkbox"/>
+<img alt="Flag of Afghanistan" class="w-6 h-auto mx-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuCPKuIX-x65ZRZqLSQrvIfB28G6oQIRzPs2a7ZgL3vVOgR2fsQZFL0yGm4bpp8W_zmEijvolPzcl3S82rfdGOdjo9bta0Fw-QjfZx--zyTUeCEI0Av-3eKhmiKy7gZ7FtktEu-xA0qvSY4NxBSdLupSbImkKesWrzCgKx0Aoznmn4kyducr830SoX8i-Bf_GZM09UaHxN9FvhBmFc3Jho-KvZxC1drCFZaUjf7CEj0xkZlvpEAC8yGDBOZXVN4sRDFHOL47RPH7Y"/>
+<span class="flex-grow text-gray-600">Afghanistan</span>
+<span class="text-gray-500">+93</span>
+</div>
+<div class="flex items-center bg-white p-3 rounded-lg border border-gray-200">
+<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" onchange="updateButtonState()" type="checkbox"/>
+<img alt="Flag of Aland Islands" class="w-6 h-auto mx-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtellaRyl_TWNph2nq1RykTEdfwZMSxV_vpQGMWjFaZIrHwD6hj0iDSi0_mBeaKPy3yqDXPAfyVMaSqm-lb2tKL0_20bPAzCjsaDlUC-oCjyoe0ja1ng-z2ypBbwQyihOLwdARaQsQKf-EymJr0YPTKPviI04FM5SmS1zf0m4Z3LaE-qRUq6eqxHoSeZ-t9sUE_iwU4KGF8EEpaH0tmrx6AZqaT-Nau0iEQleDwbCztpmmoRXEBckxNhMZvrK2n0sifEXf0LAtmJ4"/>
+<span class="flex-grow text-gray-800">Aland Islands</span>
+<span class="text-gray-500">+358</span>
+</div>
+<div class="flex items-center bg-white p-3 rounded-lg border border-gray-200">
+<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" onchange="updateButtonState()" type="checkbox"/>
+<img alt="Flag of Albania" class="w-6 h-auto mx-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7kALsl0RmFEQuH061lylMCQCxS6_DZQ1itEcwcBZ5SwFZkiJOykrGM0yYMaZNcgUwpVqf7RouIxoCNwx2RHmZeyp5q_xMYC3PXCV4FMiKBqC3jYtKonlEPKjSoYgdcV1RvI6B-MBM_HkOjh4m8mXS1GHMrvHqd9usLMUf8-bOu2T4J8Q-6RJ97OAJFQQvHVhwMtXlnxXdf0ctze4orDWDm7vyeOnUYHmsREdfgc0eb1BMbn0HL6Bz0ZsFLb-23eLAr5X_D6TX0fk"/>
+<span class="flex-grow text-gray-800">Albania</span>
+<span class="text-gray-500">+355</span>
+</div>
+<div class="flex items-center bg-white p-3 rounded-lg border border-gray-200">
+<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" onchange="updateButtonState()" type="checkbox"/>
+<img alt="Flag of Algeria" class="w-6 h-auto mx-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEVmBbArvplf8Gw8-Z0CIB6MaiNHWwzi1VEpI2DofAk1snKCTjEpLbYfUrGKspY3UiBKdn_ol15Qz8DX8xrxpCX_nBt3Y9Z9tZG0TOn2orK9RUzg4iqUOHqWSuJ2PGwyt6y0zXfoevcYa9A5Z1dsy6odp-4_eReWwwtnCiVbsswomIakSzKwz1xEkYoJ77RZy0uteXQXtAVtnqrIKJBs8YkFx1KYxoIVpl4Z8S6AivYSgh2NAgdcMPHuEinR1AdhE_xF6ywCHby04"/>
+<span class="flex-grow text-gray-800">Algeria</span>
+<span class="text-gray-500">+213</span>
+</div>
+<div class="flex items-center bg-gray-100 p-3 rounded-lg opacity-50">
+<input checked="" class="form-checkbox h-5 w-5 text-gray-400 rounded border-gray-300 cursor-not-allowed" disabled="" type="checkbox"/>
+<img alt="Flag of American Samoa" class="w-6 h-auto mx-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFFsvFlOVtF7hzAOFTbPw5yxbLP0_p6vbk1PyKKMno0WvxQQkEN4w_pcO0RgO2r_ruYXdgk4LurrYqdYcXXT-OUttHyplgoAn9ot-QoszXHGjz0RhAh5MQh6KaDNeD0UvDKd9GaDegISLKWL1H79FTEOEEoh6HiGn1H-wkmHacOgQtlZWcdMtAHWc2fBxqjT0-_GcAiJpgwN6zcuKuy-yzmp1uRyKEN4SIRREv8_JR8-LWyV20Y0ASbVcLZqBrgMvCrDwheCKyU3g"/>
+<span class="flex-grow text-gray-600">American Samoa</span>
 <span class="text-gray-500">+1</span>
-</label>
-<label class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-blue-50 hover:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:border-blue-500 transition-colors" for="ca">
-<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="ca" type="checkbox"/>
-<img alt="Flag of Canada" class="w-10 h-6 ml-4 object-cover rounded-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGAAgMbl8qgFqvgK9kG3Cc17WPw5ZRyNgCb_W0US13Gl1O7NbY_w1LEzcqddOPxVpTnEertSdWlz1YFlsH7fmrG3YmP18jBPa-eDQeMWBaNu0LibTBKABuBBz87fNHrWU-EZ8YnkhQVFbwd6ii5idEgc-Ftlz1e3Y9IqX7b7BMKV-jV36Jv6-Vs7SaQf2XlxS8EBTBIxk-5mH4QB3NiaA3H4rm27kel1SCY6gmwXEVnnbkYyKtkOr5v0_kz1gT_pr2GiFNO9f0WFMe"/>
-<span class="ml-4 font-medium text-gray-800 flex-grow">Canada</span>
-<span class="text-gray-500">+1</span>
-</label>
-<label class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-blue-50 hover:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:border-blue-500 transition-colors" for="gb">
-<input checked="" class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="gb" type="checkbox"/>
-<img alt="Flag of United Kingdom" class="w-10 h-6 ml-4 object-cover rounded-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAg4KMMqheV6LEJ2qRc6RnRUT9n7NAaURwu-nndN5YB8INmulkgN9k71Ipb72_LYWx4wyJofq0yIiBIvthL1H6WiDKgIBcZM03pDE3aq70YEo67Q1dEEKa7uB7wTFolAcvj4W5RgERb0bVRE6kpJKkaQjacnW2nTWKRIEY6FzSDz_pfXA-ylti45R4_z4At7AdHZc40SzVCJfMFNoGgo9Qfiu-rp6y10u9krM0hw1BSjwQUCKTD7WLk1XkVL-Uf0-VphsUhq1Lups0j"/>
-<span class="ml-4 font-medium text-gray-800 flex-grow">United Kingdom</span>
-<span class="text-gray-500">+44</span>
-</label>
-<label class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-blue-50 hover:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:border-blue-500 transition-colors" for="au">
-<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="au" type="checkbox"/>
-<img alt="Flag of Australia" class="w-10 h-6 ml-4 object-cover rounded-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZYIyRHoTrL95EGDqCtBW2NOImJf4iq0_i9do_6kZQwcgkEK2xT4-KRrXmQJN-V1tj4TMOxmoGBlmTVUiPU4RV4DLL3pnL8lC_U7-bzKUT-aqsHSVp4fPvhrrUMYbijLb061JIzSkZYydHu8R9kip8d96L_iamsy3Xi-EOnTahzbWbV27VRLQMxgDrGGbDVmw7pxMoNeEQI5WBBSIcbGRqDKo68ocLo3jeKD87oU1OzMkGo7ZI1BD1DaDBlPJ8wWpSs8TSP0PTJQKJ"/>
-<span class="ml-4 font-medium text-gray-800 flex-grow">Australia</span>
-<span class="text-gray-500">+61</span>
-</label>
-<label class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-blue-50 hover:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:border-blue-500 transition-colors" for="de">
-<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="de" type="checkbox"/>
-<img alt="Flag of Germany" class="w-10 h-6 ml-4 object-cover rounded-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9e4muaonpM7OtpKzYH24i3cKNu5_5wCwjVmn4GD_57m7rW6WJnrgYCVkVmmPPE7262M_PBgXwmfuF0VshXxzRUN4qwjJX0yo3JibrKGiBENxTKag6mOwPpWp4klNN8gja7IQMJI_fsa5zHnFc-bb01MNPjvXU-9pVYQLM6bT4cOo76_3QOCV_Aspkk1i3BPDZkZMCHoUTZhX4y0PqwnpUzzLJ3yCBgQRO-K2j9_5Gcvn4HRr1UJhJk5_GBbUYBTO2n3ueB3Ts9w3w"/>
-<span class="ml-4 font-medium text-gray-800 flex-grow">Germany</span>
-<span class="text-gray-500">+49</span>
-</label>
-<label class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-blue-50 hover:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:border-blue-500 transition-colors" for="fr">
-<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="fr" type="checkbox"/>
-<img alt="Flag of France" class="w-10 h-6 ml-4 object-cover rounded-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnyjl1dgp3js6c19PxHWOF7k3VCuSU_4erNOuearzNKWK1xbS_AnyIVMttaFyq4NYLgEf-zPD09j3YojTU3bUrc-PFzWY827PM42jyY3EJUDWgQ7lDrvEYJcl3VRNhG_Rg_U8Okb1PA-jrAdthS1KcVaqtG2N3dm4iM8X_jj-_8cysRuJjJ5TwUJZwEoMul_fNW1t_Hq1YQ8cP59uC9GItx08Sp2sgORlE9EU2yNv49NffSFaIsXdcoFlagMy3R36M6v-M5-R2Vd6G"/>
-<span class="ml-4 font-medium text-gray-800 flex-grow">France</span>
-<span class="text-gray-500">+33</span>
-</label>
+</div>
+<div class="flex items-center bg-white p-3 rounded-lg border border-gray-200">
+<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" onchange="updateButtonState()" type="checkbox"/>
+<img alt="Flag of Andorra" class="w-6 h-auto mx-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcjLdDo9SZ2iN1vl3gKm2Szq4eB4Z5YwKXxuxr1FNUtDwET3MtwLSz-R4w8MWz9nX4vzdNmxsxrFaWmpnzwHcc3bsKj_1EFjUGqkEkfPFePDwAkHraYvl8zUEeN6gE81_9f_bEHUks5WA3E5SpOVawTDhhm8F_-hrgplWObjq4W-ByEDwekMvLmYqBxevcXIrTCl-5ca2jdifPZqm0bkOIeSF4VtQQkidhtEzjr0EfWX-BmYOUvQvkBNRgDYO2INnp_ZDnAUtNhek"/>
+<span class="flex-grow text-gray-800">Andorra</span>
+<span class="text-gray-500">+376</span>
 </div>
 </div>
-<div class="p-6 bg-gray-50 rounded-b-xl flex flex-col sm:flex-row sm:justify-end sm:space-x-3 space-y-3 sm:space-y-0">
-<button class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-100 transition-colors w-full sm:w-auto">
-                Cancel
-            </button>
-<button class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition-colors w-full sm:w-auto">
-                Add Selected Country(s)
-            </button>
+<div class="flex justify-end items-center mt-8 space-x-4">
+<button class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300">Close</button>
+<button class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-blue-300 disabled:cursor-not-allowed" disabled="" id="addCountryBtn">Add Selected Country</button>
 </div>
 </div>
+</div>
+<script>
+    function updateButtonState() {
+      const checkboxes = document.querySelectorAll('.form-checkbox:not(:disabled)');
+      const addButton = document.getElementById('addCountryBtn');
+      let isAnyChecked = false;
+      checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+          isAnyChecked = true;
+        }
+      });
+      addButton.disabled = !isAnyChecked;
+    }
+  </script>
 
 </body></html>
