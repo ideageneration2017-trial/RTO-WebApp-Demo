@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Assessments — Student Portal</title>
+
+<!-- Google Fonts + Material Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+:root{
+  --sidebar-bg: #eaf6fb;
+  --accent: #e53935;
+  --brand-1: #0f766e;
+  --card-bg: #ffffff;
+  --muted: #6b7280;
+  --shadow: 0 6px 20px rgba(18,38,63,0.08);
+  --radius: 12px;
+  --max-width: 1200px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+  background:#f7fafc;
+  color:#111827;
+  line-height:1.3;
+}
+a{color:inherit;text-decoration:none}
+.app{display:flex;min-height:100vh;gap:24px}
+
+/* Sidebar */
+.sidebar{
+  width:260px;
+  background:var(--sidebar-bg);
+  padding:20px 18px;
+  border-right:1px solid rgba(15,23,42,0.03);
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+}
+.nav a{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:10px 10px;
+  border-radius:8px;
+  color: #0f1724;
+  font-size:14px;
+  font-weight:500;
+}
+.nav a:hover{ background: rgba(15,23,42,0.03) }
+
+/* Main content area */
+.main{
+  flex:1;
+  padding:28px;
+  max-width: calc(var(--max-width) - 40px);
+  margin: 0 auto;
+  width:100%;
+  margin-left: 260px; /* leave space for fixed sidebar */
+}
+
+/* Topbar */
+.topbar{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+/* Page header */
+.page-header{ padding-bottom:14px; }
+.page-header h1{margin:0;font-size:20px;font-weight:700}
+.page-header p{margin:6px 0 0;color:var(--muted);font-size:13px}
+
+.nav .group-title {
+  color: var(--muted);
+  font-size: 12px;     /* matches your other screens */
+  padding: 10px 6px 2px 6px;
+  font-weight: 600;
+  text-transform: uppercase; /* optional: makes it consistent */
+}
+
+
+
+.profile-avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid white; 
+  box-shadow:0 4px 12px rgba(2,6,23,0.08);
+}
+.profile-container{position:relative;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+#profile-dropdown-menu{
+  position:absolute;right:0;margin-top:12px;width:260px;
+  background:#fff;border:1px solid #e5e7eb;border-radius:8px;
+  box-shadow:0 10px 30px rgba(2,6,23,0.12);z-index:50;padding-bottom:8px;
+}
+#profile-dropdown-menu.hidden{display:none}
+#dropdown-arrow{color:#9ca3af;transition:transform .18s ease}
+
+
+/* Assessment tiles grid */
+.assessments-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:20px;
+}
+
+.assessment-card{
+  background:var(--card-bg);
+  border-radius:var(--radius);
+  padding:16px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  transition:all 0.2s ease-in-out;
+  cursor:pointer;
+}
+.assessment-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 28px rgba(0,0,0,0.15);
+}
+
+.assessment-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+}
+.assessment-title{
+  font-weight:600;
+  font-size:15px;
+}
+.badge{
+  padding:3px 8px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:600;
+}
+.badge.semester{ background:#eff6ff;color:#1e40af; }
+.badge.group{ background:#dcfce7;color:#166534; }
+.badge.individual{ background:#e0f2fe;color:#0369a1; }
+
+.assessment-meta{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+.progress-bar{
+  height:6px;
+  background: rgba(15,23,42,0.06);
+  border-radius:999px;
+  overflow:hidden;
+  margin-bottom:8px;
+}
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--brand-1),#06b6d4);
+}
+
+/* Buttons */
+.btn{
+  padding:5px 10px;
+  border-radius:6px;
+  font-size:12px;
+  font-weight:600;
+  border:0;
+  cursor:pointer;
+}
+.btn.primary{ background:var(--brand-1); color:#fff; margin-right:6px; }
+.btn.ghost{ background:transparent; border:1px solid rgba(15,23,42,0.06); color:#374151; }
+
+/* Small text */
+.small{ font-size:12px; color:var(--muted) }
+</style>
+</head>
+
+<body>
+<div class="app">
+  <!-- Sidebar (same as before) -->
+  <aside id="sidebar" class="sidebar">
+    <div style="padding:16px;display:flex;justify-content:center;">
+      <img src="isoft.jpg" alt="ISoft Logo" style="max-height:56px;object-fit:contain">
+    </div>
+    <nav class="nav" aria-label="Main navigation">
+      <div class="group-title">Main</div>
+      <a href="StudentDashboard.html">🏠 Dashboard</a>
+      <a href="StudentMyCourses.html">📚 My Courses</a>
+      <a href="#" style="background:#60a5fa;color:#fff">📝 Assessments</a>
+      <a href="#">📅 Timetable</a>
+	  
+	  <div class="group-title">Admin</div>
+        <a href="#">💳 Fees & Payments</a>
+        <a href="#">📂 Documents</a>
+        <a href="#">💬 Messages</a>
+
+      <div class="group-title">CRICOS</div>
+        <a href="#">🛂 COE & Visa</a>
+
+      <div class="group-title">Support</div>
+        <a href="#">🤖 Ask AI</a>
+        <a href="#">📞 Contact Trainer</a>
+
+      <button class="sidebar-toggle" onclick="toggleSidebar()">Close sidebar</button>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <!-- Topbar -->
+    <div class="topbar">
+  <div class="profile-container" id="profile-root">
+    <div id="profile-menu-button" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+      <img src="owner.jpg" alt="avatar" class="profile-avatar">
+      <div style="font-weight:600;color:#0f1724">John Edward</div>
+      <span id="dropdown-arrow" class="material-icons">expand_more</span>
+    </div>
+
+    <!-- Dropdown (hidden by default) -->
+    <div id="profile-dropdown-menu" class="hidden" aria-hidden="true">
+      <div style="padding:16px;border-bottom:1px solid #e5e7eb">
+        <div style="font-weight:bold;color:#1f2937">Hi, John</div>
+        <div style="font-size:14px;color:#6b7280">john.edward@isoftanz.com.au</div>
+      </div>
+      <ul style="list-style:none;margin:0;padding:0">
+        <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+          <span class="material-icons" style="margin-right:8px">person</span>Edit Profile</a></li>
+        <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+          <span class="material-icons" style="margin-right:8px">settings</span>Account settings</a></li>
+        <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+          <span class="material-icons" style="margin-right:8px">help_outline</span>Support</a></li>
+        <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;border-top:1px solid #e5e7eb;margin-top:4px">
+          <span class="material-icons" style="margin-right:8px">logout</span>Sign out</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+    <!-- Page header -->
+    <div class="page-header">
+      <h1>Assessments</h1>
+      <p>All scheduled assessments for your enrolled courses</p>
+    </div>
+
+    <!-- Assessments content -->
+    <div class="assessments-grid" id="assessmentsGrid"></div>
+  </div>
+</div>
+
+<!-- Quick footer links -->
+      <div style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div class="quick-links">
+          <a class="small text-muted" href="#">Help center</a>
+          <a class="small text-muted" href="#">Policies</a>
+          <a class="small text-muted" href="#">Contact support</a>
+        </div>
+
+        <div class="small text-muted">© 2025 iSOFT — Student portal</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Floating AI Chat Avatar -->
+<!-- Floating AI Chat Avatar -->
+<div id="aiWidget" style="position:fixed;right:20px;bottom:20px;z-index:80; cursor:pointer;" onclick="openChat()">
+  <div style="
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    overflow:hidden;
+    box-shadow:0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    <img src="AI2.png" alt="AI Assistant" style="width:100%;height:100%;object-fit:cover;">
+  </div>
+</div>
+
+
+
+  <!-- Chat modal (hidden) -->
+  <div id="chatModal" style="display:none;position:fixed;right:20px;bottom:90px;width:380px;z-index:90">
+    <div style="background:white;border-radius:14px;box-shadow:0 24px 60px rgba(2,6,23,0.45);overflow:hidden">
+      <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(90deg,#06b6d4,#0f766e);display:flex;align-items:center;justify-content:center;color:white;font-weight:700">AI</div>
+          <div>
+            <div style="font-weight:700">AI Assistant</div>
+            <div class="small text-muted">Ask about fees, COE, or study tips</div>
+          </div>
+        </div>
+        <div>
+          <button onclick="closeChat()" style="border:0;background:transparent;font-weight:700;cursor:pointer">✕</button>
+        </div>
+      </div>
+
+      <div style="height:320px;background:#f8fafc;padding:12px;overflow:auto">
+        <div style="max-width:80%;padding:10px;background:white;border-radius:10px;margin-bottom:10px">Hi! How can I help with your enrolment or study tasks?</div>
+        <div style="max-width:80%;margin-left:auto;padding:10px;background:#eff6ff;border-radius:10px;margin-bottom:10px">What is the due date for my next assessment?</div>
+        <!-- messages placeholder -->
+      </div>
+
+      <div style="padding:10px;border-top:1px solid rgba(15,23,42,0.03);display:flex;gap:8px;align-items:center">
+        <input id="chatInput" placeholder="Ask something..." style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06)" />
+        <button style="background:var(--brand-1);border:0;padding:10px 12px;border-radius:10px;color:white;cursor:pointer" onclick="sendTest()">Send</button>
+      </div>
+    </div>
+  </div>
+
+
+<script>
+// Sample assessment data
+const assessments = [
+  {
+    id:1,
+    title:"Business Communication",
+    unit:"BSBTEC101",
+    semester:"Sem 1",
+    type:"Project",
+    group:true,
+    due:"2025-10-20",
+    status:"In Progress",
+    progress:50,
+    feedback:"Awaiting"
+  },
+  {
+    id:2,
+    title:"Programming Fundamentals",
+    unit:"ICT401A",
+    semester:"Sem 1",
+    type:"Practical Task",
+    group:false,
+    due:"2025-10-22",
+    status:"Not Started",
+    progress:0,
+    feedback:"Awaiting"
+  },
+  {
+    id:3,
+    title:"Strategic Management",
+    unit:"BSB604A",
+    semester:"Sem 2",
+    type:"Case Study",
+    group:true,
+    due:"2025-11-01",
+    status:"Submitted",
+    progress:100,
+    feedback:"Provided"
+  }
+];
+ // Profile dropdown logic
+    const profileMenuButton = document.getElementById('profile-menu-button');
+    const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+    const dropdownArrow = document.getElementById('dropdown-arrow');
+
+    profileMenuButton.addEventListener('click', (e) => {
+      // stop propagation so window click doesn't immediately close it
+      e.stopPropagation();
+      const isHidden = profileDropdownMenu.classList.toggle('hidden');
+      profileDropdownMenu.setAttribute('aria-hidden', isHidden ? 'true' : 'false');
+      dropdownArrow.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+    });
+
+    // Close the dropdown if the user clicks outside of it
+    window.addEventListener('click', (event) => {
+      if (!profileMenuButton.contains(event.target) && !profileDropdownMenu.contains(event.target)) {
+        profileDropdownMenu.classList.add('hidden');
+        profileDropdownMenu.setAttribute('aria-hidden','true');
+        dropdownArrow.style.transform = 'rotate(0deg)';
+      }
+    });
+
+// Render assessments
+const grid = document.getElementById('assessmentsGrid');
+
+assessments.forEach(a => {
+  const card = document.createElement('div');
+  card.className = 'assessment-card';
+
+  // Determine if feedback button should be enabled
+  const feedbackEnabled = a.status === 'Submitted' && a.feedback.toLowerCase() !== 'awaiting';
+
+  card.innerHTML = `
+    <div class="assessment-header">
+      <div class="assessment-title">${a.unit} — ${a.title}</div>
+      <div>
+        <span class="badge semester">${a.semester}</span>
+        <span class="badge ${a.group ? 'group':'individual'}">${a.group ? 'Group':'Individual'}</span>
+      </div>
+    </div>
+    <div class="assessment-meta">
+      Type: ${a.type} <br>
+      Due: ${a.due} <br>
+      Status: ${a.status} <br>
+      Feedback: ${a.feedback}
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" style="width:${a.progress}%;"></div>
+    </div>
+   <div>
+  <button class="btn primary" style="background:#3b82f6;color:white;">Open</button>
+  <button class="btn ghost" 
+    ${a.status === "Submitted" && a.feedback === "Provided" 
+      ? 'style="background:#16a34a;color:white;border:none;cursor:pointer"' 
+      : 'disabled style="opacity:0.4;cursor:not-allowed"'}
+  >
+    View Feedback
+  </button>
+</div>
+
+
+  `;
+  grid.appendChild(card);
+});
+
+
+// AI Chat open/close
+    function openChat(){
+      document.getElementById('chatModal').style.display = 'block';
+    }
+    function closeChat(){
+      document.getElementById('chatModal').style.display = 'none';
+    }
+	
+	  // Example send function (replace with real integration)
+    function sendTest(){
+      const input = document.getElementById('chatInput');
+      if(!input) return;
+      if(!input.value.trim()) return;
+      // Append message to chat (simple demo)
+      const container = document.querySelector('#chatModal > div:nth-child(2)');
+      const bubble = document.createElement('div');
+      bubble.style.cssText = 'max-width:80%;margin-left:auto;padding:10px;background:#eff6ff;border-radius:10px;margin-bottom:10px';
+      bubble.textContent = input.value;
+      container.appendChild(bubble);
+      container.scrollTop = container.scrollHeight;
+      input.value = '';
+    }
+</script>
+</body>
+</html>
