@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Courses — Student Portal</title>
+
+  <!-- Google Fonts + Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+    :root{
+      --sidebar-bg: #eaf6fb;
+      --accent: #e53935;
+      --brand-1: #0f766e;
+      --card-bg: #ffffff;
+      --muted: #6b7280;
+      --shadow: 0 6px 20px rgba(18,38,63,0.08);
+      --radius: 12px;
+      --max-width: 1200px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background:#f7fafc;
+      color:#111827;
+      line-height:1.3;
+    }
+    a{color:inherit;text-decoration:none}
+
+    .app{display:flex;min-height:100vh;gap:24px}
+
+    /* Sidebar (same as Dashboard) */
+    .sidebar{
+      width:260px;
+      background:var(--sidebar-bg);
+      padding:20px 18px;
+      border-right:1px solid rgba(15,23,42,0.03);
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      position:fixed;
+      left:0;
+      top:0;
+      bottom:0;
+    }
+    .sidebar .logo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 4px;
+    }
+    .sidebar .logo img{ max-height:56px; object-fit:contain; }
+
+    .nav{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      margin-top:6px;
+      overflow:auto;
+      padding-right:6px;
+    }
+    .nav a{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding:10px 10px;
+      border-radius:8px;
+      color: #0f1724;
+      font-size:14px;
+      font-weight:500;
+    }
+    .nav a:hover{ background: rgba(15,23,42,0.03) }
+    .nav .group-title{
+      color:var(--muted);
+      font-size:12px;
+      padding:10px 6px 2px 6px;
+      font-weight:600;
+    }
+
+    .sidebar-toggle{
+      display:none;
+      margin-top:auto;
+      padding:12px;
+      font-size:13px;
+      color:var(--muted);
+      cursor:pointer;
+      border-radius:8px;
+    }
+    .sidebar.mobile-open{
+      position:fixed; left:0; top:0; bottom:0; z-index:60; box-shadow: 0 12px 40px rgba(2,6,23,0.35)
+    }
+
+    /* Main content area */
+    .main{
+      flex:1;
+      padding:28px;
+      max-width: calc(var(--max-width) - 40px);
+      margin: 0 auto;
+      width:100%;
+      margin-left: 260px; /* leave space for the fixed sidebar */
+    }
+
+    /* Topbar (only profile / notifications) */
+    .topbar{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:10px;
+      margin-bottom:20px;
+      background: transparent;
+    }
+    .hamburger{
+      display:none;
+      width:38px;height:38px;
+      background:white;
+      border-radius:10px;
+      box-shadow:var(--shadow);
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+    }
+
+    /* Profile dropdown styles */
+    .profile-avatar{
+      width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid white; box-shadow:0 4px 12px rgba(2,6,23,0.08);
+    }
+    .profile-container{position:relative;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+    #profile-dropdown-menu{
+      position:absolute;right:0;margin-top:12px;width:260px;
+      background:#fff;border:1px solid #e5e7eb;border-radius:8px;
+      box-shadow:0 10px 30px rgba(2,6,23,0.12);z-index:50;padding-bottom:8px;
+    }
+    #profile-dropdown-menu.hidden{display:none}
+    #dropdown-arrow{color:#9ca3af;transition:transform .18s ease}
+
+    /* Page header (placed below topbar) */
+    .page-header{ padding-bottom:14px; }
+    .page-header h1{margin:0;font-size:20px;font-weight:700}
+    .page-header p{margin:6px 0 0;color:var(--muted);font-size:13px}
+
+    /* Common card */
+    .card{
+      background:var(--card-bg);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+
+    /* MyCourses-specific styles (course list + detail) */
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 8px 0 40px 0;
+      width: 100%;
+    }
+
+    .mygrid {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .mygrid { grid-template-columns: 1fr; }
+      .main{ margin-left: 0; padding: 18px }
+      .sidebar{ display:none }
+      .hamburger{ display:flex }
+    }
+
+    .list { display: flex; flex-direction: column; gap: 12px; }
+    .course-card {
+      background: #f3f4f6;
+      padding: 14px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(18,38,63,0.06);
+      cursor: pointer;
+      transition: all .15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border: 1px solid rgba(15,23,42,0.03);
+    }
+    .course-card:hover { transform: translateY(-2px); }
+    .course-card.active { border: 2px solid var(--brand-1); background: #ecfdf5; }
+
+    .course-head { display: flex; justify-content: space-between; align-items: center; }
+    .course-title { font-weight: 600; font-size: 15px; color: #0f1724; }
+    .course-meta { font-size: 13px; color: var(--muted) }
+
+    .progress-bar {
+      height: 6px;
+      background: rgba(15,23,42,0.06);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--brand-1), #06b6d4); }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge.green { background: #ecfdf5; color: #065f46 }
+    .badge.amber { background: #fff7ed; color: #92400e }
+
+    .detail {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* main shadow */
+  border: 1px solid rgba(0, 0, 0, 0.05);      /* subtle border for depth */
+  transform: translateY(0);
+  transition: all 0.2s ease-in-out;
+}
+/* Optional hover lift effect */
+.detail:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+    .detail h3 { margin: 0; font-size: 15px; font-weight: 600; color: #1e293b }
+    .detail .small { font-size: 13px; color: var(--muted) }
+    .detail p { font-size: 13px; color: #374151; margin: 4px 0 }
+    .units { display: flex; flex-direction: column; gap: 8px; }
+    .unit {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      background: rgba(15,23,42,0.03);
+      border-radius: 8px;
+    }
+    .unit .u-left { font-size: 13px }
+    .unit .u-left strong { font-size: 14px }
+    .btn {
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .btn.primary { background: var(--brand-1); color: #fff }
+    .btn.ghost { background: transparent; border: 1px solid rgba(15,23,42,0.06) }
+
+    .small{ font-size:13px }
+    .text-muted{ color:var(--muted) }
+	
+	 /* AI chat compact */
+    .ai-card{
+      display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px;border-radius:12px;
+      background:linear-gradient(90deg, rgba(14,167,179,0.06), rgba(14,167,179,0.02));
+      cursor:pointer;
+    }
+	
+	/* Footer quick links */
+    .quick-links{ display:flex; gap:12px; margin-top:16px; flex-wrap:wrap }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar (same as Dashboard) -->
+    <aside id="sidebar" class="sidebar">
+      <div style="padding:16px;display:flex;justify-content:center;">
+        <img src="isoft.jpg" alt="ISoft Logo" style="max-height:56px;object-fit:contain">
+      </div>
+      <nav class="nav" aria-label="Main navigation">
+        <div class="group-title">Main</div>
+        <a href="StudentDashboard.html">🏠 Dashboard</a>
+        <a href="StudentMyCourses.html" style="background:#60a5fa;color:#fff">📚 My Courses</a>
+        <a href="#">📝 Assessments</a>
+        <a href="#">📅 Timetable</a>
+
+        <div class="group-title">Admin</div>
+        <a href="#">💳 Fees & Payments</a>
+        <a href="#">📂 Documents</a>
+        <a href="#">💬 Messages</a>
+
+        <div class="group-title">CRICOS</div>
+        <a href="#">🛂 COE & Visa</a>
+
+        <div class="group-title">Support</div>
+        <a href="#">🤖 Ask AI</a>
+        <a href="#">📞 Contact Trainer</a>
+
+        <button class="sidebar-toggle" onclick="toggleSidebar()">Close sidebar</button>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <div class="main">
+      <!-- Topbar (only profile) -->
+      <div class="topbar">
+        <div class="profile-container" id="profile-root">
+          <div id="profile-menu-button" style="display:flex;align-items:center;gap:10px;">
+            <img src="owner.jpg" alt="avatar" class="profile-avatar">
+            <div style="font-weight:600;color:#0f1724">John Edward</div>
+            <span id="dropdown-arrow" class="material-icons">expand_more</span>
+          </div>
+
+          <!-- Dropdown (hidden by default) -->
+          <div id="profile-dropdown-menu" class="hidden" aria-hidden="true">
+            <div style="padding:16px;border-bottom:1px solid #e5e7eb">
+              <div style="font-weight:bold;color:#1f2937">Hi,John</div>
+              <div style="font-size:14px;color:#6b7280">john.edward@isoftanz.com.au</div>
+            </div>
+            <ul style="list-style:none;margin:0;padding:0">
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151"><span class="material-icons" style="margin-right:8px">person</span>Edit Profile</a></li>
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151"><span class="material-icons" style="margin-right:8px">settings</span>Account settings</a></li>
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151"><span class="material-icons" style="margin-right:8px">help_outline</span>Support</a></li>
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;border-top:1px solid #e5e7eb;margin-top:4px"><span class="material-icons" style="margin-right:8px">logout</span>Sign out</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page header (one level below topbar) -->
+      <div class="page-header">
+        <h1>My Courses</h1>
+        <p>All enrolled courses and progress</p>
+      </div>
+
+      <!-- Page content: MyCourses original area preserved -->
+      <div class="page">
+        <div class="mygrid">
+          <!-- Left: list -->
+          <section>
+            <div class="list" id="courseList"></div>
+          </section>
+
+          <!-- Right: detail -->
+          <aside class="detail" id="courseDetail">
+            <div id="detailEmpty">
+              <h3>Select a course</h3>
+              <div class="small">Click a card on the left to view details</div>
+            </div>
+            <div id="detailContent" style="display:none">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <h3 id="cTitle">—</h3>
+                  <div id="cCode" class="small">Code — </div>
+                </div>
+                <div style="text-align:right">
+                  <div id="cProgress" style="font-weight:600;font-size:14px;color:var(--brand-1)">0%</div>
+                  <div class="progress-bar" style="margin-top:4px;width:120px">
+                    <div id="cFill" class="progress-fill" style="width:0%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <p class="small" id="cNext">Next assessment: —</p>
+
+              <div style="display:flex;gap:8px;margin-top:6px">
+                <button class="btn primary" id="continueBtn">Open course</button>
+                <button class="btn ghost" id="unitsBtn">View units</button>
+              </div>
+
+              <h4 style="margin:12px 0 4px;font-size:13px;color:#334155">Units & assessments</h4>
+              <div class="units" id="unitsList"></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div> <!-- end .main -->
+  </div> <!-- end .app -->
+
+ <!-- Quick footer links -->
+      <div style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div class="quick-links">
+          <a class="small text-muted" href="#">Help center</a>
+          <a class="small text-muted" href="#">Policies</a>
+          <a class="small text-muted" href="#">Contact support</a>
+        </div>
+
+        <div class="small text-muted">© 2025 iSOFT — Student portal</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Floating AI Chat Avatar -->
+<!-- Floating AI Chat Avatar -->
+<div id="aiWidget" style="position:fixed;right:20px;bottom:20px;z-index:80; cursor:pointer;" onclick="openChat()">
+  <div style="
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    overflow:hidden;
+    box-shadow:0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    <img src="AI2.png" alt="AI Assistant" style="width:100%;height:100%;object-fit:cover;">
+  </div>
+</div>
+
+
+
+  <!-- Chat modal (hidden) -->
+  <div id="chatModal" style="display:none;position:fixed;right:20px;bottom:90px;width:380px;z-index:90">
+    <div style="background:white;border-radius:14px;box-shadow:0 24px 60px rgba(2,6,23,0.45);overflow:hidden">
+      <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(90deg,#06b6d4,#0f766e);display:flex;align-items:center;justify-content:center;color:white;font-weight:700">AI</div>
+          <div>
+            <div style="font-weight:700">AI Assistant</div>
+            <div class="small text-muted">Ask about fees, COE, or study tips</div>
+          </div>
+        </div>
+        <div>
+          <button onclick="closeChat()" style="border:0;background:transparent;font-weight:700;cursor:pointer">✕</button>
+        </div>
+      </div>
+
+      <div style="height:320px;background:#f8fafc;padding:12px;overflow:auto">
+        <div style="max-width:80%;padding:10px;background:white;border-radius:10px;margin-bottom:10px">Hi! How can I help with your enrolment or study tasks?</div>
+        <div style="max-width:80%;margin-left:auto;padding:10px;background:#eff6ff;border-radius:10px;margin-bottom:10px">What is the due date for my next assessment?</div>
+        <!-- messages placeholder -->
+      </div>
+
+      <div style="padding:10px;border-top:1px solid rgba(15,23,42,0.03);display:flex;gap:8px;align-items:center">
+        <input id="chatInput" placeholder="Ask something..." style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06)" />
+        <button style="background:var(--brand-1);border:0;padding:10px 12px;border-radius:10px;color:white;cursor:pointer" onclick="sendTest()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sidebar toggle (mobile)
+    function toggleSidebar(){
+      const sb = document.getElementById('sidebar');
+      if(!sb) return;
+      sb.classList.toggle('mobile-open');
+    }
+
+// AI Chat open/close
+    function openChat(){
+      document.getElementById('chatModal').style.display = 'block';
+    }
+    function closeChat(){
+      document.getElementById('chatModal').style.display = 'none';
+    }
+	
+	  // Example send function (replace with real integration)
+    function sendTest(){
+      const input = document.getElementById('chatInput');
+      if(!input) return;
+      if(!input.value.trim()) return;
+      // Append message to chat (simple demo)
+      const container = document.querySelector('#chatModal > div:nth-child(2)');
+      const bubble = document.createElement('div');
+      bubble.style.cssText = 'max-width:80%;margin-left:auto;padding:10px;background:#eff6ff;border-radius:10px;margin-bottom:10px';
+      bubble.textContent = input.value;
+      container.appendChild(bubble);
+      container.scrollTop = container.scrollHeight;
+      input.value = '';
+    }
+    // MyCourses data + rendering
+    const courses = [
+      { id:1, name:"Diploma of Business", code:"BSB50120", duration:"1 Year", progress:25, completed:3, total:12,
+        units:[{id:"BSBTEC101",title:"Business Communication",due:"2025-10-20",status:"inprogress"}],
+        cricos:false, next:"SITXWHS101 — 28 Oct"
+      },
+      { id:2, name:"Certificate IV in IT", code:"ICT40120", duration:"6 Months", progress:50, completed:5, total:10,
+        units:[{id:"ICT401A",title:"Programming Fundamentals",due:"2025-10-22",status:"inprogress"}],
+        cricos:false, next:"Programming Fundamentals — 22 Oct"
+      },
+      { id:3, name:"Advanced Diploma of Leadership (CRICOS)", code:"BSB60420", duration:"18 Months", progress:40, completed:8, total:20,
+        units:[{id:"BSB604A",title:"Strategic Management",due:"2025-11-01",status:"inprogress"}],
+        cricos:true, next:"Strategic Management — 1 Nov"
+      }
+    ];
+
+    const listEl = document.getElementById('courseList');
+    const detailEmpty = document.getElementById('detailEmpty');
+    const detailContent = document.getElementById('detailContent');
+    let activeId = null;
+
+    function renderList() {
+      listEl.innerHTML = '';
+      courses.forEach(c=>{
+        const el = document.createElement('div');
+        el.className = 'course-card' + (c.id===activeId?' active':'');
+
+        el.innerHTML = `
+          <div class="course-head">
+            <div>
+              <div class="course-title">${c.name}</div>
+              <div class="course-meta">${c.code} • ${c.duration}</div>
+              <div class="course-meta">Next: ${c.next}</div>
+              <div class="course-meta">Progress: ${c.completed}/${c.total} Units</div>
+            </div>
+            ${c.cricos ? '<div class="badge amber">CRICOS</div>' : '<div class="badge green">Active</div>'}
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${c.progress}%"></div></div>
+        `;
+
+        el.addEventListener('click',()=>selectCourse(c.id));
+        listEl.appendChild(el);
+      });
+    }
+
+    function selectCourse(id) {
+      activeId = id;
+      const c = courses.find(x=>x.id===id);
+      renderList();
+      detailEmpty.style.display = 'none';
+      detailContent.style.display = 'block';
+      document.getElementById('cTitle').textContent = c.name;
+      document.getElementById('cCode').textContent = `${c.code} • ${c.duration}`;
+      document.getElementById('cProgress').textContent = `${c.completed}/${c.total} Units`;
+      document.getElementById('cFill').style.width = c.progress+'%';
+      document.getElementById('cNext').textContent = 'Next: '+c.next;
+      const unitsList = document.getElementById('unitsList');
+      unitsList.innerHTML = '';
+      c.units.forEach(u=>{
+        const unit = document.createElement('div');
+        unit.className='unit';
+        unit.innerHTML = `<div class="u-left"><strong>${u.id}</strong> — ${u.title}<br><span class="small">Due: ${u.due}</span></div>
+                          <button class="btn ghost">Open</button>`;
+        unitsList.appendChild(unit);
+      });
+    }
+
+    renderList();
+	if (courses.length > 0) {
+  selectCourse(courses[0].id);
+}
+
+    // Profile dropdown logic
+    const profileMenuButton = document.getElementById('profile-menu-button');
+    const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+    const dropdownArrow = document.getElementById('dropdown-arrow');
+
+    profileMenuButton.addEventListener('click', (e) => {
+      // stop propagation so window click doesn't immediately close it
+      e.stopPropagation();
+      const isHidden = profileDropdownMenu.classList.toggle('hidden');
+      profileDropdownMenu.setAttribute('aria-hidden', isHidden ? 'true' : 'false');
+      dropdownArrow.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+    });
+
+    // Close the dropdown if the user clicks outside of it
+    window.addEventListener('click', (event) => {
+      if (!profileMenuButton.contains(event.target) && !profileDropdownMenu.contains(event.target)) {
+        profileDropdownMenu.classList.add('hidden');
+        profileDropdownMenu.setAttribute('aria-hidden','true');
+        dropdownArrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  </script>
+</body>
+</html>

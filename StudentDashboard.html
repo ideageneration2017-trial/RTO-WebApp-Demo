@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Student Dashboard</title>
+
+  <!-- Optional: replace with your project's font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================
+       Theme variables (swap with your design tokens)
+       ============================ */
+    :root{
+      --sidebar-bg: #eaf6fb;      /* light blue sidebar */
+      --accent: #e53935;          /* accent / logo red */
+      --brand-1: #0f766e;         /* primary brand (teal/dark) */
+      --card-bg: #ffffff;
+      --muted: #6b7280;
+      --glass: rgba(255,255,255,0.6);
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --shadow: 0 6px 20px rgba(18,38,63,0.08);
+      --radius: 12px;
+      --max-width: 1200px;
+    }
+
+    /* ============================
+       Reset & base
+       ============================ */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:#f7fafc;
+      color:#111827;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.3;
+    }
+    a{color:inherit; text-decoration:none}
+
+    /* Container */
+    .app{
+      display:flex;
+      min-height:100vh;
+      gap:24px;
+    }
+
+    /* ============================
+       Sidebar
+       ============================ */
+    .sidebar{
+      width:260px;
+      background:var(--sidebar-bg);
+      padding:20px 18px;
+      border-right:1px solid rgba(15,23,42,0.03);
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 4px;
+    }
+    .logo .mark{
+      width:46px;
+      height:46px;
+      background:var(--accent);
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      border-radius:6px;
+      font-size:18px;
+      letter-spacing:1px;
+    }
+    .logo .title{
+      font-weight:700;
+      font-size:14px;
+      color:var(--brand-1);
+    }
+
+    .nav{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      margin-top:6px;
+      overflow:auto;
+      padding-right:6px;
+    }
+    .nav a{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding:10px 10px;
+      border-radius:8px;
+      color: #0f1724;
+      font-size:14px;
+    }
+    .nav a:hover{ background: rgba(15,23,42,0.03) }
+
+    .nav .group-title{
+      color:var(--muted);
+      font-size:12px;
+      padding:10px 6px 2px 6px;
+      font-weight:600;
+    }
+
+    /* Sidebar collapse button (mobile) */
+    .sidebar-toggle{
+      display:none;
+      margin-top:auto;
+      padding:12px;
+      font-size:13px;
+      color:var(--muted);
+      cursor:pointer;
+      border-radius:8px;
+    }
+
+    /* ============================
+       Main content area
+       ============================ */
+    .main{
+      flex:1;
+      padding:28px;
+      max-width: calc(var(--max-width) - 40px);
+      margin: 0 auto;
+      width:100%;
+    }
+
+    /* Topbar */
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom:20px;
+    }
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .hamburger{
+      display:none;
+      width:38px;height:38px;
+      background:white;
+      border-radius:10px;
+      box-shadow:var(--shadow);
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+    }
+
+    .search{
+      background:transparent;border:0;padding:8px 12px;border-radius:10px;
+      box-shadow:var(--shadow);
+      min-width:260px;
+      display:flex;align-items:center;gap:8px;
+    }
+
+    .user{
+      display:flex;gap:12px;align-items:center;
+    }
+    .avatar{
+      width:40px;height:40px;border-radius:50%;overflow:hidden;
+      border:2px solid white; box-shadow:var(--shadow);
+    }
+    .avatar img{width:100%;height:100%;object-fit:cover}
+
+    /* Overview tiles (hero row) */
+    .hero-row{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:18px;
+      margin-bottom:18px;
+    }
+    .tile{
+      background:var(--card-bg);
+      padding:18px;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      min-height:86px;
+    }
+    .tile .label{ font-size:13px; color:var(--muted) }
+    .tile .value{ font-size:24px; font-weight:700; color:#0f1724; margin-top:6px }
+
+    /* Main grid */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:18px;
+    }
+
+    /* Large card */
+    .card{
+      background:var(--card-bg);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+    .card h3{margin:0 0 10px 0;font-size:16px}
+    .muted{color:var(--muted);font-size:13px}
+
+    /* Progress & list */
+    .progress-row{
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+    .progress-circle{
+      width:96px;height:96px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(180deg, rgba(15,118,110,0.08), rgba(15,118,110,0.02));
+      font-weight:700;color:var(--brand-1);font-size:20px;
+    }
+    .unit-list{ margin-top:12px; display:flex; flex-direction:column; gap:8px }
+    .unit{
+      display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;
+      background:rgba(15,23,42,0.02);
+    }
+
+    /* Chart placeholder */
+    .chart{
+      height:220px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(236,241,255,0.6), rgba(250,252,255,0.4));
+      display:flex;align-items:center;justify-content:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* Right column components */
+    .reminders .item{
+      display:flex;justify-content:space-between;align-items:center;padding:10px 6px;
+      border-bottom:1px solid rgba(15,23,42,0.03);
+    }
+
+    .todo{ display:flex;flex-direction:column; gap:8px}
+    .todo label{display:flex;gap:10px;align-items:center;font-size:14px;color:#111827}
+    .badge{ padding:6px 10px;border-radius:999px;font-weight:600;font-size:12px }
+
+    /* Messages and docs */
+    .msg-list{display:flex;flex-direction:column;gap:8px}
+    .msg{display:flex;gap:10px;align-items:center;padding:10px;border-radius:8px;background:rgba(15,23,42,0.02)}
+    .doc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
+    .doc{padding:10px;border-radius:8px;background:rgba(15,23,42,0.02);font-size:13px}
+
+    /* AI chat compact */
+    .ai-card{
+      display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px;border-radius:12px;
+      background:linear-gradient(90deg, rgba(14,167,179,0.06), rgba(14,167,179,0.02));
+      cursor:pointer;
+    }
+
+    /* Footer quick links */
+    .quick-links{ display:flex; gap:12px; margin-top:16px; flex-wrap:wrap }
+
+    /* ============================
+       Responsive
+       ============================ */
+    @media (max-width:1100px){
+      .grid{ grid-template-columns: 1fr 320px }
+      .hero-row{ grid-template-columns: repeat(2,1fr) }
+    }
+    @media (max-width:880px){
+      .sidebar{ display:none; }
+      .hamburger{ display:flex; }
+      .sidebar-toggle{ display:block; }
+      .main{ padding:16px; }
+      .hero-row{ grid-template-columns: 1fr; }
+      .grid{ grid-template-columns: 1fr; }
+      .topbar .search{ display:none; }
+      .hamburger{ display:flex }
+    }
+
+    /* Sidebar open state for mobile overlay */
+    .sidebar.mobile-open{
+      position:fixed; left:0; top:0; bottom:0; z-index:60; box-shadow: 0 12px 40px rgba(2,6,23,0.35)
+    }
+
+    /* small helpers */
+    .small{ font-size:13px }
+    .text-muted{ color:var(--muted) }
+    .space-y{ display:flex; flex-direction:column; gap:12px }
+	
+	/* Common Card Style */
+  .card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* subtle shadow */
+    font-size: 15px;
+  }
+
+  .card h3 {
+    font-size: 17px;
+    margin-bottom: 6px;
+  }
+
+  .card .muted {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 10px;
+  }
+
+  .card ul.reminders {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-top: 0;
+    font-size: 14px;
+  }
+
+  .card ul.reminders li {
+    margin-bottom: 12px;
+  }
+
+  .card .badge {
+    font-size: 13px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #fff;
+  }
+
+  .badge.orange { background-color: #f39c12; }
+  .badge.blue { background-color: #3498db; }
+  .badge.purple { background-color: #9b59b6; }
+	
+  </style>
+</head>
+<body>
+
+  <div class="app">
+    <!-- Sidebar -->
+		<aside class="sidebar w-64 bg-gray-800 text-white flex flex-col">
+			<div style="padding:16px;display:flex;justify-content:center;align-items:center;height:80px;overflow:hidden;">
+				<img src="isoft.jpg" alt="ISoft Logo"
+				style="max-height:56px; width:auto; display:block; object-fit:contain;" />
+			</div>
+
+
+			<nav class="nav flex-1 px-2 space-y-2" aria-label="Main navigation">
+				<div class="group-title text-gray-400 uppercase text-xs px-2">Main</div>
+					<a href="StudentDashboard.html" class="flex items-center gap-2 px-2 py-2 rounded text-white" style="background-color: #60a5fa;">
+						🏠 Dashboard  
+					</a>
+					<a href="StudentMyCourses.html" class="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-700">
+						📚 My Courses
+					</a>
+					<a href="#" class="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-700">
+						📝 Assessments
+					</a>
+					<a href="#" class="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-700">
+						📅 Timetable
+					</a>
+					
+					<div class="group-title text-gray-400 uppercase text-xs px-2">Admin</div>
+					<a href="#" class="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-700">
+						💳 Fees & Payments
+					</a>
+					<a href="#" class="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-700">
+						📂 Documents
+					</a>
+					<a href="#" class="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-700">
+						💬 Messages
+					</a>
+					
+					<div class="group-title text-gray-400 uppercase text-xs px-2">CRICOS</div>
+					<a href="#" class="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-700">
+						🛂 COE & Visa
+					</a>
+										
+					
+					<div class="group-title text-gray-400 uppercase text-xs px-2">Support</div>
+					<a href="#" class="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-700">
+						🤖 Ask AI
+					</a>
+					<a href="#" class="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-700">
+						📞 Contact Trainer
+					</a>
+					
+					 <button class="sidebar-toggle" onclick="toggleSidebar()">Close sidebar</button>
+					
+			</nav>
+		</aside>
+
+    <!-- Main content -->
+    <main class="main">
+      <div class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" id="hambBtn" aria-label="open menu" onclick="toggleSidebar()">
+            ☰
+          </button>
+
+          <div>
+            <h1 style="margin:0;font-size:20px;font-weight:700">Overview</h1>
+            <div class="muted" style="font-size:13px">Welcome back — here's your personalised student dashboard</div>
+          </div>
+        </div>
+
+        <div class="user">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div class="muted small">Notifications</div>
+            <div class="avatar" title="User">
+              <img src="owner.jpg" alt="avatar">
+            </div>
+			
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero tiles -->
+      <div class="hero-row">
+        <div class="tile">
+          <div>
+            <div class="label">Course Progress</div>
+            <div class="value">62%</div>
+          </div>
+          <div style="background:#ecfeff;padding:10px;border-radius:10px">
+            📈
+          </div>
+        </div>
+
+        <div class="tile">
+          <div>
+            <div class="label">Attendance (28d)</div>
+            <div class="value">88%</div>
+          </div>
+          <div style="background:#f0fff4;padding:10px;border-radius:10px">✅</div>
+        </div>
+
+        <div class="tile">
+          <div>
+            <div class="label">Outstanding Fees</div>
+            <div class="value">$450</div>
+          </div>
+          <div style="background:#fff7ed;padding:10px;border-radius:10px">💳</div>
+        </div>
+
+        <div class="tile">
+          <div>
+            <div class="label">COE / Visa</div>
+            <div class="value" style="color:var(--warning)">Action Needed</div>
+          </div>
+          <div style="background:#fff1f0;padding:10px;border-radius:10px">⚠️</div>
+        </div>
+      </div>
+
+      <!-- Main grid -->
+      <div class="grid">
+        <!-- Left column -->
+        <div>
+          <!-- Progress & compliance card -->
+          <section class="card" aria-labelledby="progress-heading" style="margin-bottom:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+              <div>
+                <h3 id="progress-heading">Progress & Compliance</h3>
+                <div class="muted small">Your course progress, upcoming assessments and compliance status</div>
+
+                <div style="margin-top:14px" class="progress-row">
+                  <div class="progress-circle">62%</div>
+                  <div style="flex:1">
+                    <div style="margin-bottom:10px">
+                      <div style="height:10px;background:rgba(15,23,42,0.06);border-radius:999px;overflow:hidden">
+                        <div style="width:62%;height:100%;background:linear-gradient(90deg,var(--brand-1),#06b6d4)"></div>
+                      </div>
+                      <div class="muted small" style="margin-top:8px">Completed 8 / 13 units</div>
+                    </div>
+
+                    <div class="unit-list">
+                      <div class="unit">
+                        <div>
+                          <div style="font-weight:500">BSBTEC101 — Business Comm</div>
+                          <div class="small text-muted">Assessment due: 20 Oct</div>
+                        </div>
+                        <div class="small text-muted">In progress</div>
+                      </div>
+
+                      <div class="unit">
+                        <div>
+                          <div style="font-weight:500">SITXWHS101 — Safety</div>
+                          <div class="small text-muted">Assessment due: 28 Oct</div>
+                        </div>
+                        <div style="color:var(--danger);font-weight:700">Overdue</div>
+                      </div>
+
+                      <div class="unit">
+                        <div>
+                          <div style="font-weight:500">SITXMGT002 — Teamwork</div>
+                          <div class="small text-muted">Assessment due: 12 Nov</div>
+                        </div>
+                        <div class="text-muted">Not started</div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div style="min-width:160px;display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+                <button style="background:var(--brand-1);color:white;border:0;padding:10px 12px;border-radius:10px;font-weight:700;cursor:pointer">View course</button>
+                <button style="background:transparent;border:1px solid rgba(15,23,42,0.06);padding:8px 12px;border-radius:10px;cursor:pointer">Request support</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Enrollment prediction / suggestions -->
+		   <section class="card" style="margin-bottom:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <h3>Suggested this week</h3>
+                <div class="muted small">AI driven personalised micro-tasks for you</div>
+              </div>
+              <div style="font-weight:700;color:var(--brand-1)">High Priority</div>
+            </div>
+
+            <ul style="margin-top:12px" class="space-y">
+              <li style="padding:12px;border-radius:10px;background:rgba(14,118,110,0.04)">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <div>
+                    <div style="font-weight:700">Practice quiz — Workplace health</div>
+                    <div class="small text-muted">Estimated time: 18 mins</div>
+                  </div>
+                  <div>
+                    <button style="padding:8px 10px;border-radius:10px;border:0;background:var(--brand-1);color:white;font-weight:600;cursor:pointer">Start</button>
+                  </div>
+                </div>
+              </li>
+
+              <li style="padding:12px;border-radius:10px;background:rgba(15,23,42,0.02);display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <div style="font-weight:700">Read: Assessment instructions — BSBTEC101</div>
+                  <div class="small text-muted">2 pages</div>
+                </div>
+                <div><button style="padding:8px 10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);cursor:pointer">Open</button></div>
+              </li>
+            </ul>
+
+          </section>
+
+        </div>
+
+        <!-- Right column -->
+        <aside>
+        <div class="card">
+  <h3>Reminders</h3>
+  <div class="muted">Important upcoming deadlines</div>
+  <ul class="reminders">
+    <li>
+      <strong>Fee payment due</strong><br/>
+      Engineering — Batch B 
+      <span class="badge orange">Today</span>
+    </li>
+    <li>
+      <strong>Exam registration</strong><br/>
+      Semester 2 Exams 
+      <span class="badge blue">In 3 days</span>
+    </li>
+    <li>
+      <strong>Project submission</strong><br/>
+      Final Year Students 
+      <span class="badge purple">Oct 25</span>
+    </li>
+  </ul>
+</div>
+
+
+
+
+
+          <div class="card" style="margin-bottom:12px">
+			<h3>To-Do</h3>
+			<div class="muted small">Your study tasks</div>
+			  <div style="margin-top:12px" class="todo">
+				<label><input type="checkbox" /> Submit Safety (SITXWHS101) assessment</label>
+				<label><input type="checkbox" checked /> Revise Business Comm notes (BSBTEC101)</label>
+				<label><input type="checkbox" /> Prepare for Teamwork module quiz</label>
+				<label><input type="checkbox" /> Upload latest ID proof to portal</label>
+			</div>
+		</div>
+
+          <div class="card" style="margin-bottom:12px">
+            <h3>Messages</h3>
+            <div class="muted small">Latest from trainers & admin</div>
+            <div style="margin-top:10px" class="msg-list">
+              <div class="msg">
+                <div style="width:42px;height:42px;border-radius:8px;background:#fde68a;display:flex;align-items:center;justify-content:center">T</div>
+                <div style="flex:1">
+                  <div style="font-weight:700">Trainer — Assessment reminder</div>
+                  <div class="small text-muted">Your assessment feedback is ready</div>
+                </div>
+                <div class="small text-muted">2d</div>
+              </div>
+
+              <div class="msg">
+                <div style="width:42px;height:42px;border-radius:8px;background:#c7f9cc;display:flex;align-items:center;justify-content:center">A</div>
+                <div style="flex:1">
+                  <div style="font-weight:700">Admin — COE update</div>
+                  <div class="small text-muted">We need passport copy to renew COE</div>
+                </div>
+                <div class="small text-muted">4d</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Docs</h3>
+            <div class="muted small">Quick access & upload</div>
+            <div class="doc-grid">
+              <div class="doc">Passport <div class="small text-muted">Uploaded</div></div>
+              <div class="doc">COE <div class="small text-muted">Needs update</div></div>
+              <div class="doc">Transcript <div class="small text-muted">Uploaded</div></div>
+              <div class="doc">Visa <div class="small text-muted">Expiry 20 Dec</div></div>
+            </div>
+            <div style="margin-top:10px">
+              <button style="width:100%;padding:10px;border-radius:10px;background:var(--brand-1);color:white;border:0;cursor:pointer">Upload document</button>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+
+      <!-- Quick footer links -->
+      <div style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div class="quick-links">
+          <a class="small text-muted" href="#">Help center</a>
+          <a class="small text-muted" href="#">Policies</a>
+          <a class="small text-muted" href="#">Contact support</a>
+        </div>
+
+        <div class="small text-muted">© 2025 iSOFT — Student portal</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Floating AI Chat Avatar -->
+<!-- Floating AI Chat Avatar -->
+<div id="aiWidget" style="position:fixed;right:20px;bottom:20px;z-index:80; cursor:pointer;" onclick="openChat()">
+  <div style="
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    overflow:hidden;
+    box-shadow:0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    <img src="AI2.png" alt="AI Assistant" style="width:100%;height:100%;object-fit:cover;">
+  </div>
+</div>
+
+
+
+  <!-- Chat modal (hidden) -->
+  <div id="chatModal" style="display:none;position:fixed;right:20px;bottom:90px;width:380px;z-index:90">
+    <div style="background:white;border-radius:14px;box-shadow:0 24px 60px rgba(2,6,23,0.45);overflow:hidden">
+      <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(90deg,#06b6d4,#0f766e);display:flex;align-items:center;justify-content:center;color:white;font-weight:700">AI</div>
+          <div>
+            <div style="font-weight:700">AI Assistant</div>
+            <div class="small text-muted">Ask about fees, COE, or study tips</div>
+          </div>
+        </div>
+        <div>
+          <button onclick="closeChat()" style="border:0;background:transparent;font-weight:700;cursor:pointer">✕</button>
+        </div>
+      </div>
+
+      <div style="height:320px;background:#f8fafc;padding:12px;overflow:auto">
+        <div style="max-width:80%;padding:10px;background:white;border-radius:10px;margin-bottom:10px">Hi! How can I help with your enrolment or study tasks?</div>
+        <div style="max-width:80%;margin-left:auto;padding:10px;background:#eff6ff;border-radius:10px;margin-bottom:10px">What is the due date for my next assessment?</div>
+        <!-- messages placeholder -->
+      </div>
+
+      <div style="padding:10px;border-top:1px solid rgba(15,23,42,0.03);display:flex;gap:8px;align-items:center">
+        <input id="chatInput" placeholder="Ask something..." style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06)" />
+        <button style="background:var(--brand-1);border:0;padding:10px 12px;border-radius:10px;color:white;cursor:pointer" onclick="sendTest()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sidebar toggle (mobile)
+    function toggleSidebar(){
+      const sb = document.getElementById('sidebar');
+      if(!sb) return;
+      sb.classList.toggle('mobile-open');
+      // clicking overlay / other logic could be added
+    }
+
+    // AI Chat open/close
+    function openChat(){
+      document.getElementById('chatModal').style.display = 'block';
+    }
+    function closeChat(){
+      document.getElementById('chatModal').style.display = 'none';
+    }
+
+    // Example send function (replace with real integration)
+    function sendTest(){
+      const input = document.getElementById('chatInput');
+      if(!input) return;
+      if(!input.value.trim()) return;
+      // Append message to chat (simple demo)
+      const container = document.querySelector('#chatModal > div:nth-child(2)');
+      const bubble = document.createElement('div');
+      bubble.style.cssText = 'max-width:80%;margin-left:auto;padding:10px;background:#eff6ff;border-radius:10px;margin-bottom:10px';
+      bubble.textContent = input.value;
+      container.appendChild(bubble);
+      container.scrollTop = container.scrollHeight;
+      input.value = '';
+    }
+
+    // Close sidebar by clicking outside on mobile
+    document.addEventListener('click', (e) => {
+      const sb = document.getElementById('sidebar');
+      if(!sb) return;
+      if(sb.classList.contains('mobile-open')){
+        const withinSidebar = e.composedPath().includes(sb);
+        const isHamb = e.target.closest('.hamburger');
+        if(!withinSidebar && !isHamb){
+          sb.classList.remove('mobile-open');
+        }
+      }
+    });
+  </script>
+</body>
+</html>
