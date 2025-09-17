@@ -442,9 +442,9 @@ a{color:inherit;text-decoration:none}
   }
   // Timetable Scripts
   const sessions = [
-    { id:1, course:"Diploma of Business", code:"BSB50120", unit:"SITXWHS101", start:"2025-10-28T09:00", trainer:"M. Turner", end:"2025-10-28T12:00", location:"Room 12, Campus A", mode:"face", notes:"Bring safety form", type:"session" },
+    { id:1, course:"Diploma of Business", code:"BSB50120", unit:"SITXWHS101", start:"2025-10-28T09:00", trainer:"M. Turner", end:"2025-10-28T12:00", location:"Room 12, Campus A", mode:"Offline", notes:"Bring safety form", type:"session" },
     { id:2, course:"Diploma of Business", code:"BSB50120", unit:"BSBTEC101", trainer:"J. Smith", start:"2025-10-29T13:00", end:"2025-10-29T15:00", location:"Zoom (link)", mode:"online", notes:"Zoom link in course resources", type:"session" },
-    { id:3, course:"Certificate IV in IT", code:"ICT40120", unit:"ICT401A", trainer:"A. Lee", start:"2025-10-30T10:00", end:"2025-10-30T13:00", location:"Lab 3", mode:"face", notes:"Lab computers reserved", type:"session" },
+    { id:3, course:"Certificate IV in IT", code:"ICT40120", unit:"ICT401A", trainer:"A. Lee", start:"2025-10-30T10:00", end:"2025-10-30T13:00", location:"Lab 3", mode:"Offline", notes:"Lab computers reserved", type:"session" },
     { id:4, course:"Diploma of Business", code:"BSB50120", unit:"BSBTEC101", title:"Assessment - Due", trainer:"N/A", start:"2025-10-31T09:00", end:"2025-10-31T10:00", location:"Online Submission", mode:"online", notes:"Business Communication Assessment is due", type: "assessment" }
   ];
   const courseSelect = document.getElementById('courseSelect');
@@ -532,7 +532,7 @@ a{color:inherit;text-decoration:none}
             eventEl.innerHTML = `<div>${s.unit}</div><div style="font-weight:400">${s.title}</div>`;
           } else {
             eventEl.className = 'event-item';
-            eventEl.innerHTML = `<div>${s.unit}</div><div style="font-weight:400">${s.trainer}</div>`;
+            eventEl.innerHTML = `<div>${s.unit}</div><div style="font-weight:400">${s.trainer}</div><div style="font-weight:400">${s.location}</div><div style="font-weight:400">${s.mode}</div>`;
           }
 
           eventEl.onclick = (e) => { e.stopPropagation(); selectSession(s.id); };
@@ -627,3 +627,4 @@ a{color:inherit;text-decoration:none}
 </body>
 
 </html>
+
