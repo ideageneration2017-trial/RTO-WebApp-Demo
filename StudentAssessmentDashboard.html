@@ -561,8 +561,8 @@ function renderAssessments(filteredAssessments) {
       <div class="progress-bar">
         <div class="progress-fill" style="width:${a.progress}%;"></div>
       </div>
-     <div>
-    <button class="btn primary" style="background:#3b82f6;color:white;">Open</button>
+      <div>
+    <a href="StudentAssessmentDetails.html" class="btn primary" style="background:#3b82f6;color:white;text-decoration:none;">Open</a>
     <button class="btn ghost" 
       ${feedbackEnabled 
         ? 'style="background:#16a34a;color:white;border:none;cursor:pointer"' 
@@ -570,7 +570,7 @@ function renderAssessments(filteredAssessments) {
     >
       View Feedback
     </button>
-  </div>
+</div>
     `;
     grid.appendChild(card);
   });
@@ -653,3 +653,4 @@ function sendTest(){
 </script>
 </body>
 </html>
+
