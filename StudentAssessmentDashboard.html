@@ -563,13 +563,13 @@ function renderAssessments(filteredAssessments) {
       </div>
       <div>
     <a href="StudentAssessmentDetails.html" class="btn primary" style="background:#3b82f6;color:white;text-decoration:none;">Open</a>
-    <button class="btn ghost" 
-      ${feedbackEnabled 
-        ? 'style="background:#16a34a;color:white;border:none;cursor:pointer"' 
-        : 'disabled style="opacity:0.4;cursor:not-allowed"'}
-    >
-      View Feedback
-    </button>
+    <a href="StudentAssessmentFeedback.html" class="btn ghost" 
+    ${feedbackEnabled 
+      ? 'style="background:#16a34a;color:white;border:none;cursor:pointer;text-decoration:none;"' 
+      : 'style="opacity:0.4;cursor:not-allowed;pointer-events:none;text-decoration:none;"'}
+>
+    View Feedback
+</a>
 </div>
     `;
     grid.appendChild(card);
@@ -653,4 +653,5 @@ function sendTest(){
 </script>
 </body>
 </html>
+
 
