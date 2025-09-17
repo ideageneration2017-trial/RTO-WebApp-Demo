@@ -1,11 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Assessments — Student Portal</title>
 
-<!-- Google Fonts + Material Icons -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -91,8 +90,6 @@ a{color:inherit;text-decoration:none}
   text-transform: uppercase; /* optional: makes it consistent */
 }
 
-
-
 .profile-avatar{
   width:40px;
   height:40px;
@@ -110,8 +107,7 @@ a{color:inherit;text-decoration:none}
 #profile-dropdown-menu.hidden{display:none}
 #dropdown-arrow{color:#9ca3af;transition:transform .18s ease}
 
-
-/* Assessment tiles grid */
+/* Assessments grid and cards (same as before) */
 .assessments-grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
@@ -182,12 +178,109 @@ a{color:inherit;text-decoration:none}
 
 /* Small text */
 .small{ font-size:12px; color:var(--muted) }
+
+/* New CSS for Filter/Search bar */
+.filter-bar{
+  display:flex;
+  align-items:center;
+  margin-bottom:24px;
+}
+
+.search-input{
+  flex: 0 1 400px; 
+  padding:10px 14px;
+  border:1px solid #e5e7eb;
+  border-radius:8px;
+  font-size:14px;
+  color:#111827;
+  background:#fff;
+  box-shadow:0 1px 2px rgba(0,0,0,0.05);
+  transition:border-color 0.2s ease;
+}
+.search-input:focus{
+  outline:none;
+  border-color:#60a5fa;
+  box-shadow:0 0 0 3px rgba(96,165,250,0.25);
+}
+
+.filter-btn{
+  background:#fff;
+  border:1px solid #e5e7eb;
+  padding:10px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#6b7280;
+  box-shadow:0 1px 2px rgba(0,0,0,0.05);
+}
+.filter-btn:hover{
+  background:#f9fafb;
+}
+
+.filter-menu{
+  position:absolute;
+  right:0;
+  top:52px; /* Position below the filter icon */
+  width:260px;
+  background:#fff;
+  border-radius:8px;
+  box-shadow:0 12px 24px rgba(0,0,0,0.1);
+  border:1px solid #e5e7eb;
+  padding:16px;
+  z-index:50;
+  display:none; /* Hidden by default */
+}
+.filter-menu.show{
+  display:block;
+}
+
+.filter-section{
+  margin-bottom:16px;
+}
+.filter-section:last-child{
+  margin-bottom:0;
+}
+.filter-section-title{
+  font-size:14px;
+  font-weight:600;
+  color:#111827;
+  margin-bottom:8px;
+}
+
+.filter-select{
+  width:100%;
+  padding:8px 10px;
+  border:1px solid #e5e7eb;
+  border-radius:6px;
+  background:#fff;
+  font-size:14px;
+  cursor:pointer;
+}
+
+.filter-actions{
+  display:flex;
+  justify-content:space-between;
+  margin-top:20px;
+}
+.filter-actions .btn{
+  padding:8px 16px;
+  font-size:14px;
+}
+.filter-actions .btn.reset{
+  background:#f1f5f9;
+  color:#475569;
+}
+.filter-actions .btn.apply{
+  background:#3b82f6;
+  color:#fff;
+}
 </style>
 </head>
 
 <body>
 <div class="app">
-  <!-- Sidebar (same as before) -->
   <aside id="sidebar" class="sidebar">
     <div style="padding:16px;display:flex;justify-content:center;">
       <img src="isoft.jpg" alt="ISoft Logo" style="max-height:56px;object-fit:contain">
@@ -196,10 +289,10 @@ a{color:inherit;text-decoration:none}
       <div class="group-title">Main</div>
       <a href="StudentDashboard.html">🏠 Dashboard</a>
       <a href="StudentMyCourses.html">📚 My Courses</a>
-      <a href="#" style="background:#60a5fa;color:#fff">📝 Assessments</a>
+      <a href="StudentAssessmentDashboard.html" style="background:#60a5fa;color:#fff">📝 Assessments</a>
       <a href="#">📅 Timetable</a>
-	  
-	  <div class="group-title">Admin</div>
+      
+      <div class="group-title">Admin</div>
         <a href="#">💳 Fees & Payments</a>
         <a href="#">📂 Documents</a>
         <a href="#">💬 Messages</a>
@@ -216,61 +309,91 @@ a{color:inherit;text-decoration:none}
   </aside>
 
   <div class="main">
-    <!-- Topbar -->
     <div class="topbar">
-  <div class="profile-container" id="profile-root">
-    <div id="profile-menu-button" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
-      <img src="owner.jpg" alt="avatar" class="profile-avatar">
-      <div style="font-weight:600;color:#0f1724">John Edward</div>
-      <span id="dropdown-arrow" class="material-icons">expand_more</span>
-    </div>
+      <div class="profile-container" id="profile-root">
+        <div id="profile-menu-button" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+          <img src="owner.jpg" alt="avatar" class="profile-avatar">
+          <div style="font-weight:600;color:#0f1724">John Edward</div>
+          <span id="dropdown-arrow" class="material-icons">expand_more</span>
+        </div>
 
-    <!-- Dropdown (hidden by default) -->
-    <div id="profile-dropdown-menu" class="hidden" aria-hidden="true">
-      <div style="padding:16px;border-bottom:1px solid #e5e7eb">
-        <div style="font-weight:bold;color:#1f2937">Hi, John</div>
-        <div style="font-size:14px;color:#6b7280">john.edward@isoftanz.com.au</div>
+        <div id="profile-dropdown-menu" class="hidden" aria-hidden="true">
+          <div style="padding:16px;border-bottom:1px solid #e5e7eb">
+            <div style="font-weight:bold;color:#1f2937">Hi, John</div>
+            <div style="font-size:14px;color:#6b7280">john.edward@isoftanz.com.au</div>
+          </div>
+          <ul style="list-style:none;margin:0;padding:0">
+            <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+              <span class="material-icons" style="margin-right:8px">person</span>Edit Profile</a></li>
+            <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+              <span class="material-icons" style="margin-right:8px">settings</span>Account settings</a></li>
+            <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+              <span class="material-icons" style="margin-right:8px">help_outline</span>Support</a></li>
+            <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;border-top:1px solid #e5e7eb;margin-top:4px">
+              <span class="material-icons" style="margin-right:8px">logout</span>Sign out</a></li>
+          </ul>
+        </div>
       </div>
-      <ul style="list-style:none;margin:0;padding:0">
-        <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
-          <span class="material-icons" style="margin-right:8px">person</span>Edit Profile</a></li>
-        <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
-          <span class="material-icons" style="margin-right:8px">settings</span>Account settings</a></li>
-        <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
-          <span class="material-icons" style="margin-right:8px">help_outline</span>Support</a></li>
-        <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;border-top:1px solid #e5e7eb;margin-top:4px">
-          <span class="material-icons" style="margin-right:8px">logout</span>Sign out</a></li>
-      </ul>
     </div>
-  </div>
-</div>
 
-    <!-- Page header -->
     <div class="page-header">
       <h1>Assessments</h1>
       <p>All scheduled assessments for your enrolled courses</p>
     </div>
 
-    <!-- Assessments content -->
-    <div class="assessments-grid" id="assessmentsGrid"></div>
-  </div>
-</div>
+    <div class="filter-bar" style="position:relative; justify-content: space-between;">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search assessments...">
+        <button id="filterBtn" class="filter-btn">
+            <span class="material-icons">filter_alt</span>
+        </button>
 
-<!-- Quick footer links -->
-      <div style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div id="filterMenu" class="filter-menu">
+            <div class="filter-section">
+                <div class="filter-section-title">Status</div>
+                <select id="statusFilter" class="filter-select">
+                    <option value="">All</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Not Started">Not Started</option>
+                    <option value="Submitted">Submitted</option>
+                </select>
+            </div>
+            <div class="filter-section">
+                <div class="filter-section-title">Feedback</div>
+                <select id="feedbackFilter" class="filter-select">
+                    <option value="">All</option>
+                    <option value="Awaiting">Awaiting</option>
+                    <option value="Provided">Provided</option>
+                </select>
+            </div>
+            <div class="filter-section">
+                <div class="filter-section-title">Type</div>
+                <select id="typeFilter" class="filter-select">
+                    <option value="">All</option>
+                    <option value="Project">Project</option>
+                    <option value="Practical Task">Practical Task</option>
+                    <option value="Case Study">Case Study</option>
+                </select>
+            </div>
+            <div class="filter-actions">
+                <button id="resetFilterBtn" class="btn reset">Reset Filter</button>
+                <button id="applyFilterBtn" class="btn apply">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="assessments-grid" id="assessmentsGrid"></div>
+
+    <div style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
         <div class="quick-links">
           <a class="small text-muted" href="#">Help center</a>
           <a class="small text-muted" href="#">Policies</a>
           <a class="small text-muted" href="#">Contact support</a>
         </div>
-
         <div class="small text-muted">© 2025 iSOFT — Student portal</div>
-      </div>
-    </main>
+    </div>
   </div>
+</div>
 
-  <!-- Floating AI Chat Avatar -->
-<!-- Floating AI Chat Avatar -->
 <div id="aiWidget" style="position:fixed;right:20px;bottom:20px;z-index:80; cursor:pointer;" onclick="openChat()">
   <div style="
     width:50px;
@@ -284,37 +407,30 @@ a{color:inherit;text-decoration:none}
   </div>
 </div>
 
-
-
-  <!-- Chat modal (hidden) -->
-  <div id="chatModal" style="display:none;position:fixed;right:20px;bottom:90px;width:380px;z-index:90">
-    <div style="background:white;border-radius:14px;box-shadow:0 24px 60px rgba(2,6,23,0.45);overflow:hidden">
-      <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
-        <div style="display:flex;gap:10px;align-items:center">
-          <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(90deg,#06b6d4,#0f766e);display:flex;align-items:center;justify-content:center;color:white;font-weight:700">AI</div>
-          <div>
-            <div style="font-weight:700">AI Assistant</div>
-            <div class="small text-muted">Ask about fees, COE, or study tips</div>
-          </div>
-        </div>
+<div id="chatModal" style="display:none;position:fixed;right:20px;bottom:90px;width:380px;z-index:90">
+  <div style="background:white;border-radius:14px;box-shadow:0 24px 60px rgba(2,6,23,0.45);overflow:hidden">
+    <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+      <div style="display:flex;gap:10px;align-items:center">
+        <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(90deg,#06b6d4,#0f766e);display:flex;align-items:center;justify-content:center;color:white;font-weight:700">AI</div>
         <div>
-          <button onclick="closeChat()" style="border:0;background:transparent;font-weight:700;cursor:pointer">✕</button>
+          <div style="font-weight:700">AI Assistant</div>
+          <div class="small text-muted">Ask about fees, COE, or study tips</div>
         </div>
       </div>
-
-      <div style="height:320px;background:#f8fafc;padding:12px;overflow:auto">
-        <div style="max-width:80%;padding:10px;background:white;border-radius:10px;margin-bottom:10px">Hi! How can I help with your enrolment or study tasks?</div>
-        <div style="max-width:80%;margin-left:auto;padding:10px;background:#eff6ff;border-radius:10px;margin-bottom:10px">What is the due date for my next assessment?</div>
-        <!-- messages placeholder -->
-      </div>
-
-      <div style="padding:10px;border-top:1px solid rgba(15,23,42,0.03);display:flex;gap:8px;align-items:center">
-        <input id="chatInput" placeholder="Ask something..." style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06)" />
-        <button style="background:var(--brand-1);border:0;padding:10px 12px;border-radius:10px;color:white;cursor:pointer" onclick="sendTest()">Send</button>
+      <div>
+        <button onclick="closeChat()" style="border:0;background:transparent;font-weight:700;cursor:pointer">✕</button>
       </div>
     </div>
+    <div style="height:320px;background:#f8fafc;padding:12px;overflow:auto">
+      <div style="max-width:80%;padding:10px;background:white;border-radius:10px;margin-bottom:10px">Hi! How can I help with your enrolment or study tasks?</div>
+      <div style="max-width:80%;margin-left:auto;padding:10px;background:#eff6ff;border-radius:10px;margin-bottom:10px">What is the due date for my next assessment?</div>
+      </div>
+    <div style="padding:10px;border-top:1px solid rgba(15,23,42,0.03);display:flex;gap:8px;align-items:center">
+      <input id="chatInput" placeholder="Ask something..." style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06)" />
+      <button style="background:var(--brand-1);border:0;padding:10px 12px;border-radius:10px;color:white;cursor:pointer" onclick="sendTest()">Send</button>
+    </div>
   </div>
-
+</div>
 
 <script>
 // Sample assessment data
@@ -354,96 +470,186 @@ const assessments = [
     status:"Submitted",
     progress:100,
     feedback:"Provided"
+  },
+  {
+    id:4,
+    title:"Project Management",
+    unit:"BSB508B",
+    semester:"Sem 2",
+    type:"Project",
+    group:false,
+    due:"2025-11-15",
+    status:"In Progress",
+    progress:75,
+    feedback:"Awaiting"
+  },
+  {
+    id:5,
+    title:"Cyber Security",
+    unit:"ICT502C",
+    semester:"Sem 2",
+    type:"Practical Task",
+    group:true,
+    due:"2025-11-20",
+    status:"Submitted",
+    progress:100,
+    feedback:"Awaiting"
   }
 ];
- // Profile dropdown logic
-    const profileMenuButton = document.getElementById('profile-menu-button');
-    const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
-    const dropdownArrow = document.getElementById('dropdown-arrow');
 
-    profileMenuButton.addEventListener('click', (e) => {
-      // stop propagation so window click doesn't immediately close it
-      e.stopPropagation();
-      const isHidden = profileDropdownMenu.classList.toggle('hidden');
-      profileDropdownMenu.setAttribute('aria-hidden', isHidden ? 'true' : 'false');
-      dropdownArrow.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
-    });
+// Cache DOM elements
+const grid = document.getElementById('assessmentsGrid');
+const searchInput = document.getElementById('searchInput');
+const filterBtn = document.getElementById('filterBtn');
+const filterMenu = document.getElementById('filterMenu');
+const statusFilter = document.getElementById('statusFilter');
+const feedbackFilter = document.getElementById('feedbackFilter');
+const typeFilter = document.getElementById('typeFilter');
+const applyFilterBtn = document.getElementById('applyFilterBtn');
+const resetFilterBtn = document.getElementById('resetFilterBtn');
 
-    // Close the dropdown if the user clicks outside of it
-    window.addEventListener('click', (event) => {
-      if (!profileMenuButton.contains(event.target) && !profileDropdownMenu.contains(event.target)) {
+// Profile dropdown logic (same as before)
+const profileMenuButton = document.getElementById('profile-menu-button');
+const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+const dropdownArrow = document.getElementById('dropdown-arrow');
+
+profileMenuButton.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isHidden = profileDropdownMenu.classList.toggle('hidden');
+    profileDropdownMenu.setAttribute('aria-hidden', isHidden ? 'true' : 'false');
+    dropdownArrow.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+});
+
+// Close the dropdown if the user clicks outside of it
+window.addEventListener('click', (event) => {
+    if (!profileMenuButton.contains(event.target) && !profileDropdownMenu.contains(event.target)) {
         profileDropdownMenu.classList.add('hidden');
         profileDropdownMenu.setAttribute('aria-hidden','true');
         dropdownArrow.style.transform = 'rotate(0deg)';
-      }
-    });
-
-// Render assessments
-const grid = document.getElementById('assessmentsGrid');
-
-assessments.forEach(a => {
-  const card = document.createElement('div');
-  card.className = 'assessment-card';
-
-  // Determine if feedback button should be enabled
-  const feedbackEnabled = a.status === 'Submitted' && a.feedback.toLowerCase() !== 'awaiting';
-
-  card.innerHTML = `
-    <div class="assessment-header">
-      <div class="assessment-title">${a.unit} — ${a.title}</div>
-      <div>
-        <span class="badge semester">${a.semester}</span>
-        <span class="badge ${a.group ? 'group':'individual'}">${a.group ? 'Group':'Individual'}</span>
-      </div>
-    </div>
-    <div class="assessment-meta">
-      Type: ${a.type} <br>
-      Due: ${a.due} <br>
-      Status: ${a.status} <br>
-      Feedback: ${a.feedback}
-    </div>
-    <div class="progress-bar">
-      <div class="progress-fill" style="width:${a.progress}%;"></div>
-    </div>
-   <div>
-  <button class="btn primary" style="background:#3b82f6;color:white;">Open</button>
-  <button class="btn ghost" 
-    ${a.status === "Submitted" && a.feedback === "Provided" 
-      ? 'style="background:#16a34a;color:white;border:none;cursor:pointer"' 
-      : 'disabled style="opacity:0.4;cursor:not-allowed"'}
-  >
-    View Feedback
-  </button>
-</div>
-
-
-  `;
-  grid.appendChild(card);
+    }
 });
 
+// Main rendering function for assessments
+function renderAssessments(filteredAssessments) {
+  grid.innerHTML = ''; // Clear previous cards
+  if (filteredAssessments.length === 0) {
+      grid.innerHTML = '<p style="text-align:center; color:#6b7280; margin-top:40px;">No assessments found matching your criteria.</p>';
+      return;
+  }
+  
+  filteredAssessments.forEach(a => {
+    const card = document.createElement('div');
+    card.className = 'assessment-card';
 
-// AI Chat open/close
-    function openChat(){
-      document.getElementById('chatModal').style.display = 'block';
+    // Determine if feedback button should be enabled
+    const feedbackEnabled = a.status === 'Submitted' && a.feedback === 'Provided';
+
+    card.innerHTML = `
+      <div class="assessment-header">
+        <div class="assessment-title">${a.unit} — ${a.title}</div>
+        <div>
+          <span class="badge semester">${a.semester}</span>
+          <span class="badge ${a.group ? 'group':'individual'}">${a.group ? 'Group':'Individual'}</span>
+        </div>
+      </div>
+      <div class="assessment-meta">
+        Type: ${a.type} <br>
+        Due: ${a.due} <br>
+        Status: ${a.status} <br>
+        Feedback: ${a.feedback}
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:${a.progress}%;"></div>
+      </div>
+     <div>
+    <button class="btn primary" style="background:#3b82f6;color:white;">Open</button>
+    <button class="btn ghost" 
+      ${feedbackEnabled 
+        ? 'style="background:#16a34a;color:white;border:none;cursor:pointer"' 
+        : 'disabled style="opacity:0.4;cursor:not-allowed"'}
+    >
+      View Feedback
+    </button>
+  </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// Function to apply search and filters
+function applyFilters() {
+    const searchQuery = searchInput.value.toLowerCase().trim();
+    const status = statusFilter.value;
+    const feedback = feedbackFilter.value;
+    const type = typeFilter.value;
+
+    const filtered = assessments.filter(a => {
+        const matchesSearch = 
+            a.title.toLowerCase().includes(searchQuery) ||
+            a.unit.toLowerCase().includes(searchQuery);
+
+        const matchesStatus = status === '' || a.status === status;
+        const matchesFeedback = feedback === '' || a.feedback === feedback;
+        const matchesType = type === '' || a.type === type;
+
+        return matchesSearch && matchesStatus && matchesFeedback && matchesType;
+    });
+
+    renderAssessments(filtered);
+}
+
+// Event listeners for filters and search
+filterBtn.addEventListener('click', () => {
+    filterMenu.classList.toggle('show');
+});
+
+applyFilterBtn.addEventListener('click', () => {
+    applyFilters();
+    filterMenu.classList.remove('show');
+});
+
+resetFilterBtn.addEventListener('click', () => {
+    statusFilter.value = '';
+    feedbackFilter.value = '';
+    typeFilter.value = '';
+    applyFilters();
+    filterMenu.classList.remove('show');
+});
+
+searchInput.addEventListener('input', applyFilters);
+
+// Close the filter menu if the user clicks outside
+window.addEventListener('click', (e) => {
+    if (!filterBtn.contains(e.target) && !filterMenu.contains(e.target)) {
+        filterMenu.classList.remove('show');
     }
-    function closeChat(){
-      document.getElementById('chatModal').style.display = 'none';
-    }
+});
+
+// Initial render of all assessments on page load
+renderAssessments(assessments);
+
+
+// AI Chat open/close (same as before)
+function openChat(){
+  document.getElementById('chatModal').style.display = 'block';
+}
+function closeChat(){
+  document.getElementById('chatModal').style.display = 'none';
+}
 	
-	  // Example send function (replace with real integration)
-    function sendTest(){
-      const input = document.getElementById('chatInput');
-      if(!input) return;
-      if(!input.value.trim()) return;
-      // Append message to chat (simple demo)
-      const container = document.querySelector('#chatModal > div:nth-child(2)');
-      const bubble = document.createElement('div');
-      bubble.style.cssText = 'max-width:80%;margin-left:auto;padding:10px;background:#eff6ff;border-radius:10px;margin-bottom:10px';
-      bubble.textContent = input.value;
-      container.appendChild(bubble);
-      container.scrollTop = container.scrollHeight;
-      input.value = '';
-    }
+// Example send function (same as before)
+function sendTest(){
+  const input = document.getElementById('chatInput');
+  if(!input) return;
+  if(!input.value.trim()) return;
+  const container = document.querySelector('#chatModal > div:nth-child(2)');
+  const bubble = document.createElement('div');
+  bubble.style.cssText = 'max-width:80%;margin-left:auto;padding:10px;background:#eff6ff;border-radius:10px;margin-bottom:10px';
+  bubble.textContent = input.value;
+  container.appendChild(bubble);
+  container.scrollTop = container.scrollHeight;
+  input.value = '';
+}
 </script>
 </body>
 </html>
