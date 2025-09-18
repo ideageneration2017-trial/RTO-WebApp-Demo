@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Documents — Student Portal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+/* --- SAME THEME / VARIABLES --- */
+:root{
+  --sidebar-bg: #eaf6fb;
+  --accent: #e53935;
+  --brand-1: #0f766e;
+  --card-bg: #ffffff;
+  --muted: #6b7280;
+  --shadow: 0 6px 20px rgba(18,38,63,0.08);
+  --radius: 12px;
+  --max-width: 1200px;
+  --success: #16a34a;
+  --danger: #dc2626;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+  background:#f7fafc;
+  color:#111827;
+  line-height:1.35;
+  overflow-x:hidden; /* prevent horizontal scroll */
+}
+a{color:inherit;text-decoration:none}
+.app{display:flex;min-height:100vh;gap:24px;max-width:100%}
+/* Sidebar */
+.sidebar{
+  width:260px;
+  background:var(--sidebar-bg);
+  padding:20px 18px;
+  border-right:1px solid rgba(15,23,42,0.03);
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  overflow-y:auto;
+}
+.nav a{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:10px 10px;
+  border-radius:8px;
+  color: #0f1724;
+  font-size:14px;
+  font-weight:500;
+}
+.nav a:hover{ background: rgba(15,23,42,0.03) }
+.nav .group-title {
+  color: var(--muted);
+  font-size: 12px;
+  padding: 10px 6px 2px 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+/* Main content area */
+.main{
+  flex:1;
+  padding:28px;
+  margin-left:260px; /* leave space for fixed sidebar */
+  width:calc(100% - 260px);
+  max-width:100%;
+}
+.topbar{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:10px;
+  margin-bottom:20px;
+}
+.profile-avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid white; 
+  box-shadow:0 4px 12px rgba(2,6,23,0.08);
+}
+.profile-container{position:relative;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+#profile-dropdown-menu{
+  position:absolute;right:0;margin-top:12px;width:260px;
+  background:#fff;border:1px solid #e5e7eb;border-radius:8px;
+  box-shadow:0 10px 30px rgba(2,6,23,0.12);z-index:50;padding-bottom:8px;
+}
+#profile-dropdown-menu.hidden{display:none}
+#dropdown-arrow{color:#9ca3af;transition:transform .18s ease}
+.page-header{ padding-bottom:14px; }
+.page-header h1{margin:0;font-size:20px;font-weight:700}
+.page-header p{margin:6px 0 0;color:var(--muted);font-size:13px}
+.small{ font-size:12px; color:var(--muted) }
+.btn{
+  padding:5px 10px;
+  border-radius:6px;
+  font-size:12px;
+  font-weight:600;
+  border:0;
+  cursor:pointer;
+}
+.btn.primary{ background:var(--brand-1); color:#fff; margin-right:6px; }
+.btn.ghost{ background:transparent; border:1px solid rgba(15,23,42,0.06); color:#374151; }
+.btn.md{ padding:8px 14px; font-size:14px; }
+/* Documents layout */
+.docs-grid{
+  display:grid;
+  grid-template-columns: 1fr 300px;
+  gap:20px;
+  margin-top:18px;
+}
+@media (max-width:980px){
+  .main{padding:18px;margin-left:0;width:100%}
+  .sidebar{position:relative;width:100%;height:auto;display:none}
+  .docs-grid{grid-template-columns:1fr}
+}
+.panel{
+  background:var(--card-bg);
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+/* Left area (file list / cards) */
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px; position: relative;}
+
+.search { 
+  background:#f9fafb;
+  border:1px solid #e5e7eb;
+  padding:10px 14px;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.search input{border:none;background:transparent;outline:none;flex:1}
+.filter-row{
+  display:none; /* Initially hide the filter dropdowns */
+}
+.docs-list{
+  display:grid;
+  grid-template-columns: 1fr; /* Display one entry per row */
+  gap:12px;
+}
+
+@media (max-width:720px){ 
+  .docs-list{grid-template-columns:1fr} 
+}
+.doc-card{
+  background:linear-gradient(180deg,#fff,#fbffff);
+  padding:12px;border-radius:10px;border:1px solid rgba(15,23,42,0.03);
+  display:flex;gap:12px;align-items:flex-start;
+  transition:transform .14s ease, box-shadow .14s ease;
+}
+.doc-card:hover{ transform:translateY(-4px); box-shadow:0 8px 24px rgba(2,6,23,0.08) }
+.doc-thumb{width:56px;height:56px;border-radius:8px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--muted)}
+.doc-info{flex:1;min-width:0}
+.doc-title{font-weight:700;font-size:14px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.doc-meta{font-size:12px;color:var(--muted);margin-bottom:8px}
+.doc-actions{display:flex;gap:8px;align-items:center}
+/* Status badges */
+.badge{font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(15,23,42,0.05);font-weight:700}
+.badge.verified{background:rgba(16,185,129,0.12);color:var(--success)}
+.badge.pending{background:rgba(250,204,21,0.12);color:#b45309}
+.badge.rejected{background:rgba(239,68,68,0.07);color:var(--danger)}
+.expires{font-size:12px;color:#b45309;font-weight:700}
+/* Right panel (upload, requests, ai & recent) */
+.right-col .section{margin-bottom:12px}
+.uploader{
+  border:2px dashed rgba(15,23,42,0.06);padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;text-align:center;background:#fff;
+}
+.file-input{display:none}
+.progress{width:100%;height:8px;background:#f1f5f9;border-radius:6px;overflow:hidden}
+.progress > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#06b6d4,#0f766e)}
+.switch{display:inline-flex;align-items:center;gap:8px}
+.small-muted{font-size:12px;color:var(--muted)}
+.preview-modal{position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(2,6,23,0.45);display:none;align-items:center;justify-content:center;z-index:120}
+.preview-modal .dialog{width:95%;max-width:900px;background:white;border-radius:12px;padding:18px;box-shadow:0 20px 60px rgba(2,6,23,0.5);display:flex;flex-direction:column;gap:12px;height:80vh}
+.preview-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.viewer{flex:1;background:#f8fafc;border-radius:8px;padding:12px;overflow:auto}
+button:focus, input:focus, select:focus { outline: 3px solid rgba(15,118,110,0.12); outline-offset:2px; }
+@media (max-width:480px){
+  .toolbar { flex-direction:column; align-items:stretch }
+  .filter-row { width:100% }
+  .btn.md{width:100%}
+}
+/* Filter dropdown styles */
+.filter-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  z-index: 10;
+  width: 280px;
+  padding: 16px;
+}
+.filter-dropdown.hidden {
+  display: none;
+}
+.filter-dropdown .filter-group {
+  margin-bottom: 12px;
+}
+.filter-dropdown .filter-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+.filter-dropdown .select {
+  width: 100%;
+}
+.filter-dropdown .select select {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 0;
+  font-size: 14px;
+}
+.filter-dropdown .buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.filter-dropdown .buttons .btn {
+  width: 48%;
+}
+
+</style>
+</head>
+
+<body>
+<div class="app">
+  <aside id="sidebar" class="sidebar" aria-label="Main sidebar">
+    <div style="padding:16px;display:flex;justify-content:center;">
+      <img src="isoft.jpg" alt="ISoft Logo" style="max-height:56px;object-fit:contain">
+    </div>
+    <nav class="nav" aria-label="Main navigation">
+      <div class="group-title">Main</div>
+      <a href="StudentDashboard.html">🏠 Dashboard</a>
+      <a href="StudentMyCourses.html">📚 My Courses</a>
+      <a href="StudentAssessmentDashboard.html">📝 Assessments</a>
+      <a href="StudentTimetable.html">📅 Timetable</a>
+      <div class="group-title">Admin</div>
+      <a href="#">💳 Fees & Payments</a>
+      <a href="#" style="background:#60a5fa;color:#fff">📂 Documents</a>
+      <a href="#">💬 Messages</a>
+      <div class="group-title">CRICOS</div>
+      <a href="#">🛂 COE & Visa</a>
+      <div class="group-title">Support</div>
+      <a href="#">🤖 Ask AI</a>
+      <a href="#">📞 Contact Trainer</a>
+    </nav>
+  </aside>
+
+  <div class="main" role="main">
+    <div class="topbar">
+      <div class="profile-container" id="profile-root">
+        <div id="profile-menu-button" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+          <img src="owner.jpg" alt="avatar" class="profile-avatar">
+          <div style="font-weight:600;color:#0f1724">John Edward</div>
+          <span id="dropdown-arrow" class="material-icons">expand_more</span>
+        </div>
+        <div id="profile-dropdown-menu" class="hidden" aria-hidden="true">
+          <div style="padding:16px;border-bottom:1px solid #e5e7eb">
+            <div style="font-weight:bold;color:#1f2937">Hi, John</div>
+            <div style="font-size:14px;color:#6b7280">john.edward@isoftanz.com.au</div>
+          </div>
+          <ul style="list-style:none;margin:0;padding:0">
+            <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+              <span class="material-icons" style="margin-right:8px">person</span>Edit Profile</a></li>
+            <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+              <span class="material-icons" style="margin-right:8px">settings</span>Account settings</a></li>
+            <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+              <span class="material-icons" style="margin-right:8px">help_outline</span>Support</a></li>
+            <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;border-top:1px solid #e5e7eb;margin-top:4px">
+              <span class="material-icons" style="margin-right:8px">logout</span>Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-header">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div>
+          <h1>Documents</h1>
+          <div class="small">Upload, view and manage your course and compliance documents. AI-assisted classification and OCR available.</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn ghost md" onclick="openRequestDoc()">Request documents</button>
+          <button class="btn primary md" onclick="openUpload()">Upload document</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="docs-grid">
+      <section>
+        <div class="panel">
+          <div class="toolbar">
+            <div class="search">
+              <span class="material-icons">search</span>
+              <input id="searchInput" placeholder="Search by name, unit, document type..." />
+            </div>
+
+            <button class="btn ghost md" onclick="toggleFilterMenu()" style="border:1px solid rgba(15,23,42,0.06);padding:8px;height:40px;width:40px;display:flex;align-items:center;justify-content:center;">
+              <span class="material-icons">filter_list</span>
+            </button>
+            <div id="filterMenu" class="filter-dropdown hidden">
+              <div class="filter-group">
+                <label for="courseFilter">Course</label>
+                <div class="select">
+                  <select id="courseFilter">
+                    <option value="all">All courses</option>
+                  </select>
+                </div>
+              </div>
+              <div class="filter-group">
+                <label for="typeFilter">Type</label>
+                <div class="select">
+                  <select id="typeFilter">
+                    <option value="all">All types</option>
+                    <option value="id">ID</option>
+                    <option value="visa">Visa/COE</option>
+                    <option value="assessment">Assessment</option>
+                    <option value="certificate">Certificate</option>
+                  </select>
+                </div>
+              </div>
+              <div class="filter-group">
+                <label for="statusFilter">Status</label>
+                <div class="select">
+                  <select id="statusFilter">
+                    <option value="all">All status</option>
+                    <option value="verified">Verified</option>
+                    <option value="pending">Pending</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+                </div>
+              </div>
+              <div class="buttons">
+                <button class="btn primary" onclick="applyFilters()">Apply</button>
+                <button class="btn ghost" onclick="resetFilters()">Reset Filter</button>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:12px;margin-bottom:12px" class="small-muted">
+            Tip: Toggle <strong>AI Auto-classify</strong> on the right to auto-fill metadata at upload.
+          </div>
+
+          <div id="docsList" class="docs-list"></div>
+
+          <div style="margin-top:12px;display:flex;justify-content:center">
+            <button class="btn ghost" id="loadMore" onclick="loadMore()">Load more</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="right-col">
+        <div class="panel section">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:700">Upload document</div>
+            <div class="small-muted">Max 25 MB / PDF, PNG, JPG</div>
+          </div>
+          <div style="margin-top:12px" class="uploader" id="uploader">
+            <div style="font-weight:700">Drag & drop or <button class="btn ghost" onclick="triggerFile()">Browse</button></div>
+            <div class="small-muted">You can use mobile camera to capture documents</div>
+            <input id="fileInput" type="file" class="file-input" accept="application/pdf,image/*" onchange="handleFiles(event)" />
+            <div id="uploadHint" class="small-muted" style="font-size:12px"></div>
+            <div class="progress" style="margin-top:8px"><i id="progressBar"></i></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+            <div class="switch">
+              <label for="aiToggle" style="font-weight:700">AI Auto-classify</label>
+              <input id="aiToggle" type="checkbox" checked style="margin-left:8px" />
+            </div>
+            <div class="small-muted">OCR & metadata</div>
+          </div>
+        </div>
+
+        <div class="panel section">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:700">Requests & Actions</div>
+            <button class="btn ghost" onclick="viewRequests()">View</button>
+          </div>
+          <div style="margin-top:12px">
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+              <div style="flex:1">
+                <div style="font-weight:600">Missing ID</div>
+                <div class="small-muted">Requested 3 days ago • <span class="expires">2 days left</span></div>
+              </div>
+              <div><button class="btn primary" onclick="openUpload()">Upload</button></div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div style="flex:1">
+                <div style="font-weight:600">Proof of Address</div>
+                <div class="small-muted">Requested 10 days ago • overdue</div>
+              </div>
+              <div><button class="btn ghost">Dismiss</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel section">
+          <div style="font-weight:700">Recent Activity</div>
+          <div style="margin-top:12px">
+            <div class="small-muted">✔️ Passport verified (Admin) • 2h ago</div>
+            <div class="small-muted">❌ COE rejected (missing dates) • 1d ago</div>
+            <div class="small-muted">⬆️ Uploaded Academic Transcript • 2d ago</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<div id="previewModal" class="preview-modal" aria-hidden="true">
+  <div class="dialog">
+    <div class="preview-toolbar">
+      <div style="font-weight:700">Document Preview</div>
+      <button class="btn ghost" onclick="closePreview()">Close</button>
+    </div>
+    <div class="viewer" id="docViewer">Loading...</div>
+  </div>
+</div>
+
+<script>
+const profileBtn=document.getElementById("profile-menu-button");
+const profileMenu=document.getElementById("profile-dropdown-menu");
+const dropdownArrow=document.getElementById("dropdown-arrow");
+profileBtn.addEventListener("click",()=>{
+  profileMenu.classList.toggle("hidden");
+  dropdownArrow.style.transform=profileMenu.classList.contains("hidden")?"rotate(0deg)":"rotate(180deg)";
+});
+window.addEventListener("click",function(e){
+  if(!profileBtn.contains(e.target)&&!profileMenu.contains(e.target)){
+    profileMenu.classList.add("hidden");
+    dropdownArrow.style.transform="rotate(0deg)";
+  }
+});
+
+let docs=[{title:"Passport",type:"ID",status:"verified",meta:"Uploaded 2025-08-10",course: "course-1"},
+          {title:"Visa Document",type:"Visa",status:"pending",meta:"Uploaded 2025-09-01", course: "course-2"},
+          {title:"COE",type:"Visa",status:"rejected",meta:"Uploaded 2025-09-05", course: "course-1"},
+          {title:"Academic Transcript",type:"Certificate",status:"verified",meta:"Uploaded 2025-09-10", course: "course-3"}];
+let shown=4;
+
+function renderDocs(list=docs){
+  const docsList=document.getElementById("docsList");
+  docsList.innerHTML="";
+  list.slice(0,shown).forEach(doc=>{
+    const card=document.createElement("div");
+    card.className="doc-card";
+    card.innerHTML=`<div class="doc-thumb">📄</div>
+      <div class="doc-info">
+        <div class="doc-title">${doc.title}</div>
+        <div class="doc-meta">${doc.meta}</div>
+        <div class="doc-actions">
+          <span class="badge ${doc.status}">${doc.status}</span>
+          <button class="btn ghost" onclick="openPreview('${doc.title}')">Preview</button>
+          <button class="btn primary">Download</button>
+        </div>
+      </div>`;
+    docsList.appendChild(card);
+  });
+}
+renderDocs();
+
+function loadMore(){
+  shown+=4; // Increase the number of documents shown by 4
+  if(shown>=docs.length){document.getElementById("loadMore").style.display="none";}
+  renderDocs(); // Re-render the documents, without opening the filter menu
+}
+function openPreview(title){
+  document.getElementById("previewModal").style.display="flex";
+  document.getElementById("docViewer").textContent="Preview of "+title;
+}
+function closePreview(){
+  document.getElementById("previewModal").style.display="none";
+}
+function triggerFile(){document.getElementById("fileInput").click();}
+function handleFiles(e){
+  const file=e.target.files[0];
+  if(file){
+    document.getElementById("uploadHint").textContent="Uploading "+file.name;
+    let bar=document.getElementById("progressBar");
+    let w=0;
+    let int=setInterval(()=>{
+      if(w>=100){clearInterval(int);document.getElementById("uploadHint").textContent="Uploaded "+file.name;}
+      else{w+=10;bar.style.width=w+"%";}
+    },200);
+  }
+}
+
+// New JavaScript for Filter Menu
+function toggleFilterMenu() {
+  const filterMenu = document.getElementById('filterMenu');
+  filterMenu.classList.toggle('hidden');
+}
+
+function applyFilters() {
+  const courseFilter = document.getElementById('courseFilter').value;
+  const typeFilter = document.getElementById('typeFilter').value;
+  const statusFilter = document.getElementById('statusFilter').value;
+  
+  let list = docs.filter(doc => {
+    const courseMatch = courseFilter === 'all' || doc.course === courseFilter;
+    const typeMatch = typeFilter === 'all' || doc.type === typeFilter;
+    const statusMatch = statusFilter === 'all' || doc.status === statusFilter;
+    return courseMatch && typeMatch && statusMatch;
+  });
+
+  renderDocs(list);
+  toggleFilterMenu(); // Hide the menu after applying
+}
+
+function resetFilters() {
+  document.getElementById('courseFilter').value = 'all';
+  document.getElementById('typeFilter').value = 'all';
+  document.getElementById('statusFilter').value = 'all';
+  applyFilters();
+}
+
+window.addEventListener('click', function(event) {
+    const filterMenu = document.getElementById('filterMenu');
+    const filterBtn = event.target.closest('.btn.ghost');
+    
+    if (!filterMenu.contains(event.target) && !filterBtn) {
+        filterMenu.classList.add('hidden');
+    }
+});
+
+</script>
+</body>
+</html>
