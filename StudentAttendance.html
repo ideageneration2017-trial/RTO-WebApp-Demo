@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Attendance & Compliance — Student Portal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+:root{
+  --sidebar-bg: #eaf6fb;
+  --accent: #e53935;
+  --brand-1: #0f766e;
+  --card-bg: #ffffff;
+  --muted: #6b7280;
+  --shadow: 0 6px 20px rgba(18,38,63,0.08);
+  --radius: 12px;
+  --max-width: 1200px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+  background:#f7fafc;
+  color:#111827;
+  line-height:1.3;
+}
+a{color:inherit;text-decoration:none}
+.app{display:flex;min-height:100vh;gap:24px}
+
+/* Sidebar */
+.sidebar{
+  width:260px;
+  background:var(--sidebar-bg);
+  padding:20px 18px;
+  border-right:1px solid rgba(15,23,42,0.03);
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+}
+.nav a{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:10px 10px;
+  border-radius:8px;
+  color:#0f1724;
+  font-size:14px;
+  font-weight:500;
+}
+.nav a:hover{ background: rgba(15,23,42,0.03) }
+.nav .group-title {
+  color: var(--muted);
+  font-size: 12px;
+  padding: 10px 6px 2px 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Main */
+.main{
+  flex:1;
+  padding:28px;
+  max-width: calc(var(--max-width) - 40px);
+  margin:0 auto;
+  width:100%;
+  margin-left:260px;
+}
+.topbar{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+/* Page header */
+.page-header{ padding-bottom:14px; }
+.page-header h1{margin:0;font-size:20px;font-weight:700}
+.page-header p{margin:6px 0 0;color:var(--muted);font-size:13px}
+
+/* Profile */
+.profile-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid white;box-shadow:0 4px 12px rgba(2,6,23,0.08)}
+.profile-container{position:relative;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+#profile-dropdown-menu{
+  position:absolute;right:0;margin-top:12px;width:260px;
+  background:#fff;border:1px solid #e5e7eb;border-radius:8px;
+  box-shadow:0 10px 30px rgba(2,6,23,0.12);z-index:50;padding-bottom:8px;
+}
+#profile-dropdown-menu.hidden{display:none}
+#dropdown-arrow{color:#9ca3af;transition:transform .18s ease}
+
+/* Cards */
+.card{
+  background:#fff;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:20px;
+  margin-bottom:20px;
+}
+.card h2{margin:0 0 10px;font-size:18px;font-weight:700;color:#111827}
+.card p{margin:6px 0;color:#374151;font-size:14px}
+.small{font-size:13px;color:var(--muted)}
+
+/* Attendance progress */
+.attendance-progress{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+.progress-circle{
+  width:100px;height:100px;border-radius:50%;background:#f3f4f6;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:20px;color:var(--brand-1);
+  position:relative;
+}
+.progress-circle.low{color:var(--accent)}
+.progress-circle::after{
+  content:"";
+  position:absolute;
+  width:100%;height:100%;
+  border-radius:50%;
+  border:8px solid var(--brand-1);
+  top:0;left:0;
+  box-sizing:border-box;
+}
+.progress-circle.low::after{border-color:var(--accent)}
+
+/* Alerts */
+.alert{
+  border-radius:8px;
+  padding:14px;
+  font-size:14px;
+  margin:10px 0;
+}
+.alert.warning{background:#fff7ed;color:#92400e}
+.alert.danger{background:#fef2f2;color:#b91c1c}
+.alert.success{background:#ecfdf5;color:#065f46}
+
+/* Steps */
+.steps{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+.steps li{
+  padding:10px;
+  border:1px solid #e5e7eb;
+  border-radius:6px;
+  margin-bottom:8px;
+  background:#f9fafb;
+  font-size:14px;
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .attendance-progress{flex-direction:column;align-items:flex-start}
+}
+
+/* Button style for the new button */
+.view-button {
+  background: #2563eb;
+  border: 1px solid #2563eb;
+  color: white;
+  padding: 8px 16px;
+  font-size: 13px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  font-weight: 500;
+}
+.view-button:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.modal-content {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  margin: -24px -24px 20px -24px;
+  background-color: #f0f9ff;
+  border-bottom: 2px solid #06b6d4;
+  border-radius: 12px 12px 0 0;
+}
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+.close-button, .download-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.download-button {
+  font-size: 14px;
+  font-weight: 500;
+}
+.modal-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+.modal-controls select, .modal-controls button {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+.modal-controls button {
+  background: #f3f4f6;
+  cursor: pointer;
+}
+.modal-controls button:hover {
+  background: #e5e7eb;
+}
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.attendance-table th, .attendance-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+.attendance-table th {
+  background-color: #f9fafb;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+}
+.present { color: #065f46; font-weight: 600; }
+.absent { color: #b91c1c; font-weight: 600; }
+.excused { color: #92400e; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside id="sidebar" class="sidebar">
+    <div style="padding:16px;display:flex;justify-content:center;">
+      <img src="isoft.jpg" alt="ISoft Logo" style="max-height:56px;object-fit:contain">
+    </div>
+    <nav class="nav" aria-label="Main navigation">
+      <div class="group-title">Main</div>
+      <a href="StudentDashboard.html">🏠 Dashboard</a>
+      <a href="StudentMyCourses.html">📚 My Courses</a>
+      <a href="StudentAssessmentDashboard.html">📝 Assessments</a>
+      <a href="StudentTimetable.html">📅 Timetable</a>
+
+      <div class="group-title">Admin</div>
+        <a href="StudentFeesPayments.html">💳 Fees & Payments</a>
+        <a href="StudentDocuments.html">📂 Documents</a>
+        <a href="#">💬 Messages</a>
+
+      <div class="group-title">CRICOS</div>
+        <a href="#">🛂 COE & Visa</a>
+        <a href="StudentAttendance.html" style="background:#60a5fa;color:#fff"><span class="material-icons">fact_check</span> Attendance</a>
+
+      <div class="group-title">Support</div>
+        <a href="#">🤖 Ask AI</a>
+        <a href="#">📞 Contact Trainer</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="profile-container" id="profile-root">
+        <div id="profile-menu-button" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+          <img src="owner.jpg" alt="avatar" class="profile-avatar">
+          <div style="font-weight:600;color:#0f1724">John Edward</div>
+          <span id="dropdown-arrow" class="material-icons">expand_more</span>
+        </div>
+        <div id="profile-dropdown-menu" class="hidden" aria-hidden="true">
+          <div style="padding:16px;border-bottom:1px solid #e5e7eb">
+            <div style="font-weight:bold;color:#1f2937">Hi, John</div>
+            <div style="font-size:14px;color:#6b7280">john.edward@isoftanz.com.au</div>
+          </div>
+          <ul style="list-style:none;margin:0;padding:0">
+            <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+              <span class="material-icons" style="margin-right:8px">person</span>Edit Profile</a></li>
+            <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+              <span class="material-icons" style="margin-right:8px">settings</span>Account settings</a></li>
+            <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+              <span class="material-icons" style="margin-right:8px">help_outline</span>Support</a></li>
+            <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;border-top:1px solid #e5e7eb;margin-top:4px">
+              <span class="material-icons" style="margin-right:8px">logout</span>Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-header">
+      <h1>Attendance & Compliance</h1>
+      <p>Track your attendance percentage and meet compliance requirements</p>
+    </div>
+
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h2>Attendance Overview (Last 12 Weeks)</h2>
+        <button class="view-button" onclick="openAttendanceModal()">View Attendance</button>
+      </div>
+      <div class="attendance-progress">
+        <div class="progress-circle low">68%</div>
+        <div>
+          <p>Your current attendance rate is <strong>68%</strong>.</p>
+          <p class="small">Required minimum for compliance: <strong>80%</strong></p>
+          <div class="alert danger">⚠ Attendance below compliance threshold. Immediate action required.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Compliance Alerts</h2>
+      <div class="alert warning">You have 3 missed sessions in the last month.</div>
+      <div class="alert danger">Visa compliance at risk if attendance is not improved.</div>
+    </div>
+
+    <div class="card">
+      <h2>How to Rectify Attendance</h2>
+      <ul class="steps">
+        <li>Attend all upcoming scheduled classes.</li>
+        <li>Submit medical certificates for excused absences.</li>
+        <li>Meet with your trainer to discuss catch-up sessions.</li>
+        <li>Contact student services if you need support.</li>
+      </ul>
+    </div>
+
+    <div style="margin-top:28px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div class="quick-links">
+        <a class="small text-muted" href="#">Help center</a>
+        <a class="small text-muted" href="#">Policies</a>
+        <a class="small text-muted" href="#">Contact support</a>
+      </div>
+      <div class="small text-muted">© 2025 iSOFT — Student portal</div>
+    </div>
+  </div>
+</div>
+
+<div id="aiWidget" style="position:fixed;right:20px;bottom:20px;z-index:80;cursor:pointer;" onclick="openChat()">
+  <div style="width:50px;height:50px;border-radius:50%;overflow:hidden;box-shadow:0 4px 8px rgba(0,0,0,0.2);transition:transform 0.2s;"
+       onmouseover="this.style.transform='scale(1.1)'"
+       onmouseout="this.style.transform='scale(1)'">
+    <img src="AI2.png" alt="AI Assistant" style="width:100%;height:100%;object-fit:cover;">
+  </div>
+</div>
+
+<div id="chatModal" style="display:none;position:fixed;right:20px;bottom:90px;width:380px;z-index:90">
+  <div style="background:white;border-radius:14px;box-shadow:0 24px 60px rgba(2,6,23,0.45);overflow:hidden">
+    <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+      <div style="display:flex;gap:10px;align-items:center">
+        <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(90deg,#06b6d4,#0f766e);display:flex;align-items:center;justify-content:center;color:white;font-weight:700">AI</div>
+        <div>
+          <div style="font-weight:700">AI Assistant</div>
+          <div class="small text-muted">Ask about attendance, compliance or visa</div>
+        </div>
+      </div>
+      <div><button onclick="closeChat()" style="border:0;background:transparent;font-weight:700;cursor:pointer">✕</button></div>
+    </div>
+    <div style="height:280px;background:#f8fafc;padding:12px;overflow:auto" id="chatWindow">
+      <div style="max-width:80%;padding:10px;background:white;border-radius:10px;margin-bottom:10px">Hi! I can help with attendance and compliance.</div>
+    </div>
+    <div style="padding:10px;border-top:1px solid rgba(15,23,42,0.03);display:flex;gap:8px;align-items:center">
+      <input id="chatInput" placeholder="Ask something..." style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06)" />
+      <button style="background:var(--brand-1);border:0;padding:10px 12px;border-radius:10px;color:white;cursor:pointer" onclick="sendChat()">Send</button>
+    </div>
+  </div>
+</div>
+
+<div id="attendanceModal" class="modal-overlay" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 style="color: #06b6d4;">Detailed Attendance</h3>
+      <div class="modal-actions">
+        <button class="download-button" onclick="downloadAttendance()">
+          <span class="material-icons">cloud_download</span>
+          Download
+        </button>
+        <button class="close-button" onclick="closeAttendanceModal()">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+    </div>
+    <div class="modal-controls">
+      <button onclick="prevMonth()">Prev</button>
+      <span id="currentMonthYear" style="font-weight: 600;">October 2024</span>
+      <button onclick="nextMonth()">Next</button>
+    </div>
+    <div style="margin-bottom: 20px;">
+      <label for="course-select" style="font-size: 14px; color: #6b7280; margin-right: 10px;">Select Course:</label>
+      <select id="course-select" onchange="updateAttendanceData()">
+        <option value="course-1">Diploma of IT</option>
+        <option value="course-2">Certificate IV in Business</option>
+        <option value="course-3">Advanced Diploma of Leadership</option>
+      </select>
+    </div>
+    <table class="attendance-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Class</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="attendance-body">
+        <tr>
+          <td>Oct 1, 2024</td>
+          <td>Networking Essentials</td>
+          <td class="present">Present</td>
+        </tr>
+        <tr>
+          <td>Oct 3, 2024</td>
+          <td>Database Fundamentals</td>
+          <td class="present">Present</td>
+        </tr>
+        <tr>
+          <td>Oct 8, 2024</td>
+          <td>Networking Essentials</td>
+          <td class="absent">Absent</td>
+        </tr>
+        <tr>
+          <td>Oct 10, 2024</td>
+          <td>Database Fundamentals</td>
+          <td class="present">Present</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+// Profile dropdown
+const profileMenuButton=document.getElementById('profile-menu-button');
+const profileDropdownMenu=document.getElementById('profile-dropdown-menu');
+const dropdownArrow=document.getElementById('dropdown-arrow');
+profileMenuButton.addEventListener('click',(e)=>{
+  e.stopPropagation();
+  const isHidden=profileDropdownMenu.classList.toggle('hidden');
+  profileDropdownMenu.setAttribute('aria-hidden',isHidden?'true':'false');
+  dropdownArrow.style.transform=isHidden?'rotate(0deg)':'rotate(180deg)';
+});
+window.addEventListener('click',(event)=>{
+  if(!profileMenuButton.contains(event.target)&&!profileDropdownMenu.contains(event.target)){
+    profileDropdownMenu.classList.add('hidden');
+    profileDropdownMenu.setAttribute('aria-hidden','true');
+    dropdownArrow.style.transform='rotate(0deg)';
+  }
+});
+
+// AI Chat
+function openChat(){document.getElementById('chatModal').style.display='block'}
+function closeChat(){document.getElementById('chatModal').style.display='none'}
+function sendChat(){
+  const input=document.getElementById('chatInput');
+  if(!input.value.trim())return;
+  const w=document.getElementById('chatWindow');
+  const el=document.createElement('div');
+  el.style.cssText='max-width:80%;margin-left:auto;padding:10px;background:#eff6ff;border-radius:10px;margin-bottom:10px';
+  el.textContent=input.value;
+  w.appendChild(el);w.scrollTop=w.scrollHeight;input.value='';
+}
+
+// Attendance Modal
+const attendanceModal = document.getElementById('attendanceModal');
+const attendanceBody = document.getElementById('attendance-body');
+const currentMonthYear = document.getElementById('currentMonthYear');
+const courseSelect = document.getElementById('course-select');
+
+// This is the sample data for the attendance records
+const attendanceData = {
+  'course-1': {
+    'October 2024': [
+      { date: 'Oct 1, 2024', class: 'Networking Essentials', status: 'Present' },
+      { date: 'Oct 3, 2024', class: 'Database Fundamentals', status: 'Present' },
+      { date: 'Oct 8, 2024', class: 'Networking Essentials', status: 'Absent' },
+      { date: 'Oct 10, 2024', class: 'Database Fundamentals', status: 'Present' },
+      { date: 'Oct 15, 2024', class: 'Networking Essentials', status: 'Present' },
+    ],
+    'September 2024': [
+      { date: 'Sep 2, 2024', class: 'Introduction to Programming', status: 'Present' },
+      { date: 'Sep 5, 2024', class: 'Introduction to Programming', status: 'Absent' },
+      { date: 'Sep 9, 2024', class: 'Introduction to IT', status: 'Present' },
+      { date: 'Sep 12, 2024', class: 'Introduction to Programming', status: 'Present' },
+    ]
+  },
+  'course-2': {
+    'October 2024': [
+      { date: 'Oct 2, 2024', class: 'Business Communication', status: 'Present' },
+      { date: 'Oct 9, 2024', class: 'Business Communication', status: 'Excused' },
+    ],
+    'September 2024': [
+      { date: 'Sep 4, 2024', class: 'Business Fundamentals', status: 'Present' },
+      { date: 'Sep 11, 2024', class: 'Business Fundamentals', status: 'Absent' },
+    ]
+  },
+  'course-3': {
+    'October 2024': [
+      { date: 'Oct 5, 2024', class: 'Leadership Principles', status: 'Present' },
+    ],
+    'September 2024': [
+      { date: 'Sep 1, 2024', class: 'Project Management', status: 'Present' },
+      { date: 'Sep 8, 2024', class: 'Leadership Principles', status: 'Present' },
+    ]
+  }
+};
+
+let currentMonthIndex = 0;
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+let currentCourse = 'course-1';
+let currentYear = 2024;
+
+function openAttendanceModal() {
+  attendanceModal.style.display = 'flex';
+  // To ensure sample data shows, we set the initial view to a month with data
+  currentMonthIndex = months.indexOf('October');
+  currentYear = 2024;
+  currentCourse = courseSelect.value;
+  updateModalContent();
+}
+
+function closeAttendanceModal() {
+  attendanceModal.style.display = 'none';
+}
+
+function updateModalContent() {
+  const currentMonthName = months[currentMonthIndex];
+  currentMonthYear.textContent = `${currentMonthName} ${currentYear}`;
+  
+  const courseData = attendanceData[currentCourse];
+  const monthData = courseData?.[`${currentMonthName} ${currentYear}`] || [];
+  
+  attendanceBody.innerHTML = '';
+  if (monthData.length > 0) {
+    monthData.forEach(entry => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${entry.date}</td>
+        <td>${entry.class}</td>
+        <td class="${entry.status.toLowerCase()}">${entry.status}</td>
+      `;
+      attendanceBody.appendChild(row);
+    });
+  } else {
+    attendanceBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 20px; color: var(--muted);">No attendance data for this period.</td></tr>`;
+  }
+}
+
+function prevMonth() {
+  currentMonthIndex--;
+  if (currentMonthIndex < 0) {
+    currentMonthIndex = 11;
+    currentYear--;
+  }
+  updateModalContent();
+}
+
+function nextMonth() {
+  currentMonthIndex++;
+  if (currentMonthIndex > 11) {
+    currentMonthIndex = 0;
+    currentYear++;
+  }
+  updateModalContent();
+}
+
+function updateAttendanceData() {
+  currentCourse = courseSelect.value;
+  updateModalContent();
+}
+
+// Function for the new Download button
+function downloadAttendance() {
+  alert('Downloading attendance data for ' + currentMonthYear.textContent + ' for ' + courseSelect.options[courseSelect.selectedIndex].text + '. In a real application, this would download a file.');
+}
+</script>
+</body>
+</html>
