@@ -46,6 +46,21 @@ a{color:inherit;text-decoration:none}
   top:0;
   bottom:0;
 }
+.nav-container {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.nav-container::-webkit-scrollbar {
+    width: 6px;
+}
+.nav-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.nav-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+}
 .nav a{
   display:flex;
   gap:12px;
@@ -281,26 +296,28 @@ a{color:inherit;text-decoration:none}
     <div style="padding:16px;display:flex;justify-content:center;">
       <img src="isoft.jpg" alt="ISoft Logo" style="max-height:56px;object-fit:contain">
     </div>
-    <nav class="nav" aria-label="Main navigation">
-      <div class="group-title">Main</div>
-      <a href="StudentDashboard.html">🏠 Dashboard</a>
-      <a href="StudentMyCourses.html">📚 My Courses</a>
-      <a href="StudentAssessmentDashboard.html">📝 Assessments</a>
-      <a href="StudentTimetable.html">📅 Timetable</a>
+    <div class="nav-container">
+      <nav class="nav" aria-label="Main navigation">
+        <div class="group-title">Main</div>
+        <a href="StudentDashboard.html">🏠 Dashboard</a>
+        <a href="StudentMyCourses.html">📚 My Courses</a>
+        <a href="StudentAssessmentDashboard.html">📝 Assessments</a>
+        <a href="StudentTimetable.html">📅 Timetable</a>
 
-      <div class="group-title">Admin</div>
-        <a href="StudentFeesPayments.html">💳 Fees & Payments</a>
-        <a href="StudentDocuments.html">📂 Documents</a>
-        <a href="#">💬 Messages</a>
+        <div class="group-title">Admin</div>
+          <a href="StudentFeesPayments.html">💳 Fees & Payments</a>
+          <a href="StudentDocuments.html">📂 Documents</a>
+          <a href="#">💬 Messages</a>
 
-      <div class="group-title">CRICOS</div>
-        <a href="#">🛂 COE & Visa</a>
-        <a href="StudentAttendance.html" style="background:#60a5fa;color:#fff">☑️ Attendance</a>
+        <div class="group-title">CRICOS</div>
+          <a href="#">🛂 COE & Visa</a>
+          <a href="StudentAttendance.html" style="background:#60a5fa;color:#fff"><span class="material-icons">fact_check</span> Attendance</a>
 
-      <div class="group-title">Support</div>
-        <a href="#">🤖 Ask AI</a>
-        <a href="#">📞 Contact Trainer</a>
-    </nav>
+        <div class="group-title">Support</div>
+          <a href="#">🤖 Ask AI</a>
+          <a href="#">📞 Contact Trainer</a>
+      </nav>
+    </div>
   </aside>
 
   <div class="main">
@@ -614,5 +631,4 @@ function downloadAttendance() {
 }
 </script>
 </body>
-
 </html>
