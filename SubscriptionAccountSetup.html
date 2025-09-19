@@ -6,310 +6,309 @@
 <title>Account Setup — EdTech</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --primary-color: #2563eb;
-    --secondary-color: #0d9488;
-    --background-color: #f5f7fb;
-    --card-bg-color: #fff;
-    --text-color: #333;
-    --subtle-text-color: #6b7280;
-    --border-color: #d1d5db;
-    --accent-bg-gradient: linear-gradient(135deg, #2563eb, #0d9488);
-  }
-  body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    background: var(--background-color);
-    color: var(--text-color);
-  }
+  :root {
+    --primary-color: #2563eb;
+    --secondary-color: #0d9488;
+    --background-color: #f5f7fb;
+    --card-bg-color: #fff;
+    --text-color: #333;
+    --subtle-text-color: #6b7280;
+    --border-color: #d1d5db;
+    --accent-bg-gradient: linear-gradient(135deg, #2563eb, #0d9488);
+  }
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--background-color);
+    color: var(--text-color);
+  }
 
-  /* Header for the flow */
-  .flow-header {
-    text-align: center;
-    padding: 24px 20px;
-    background: var(--card-bg-color);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  }
-  .flow-header h1 {
-    margin: 0;
-    font-size: 24px;
-    color: var(--text-color);
-    margin-bottom: 12px;
-  }
-  .flow-steps {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    font-size: 13px;
-    color: var(--subtle-text-color);
-  }
-  .flow-steps span.active {
-    color: var(--primary-color);
-    font-weight: 600;
-  }
+  /* Header for the flow */
+  .flow-header {
+    text-align: center;
+    padding: 24px 20px;
+    background: var(--card-bg-color);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  .flow-header h1 {
+    margin: 0;
+    font-size: 24px;
+    color: var(--text-color);
+    margin-bottom: 12px;
+  }
+  .flow-steps {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--subtle-text-color);
+  }
+  .flow-steps span.active {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
 
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    min-height: calc(100vh - 100px);
-    padding: 30px 20px;
-  }
-  .summary-card {
-    width: 400px;
-    background: var(--accent-bg-gradient);
-    border-radius: 12px;
-    color: #fff;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  }
-  .summary-header {
-    margin-bottom: 20px;
-  }
-  .summary-header .back-link {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: rgba(255,255,255,0.8);
-    text-decoration: none;
-    font-size: 13px;
-    margin-bottom: 15px;
-  }
-  .summary-header .back-link svg {
-    width: 14px;
-    height: 14px;
-  }
-  .summary-header h2 {
-    font-size: 28px;
-    margin: 0 0 4px;
-    font-weight: 600;
-  }
-  .summary-header p {
-    font-size: 13px;
-    color: rgba(255,255,255,0.8);
-    margin: 0;
-  }
-  .plan-details {
-    background: rgba(255,255,255,0.1);
-    border-radius: 8px;
-    padding: 15px;
-  }
-  .plan-details h3 {
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0 0 4px;
-  }
-  .plan-details p {
-    font-size: 13px;
-    margin: 0;
-    color: rgba(255,255,255,0.8);
-  }
-  .promo-code {
-    margin-top: 15px;
-  }
-  .promo-code button {
-    background: none;
-    border: 1px solid rgba(255,255,255,0.4);
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .promo-code button:hover {
-    background: rgba(255,255,255,0.1);
-  }
-  .pricing-breakdown {
-    margin-top: 24px;
-  }
-  .pricing-item {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    padding: 4px 0;
-  }
-  .pricing-item.total {
-    font-size: 16px;
-    font-weight: 600;
-    padding-top: 12px;
-    border-top: 1px solid rgba(255,255,255,0.3);
-  }
-  .form-card {
-    flex: 1;
-    max-width: 600px;
-    background: var(--card-bg-color);
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    padding: 30px;
-    margin-left: -20px;
-    position: relative;
-    z-index: 1;
-  }
-  .form-card h2 {
-    font-size: 20px;
-    margin: 0 0 20px;
-  }
-  .form-section h3 {
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0 0 16px;
-  }
-  .form-group {
-    margin-bottom: 16px;
-  }
-  .form-group label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 6px;
-    font-size: 14px;
-  }
-  .form-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 14px;
-    box-sizing: border-box;
-  }
-  .form-row {
-    display: flex;
-    gap: 16px;
-  }
-  .form-row .form-group {
-    flex: 1;
-  }
-  .btn-primary {
-    padding: 12px;
-    background: var(--primary-color);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-    width: auto;
-  }
-  .btn-primary:hover {
-    background: #1d4ed8;
-  }
-  .btn-secondary {
-    padding: 12px;
-    background: var(--background-color);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-    width: auto;
-  }
-  .actions {
-    margin-top: 24px;
-    display: flex;
-    justify-content: space-between;
-  }
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    min-height: calc(100vh - 100px);
+    padding: 30px 20px;
+  }
+  .summary-card {
+    width: 400px;
+    background: var(--accent-bg-gradient);
+    border-radius: 12px;
+    color: #fff;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  .summary-header {
+    margin-bottom: 20px;
+  }
+  .summary-header .back-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+  .summary-header .back-link svg {
+    width: 14px;
+    height: 14px;
+  }
+  .summary-header h2 {
+    font-size: 28px;
+    margin: 0 0 4px;
+    font-weight: 600;
+  }
+  .summary-header p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    margin: 0;
+  }
+  .plan-details {
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 15px;
+  }
+  .plan-details h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 4px;
+  }
+  .plan-details p {
+    font-size: 13px;
+    margin: 0;
+    color: rgba(255,255,255,0.8);
+  }
+  .promo-code {
+    margin-top: 15px;
+  }
+  .promo-code button {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .promo-code button:hover {
+    background: rgba(255,255,255,0.1);
+  }
+  .pricing-breakdown {
+    margin-top: 24px;
+  }
+  .pricing-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 4px 0;
+  }
+  .pricing-item.total {
+    font-size: 16px;
+    font-weight: 600;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.3);
+  }
+  .form-card {
+    flex: 1;
+    max-width: 600px;
+    background: var(--card-bg-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin-left: -20px;
+    position: relative;
+    z-index: 1;
+  }
+  .form-card h2 {
+    font-size: 20px;
+    margin: 0 0 20px;
+  }
+  .form-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 16px;
+  }
+  .form-group {
+    margin-bottom: 16px;
+  }
+  .form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  .form-row {
+    display: flex;
+    gap: 16px;
+  }
+  .form-row .form-group {
+    flex: 1;
+  }
+  .btn-primary {
+    padding: 12px;
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: auto;
+  }
+  .btn-primary:hover {
+    background: #1d4ed8;
+  }
+  .btn-secondary {
+    padding: 12px;
+    background: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: auto;
+  }
+  .actions {
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+  }
 </style>
 </head>
 <body>
 
 <div class="flow-header">
-  <h1>EdTech</h1>
-  <div class="flow-steps">
-    <span>1. Choose Plan</span> &nbsp;→&nbsp;
-    <span class="active">2. Account Setup</span> &nbsp;→&nbsp;
-    <span>3. Billing</span> &nbsp;→&nbsp;
-    <span>4. Payment</span> &nbsp;→&nbsp;
-    <span>5. Confirmation</span>
-  </div>
+  <h1>EdTech</h1>
+  <div class="flow-steps">
+    <span>1. Choose Plan</span> &nbsp;→&nbsp;
+    <span class="active">2. Account Setup</span> &nbsp;→&nbsp;
+    <span>3. Billing</span> &nbsp;→&nbsp;
+    <span>4. Payment</span> &nbsp;→&nbsp;
+    <span>5. Confirmation</span>
+  </div>
 </div>
 
 <div class="container">
-  <div class="summary-card">
-    <div class="summary-content">
-      <div class="summary-header">
-        <a href="#" class="back-link">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 5-7 7 7 7"/></svg>
-          Account Setup
-        </a>
-        <h2>Welcome!</h2>
-        <p>You're one step closer to getting started with EdTech.</p>
-      </div>
-      <div class="plan-details">
-        <h3>Selected Plan: Pro</h3>
-        <p>Up to 1000 students. Advanced analytics included! Great for medium sized RTOs.</p>
-      </div>
-      <div class="pricing-breakdown">
-        <div class="pricing-item"><span>Base Price</span> <span>$499/mo</span></div>
-        <div class="pricing-item"><span>Extra Trainers (5)</span> <span>$50</span></div>
-        <div class="pricing-item"><span>Extra Finance Officer (1)</span> <span>$20</span></div>
-        <div class="pricing-item total"><span>Total:</span><span>$569/mo</span></div>
-      </div>
-    </div>
-  </div>
+  <div class="summary-card">
+    <div class="summary-content">
+      <div class="summary-header">
+        <a href="#" class="back-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 5-7 7 7 7"/></svg>
+          Account Setup
+        </a>
+        <h2>Welcome!</h2>
+        <p>You're one step closer to getting started with EdTech.</p>
+      </div>
+      <div class="plan-details">
+        <h3>Selected Plan: Pro</h3>
+        <p>Up to 1000 students. Advanced analytics included! Great for medium sized RTOs.</p>
+      </div>
+      <div class="pricing-breakdown">
+        <div class="pricing-item"><span>Base Price</span> <span>$499/mo</span></div>
+        <div class="pricing-item"><span>Extra Trainers (5)</span> <span>$50</span></div>
+        <div class="pricing-item"><span>Extra Finance Officer (1)</span> <span>$20</span></div>
+        <div class="pricing-item total"><span>Total:</span><span>$569/mo</span></div>
+      </div>
+    </div>
+  </div>
 
-  <div class="form-card">
-    <h2>Set up your institute account</h2>
-    <form onsubmit="handleNext(event)">
-      <div class="form-group">
-        <label for="instituteName">Institute Name</label>
-        <input type="text" id="instituteName" required>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="contactName">Primary Contact Name</label>
-          <input type="text" id="contactName" required>
-        </div>
-        <div class="form-group">
-          <label for="designation">Designation</label>
-          <input type="text" id="designation" required>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" required>
-        </div>
-        <div class="form-group">
-          <label for="phone">Phone</label>
-          <input type="tel" id="phone" required>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="abn">ABN</label>
-          <input type="text" id="abn">
-        </div>
-        <div class="form-group">
-          <label for="cricos">CRICOS Provider #</label>
-          <input type="text" id="cricos">
-        </div>
-      </div>
-      <div class="actions">
-        <button type="button" class="btn-secondary" onclick="alert('Going back to plan selection')">Back</button>
-        <button type="submit" class="btn-primary">Proceed to Billing Details</button>
-      </div>
-    </form>
-  </div>
+  <div class="form-card">
+    <h2>Set up your institute account</h2>
+    <form onsubmit="handleNext(event)">
+      <div class="form-group">
+        <label for="instituteName">Institute Name</label>
+        <input type="text" id="instituteName" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="contactName">Primary Contact Name</label>
+          <input type="text" id="contactName" required>
+        </div>
+        <div class="form-group">
+          <label for="designation">Designation</label>
+          <input type="text" id="designation" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="abn">ABN</label>
+          <input type="text" id="abn">
+        </div>
+        <div class="form-group">
+          <label for="cricos">CRICOS Provider #</label>
+          <input type="text" id="cricos">
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn-secondary" onclick="alert('Going back to plan selection')">Back</button>
+        <button type="submit" class="btn-primary">Proceed to Billing Details</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <script>
-  function handleNext(e) {
-    e.preventDefault();
-    // Remove the alert and redirect to the next page
-    window.location.href = 'SubscriptionBilling.html';
-  }
-  
-  // Remove the problematic click event listener
-  // document.querySelector('.btn-primary').addEventListener('click', function() {
-  //   window.location.href = 'SubscriptionBilling.html';
-  // });
+  function handleNext(e) {
+    e.preventDefault();
+    alert('Account setup saved! Redirecting to billing page...');
+  }
+  
+  document.querySelector('.btn-primary').addEventListener('click', function() {
+    // Optional: Add validation here
+    window.location.href = 'SubscriptionBilling.html';
+});
 </script>
 
 </body>
