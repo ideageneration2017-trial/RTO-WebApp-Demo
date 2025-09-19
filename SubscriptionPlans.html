@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>EdTech — Plans & Role-aware Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f7fafc; --card:#ffffff; --accent:#2563eb; --muted:#64748b; --success:#10b981;
+    --shadow: 0 8px 30px rgba(16,24,40,0.06);
+  }
+  body{font-family:'Inter',system-ui,Arial; margin:0; background:var(--bg); color:#0f172a; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px; margin:36px auto; padding:28px;}
+
+  /* NEW: Header for the flow */
+  .flow-header {
+    text-align: center;
+    padding: 30px 20px;
+    background: var(--card);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  .flow-header h1 {
+    margin: 0;
+    font-size: 26px;
+    color: #0f172a;
+    margin-bottom: 15px;
+  }
+  .flow-steps {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .flow-steps span.active {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  
+  header{display:flex; align-items:flex-start; gap:18px; justify-content:space-between; margin-bottom:20px}
+  header h1{font-size:26px; margin:0}
+  header p{margin:6px 0 0; color:var(--muted); font-size:14px}
+  /* PLANS grid: equal height cards */
+  .plans{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; grid-auto-rows:1fr; margin-bottom:20px}
+  .plan{background:var(--card); border-radius:12px; padding:20px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:12px; border:1px solid transparent}
+  .plan.selected{border-color:rgba(37,99,235,0.12); box-shadow:0 12px 40px rgba(37,99,235,0.06)}
+  .plan .head{display:flex; justify-content:space-between; align-items:center}
+  .plan .name{font-weight:700; font-size:18px}
+  .badge{background:linear-gradient(90deg,#2563eb,#7c3aed); color:#fff; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:600}
+  .price{font-size:22px; color:var(--accent); font-weight:700}
+  .features{color:var(--muted); margin:0; padding:0; list-style:none; display:block}
+  .features li{padding:6px 0; border-bottom:1px dashed #eef2ff; font-size:14px}
+  .plan-footer{margin-top:auto; display:flex; gap:10px; align-items:center}
+  .select-btn{flex:1; background:var(--accent); color:#fff; border:none; padding:10px 12px; border-radius:8px; cursor:pointer; font-weight:700}
+  .details-btn{background:transparent; color:var(--muted); border:1px solid #e6edf8; padding:9px 12px; border-radius:8px; cursor:pointer}
+  /* Comparison table */
+  .table-wrap{background:var(--card); padding:18px; border-radius:12px; box-shadow:var(--shadow); margin-bottom:20px}
+  table{width:100%; border-collapse:collapse; font-size:14px}
+  th,td{padding:12px; text-align:center; border-bottom:1px solid #eef2ff}
+  th:first-child, td:first-child{text-align:left; font-weight:600}
+  th{background:#fbfdff; color:#0f172a; font-weight:600}
+  .tick{color:var(--success); font-weight:800}
+  .dash{color:var(--muted)}
+  /* Calculator card */
+  .calculator{display:grid; grid-template-columns:1fr 420px; gap:18px}
+  @media (max-width:960px){ .calculator{grid-template-columns:1fr} }
+  .calc-left{background:var(--card); padding:18px; border-radius:12px; box-shadow:var(--shadow)}
+  .calc-right{background:linear-gradient(180deg,#ffffff,#f7fbff); padding:18px; border-radius:12px; box-shadow:var(--shadow)}
+  .calc-row{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:10px}
+  .calc-row .field{display:flex; flex-direction:column; gap:6px}
+  label{font-size:13px; color:var(--muted)}
+  input[type=number]{padding:8px 10px; border-radius:8px; border:1px solid #e6eef9; font-size:15px}
+  .quota-grid{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+  .quota-item{background:#eef2ff; padding:8px 10px; border-radius:8px; font-size:13px; color:#0369a1}
+  .results{margin-top:12px; display:flex; gap:12px; flex-direction:column}
+  .result-block{background:#fff; padding:12px; border-radius:10px; border:1px solid #eef6ff}
+  .result-row{display:flex; justify-content:space-between; gap:12px; font-size:14px; padding:6px 0}
+  .summary{font-size:16px; font-weight:700; color:#0f172a}
+  .em{color:var(--muted); font-size:13px}
+  .green{color:var(--success); font-weight:700}
+  /* Checkout modal */
+  .modal{display:none; position:fixed; inset:0; background:rgba(2,6,23,0.5); align-items:center; justify-content:center; z-index:1000}
+  .modal-card{background:var(--card); padding:20px; border-radius:12px; max-width:480px; width:92%; box-shadow:var(--shadow)}
+  .modal-card h3{margin:0 0 8px}
+  .muted{color:var(--muted); font-size:13px}
+  .small{font-size:13px; color:var(--muted)}
+  .hint{font-size:13px; color:#334155; margin-top:8px}
+  /* small decorative */
+  .sep{height:1px;background:#eef2ff;margin:12px 0;border-radius:2px}
+  .plan-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.plan-wrapper .badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff9800;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+</style>
+</head>
+<body>
+
+  <div class="flow-header">
+    <h1>EdTech</h1>
+    <div class="flow-steps">
+      <span class="active">1. Choose Plan</span> &nbsp;→&nbsp;
+      <span>2. Account Setup</span> &nbsp;→&nbsp;
+      <span>3. Billing</span> &nbsp;→&nbsp;
+      <span>4. Payment</span> &nbsp;→&nbsp;
+      <span>5. Confirmation</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>EdTech — Subscription plans</h1>
+        <p>Pick a plan, then use the role-aware calculator to model extra charges (trainers +5, finance +1, etc.) — see whether paying extras or upgrading is cheaper.</p>
+      </div>
+      <div style="text-align:right">
+        <div style="font-weight:700">Need help choosing?</div>
+        <div class="muted">Book a demo • 14-day trial • Annual discount available</div>
+      </div>
+    </header>
+
+    <section class="plans" id="plansGrid">
+      <div class="plan" data-plan="starter" id="card-starter">
+        <div class="head">
+          <div class="name">Starter</div>
+          <div class="price">$199/mo</div>
+        </div>
+        <ul class="features">
+          <li>1 Admin</li>
+          <li>2 Supervisors</li>
+          <li>10 Trainers</li>
+          <li>2 Finance Officers</li>
+          <li>5 Admissions Staff</li>
+          <li><strong>200 Students</strong></li>
+        </ul>
+        <div class="plan-footer">
+          <button class="select-btn" data-plan="starter">Select Plan</button>
+          <button class="details-btn" onclick="alert('Starter: Small RTOs. Includes basic compliance exports and community support.')">Details</button>
+        </div>
+      </div>
+
+     <div class="plan-wrapper">
+  <div class="badge">Most Popular</div>
+  <div class="plan selected" data-plan="pro" id="card-pro">
+    <div class="head">
+      <div class="name">Pro</div>
+      <div class="price">$499/mo</div>
+    </div>
+    <ul class="features">
+      <li>2 Admins</li>
+      <li>5 Supervisors</li>
+      <li>30 Trainers</li>
+      <li>5 Finance Officers</li>
+      <li>15 Admissions Staff</li>
+      <li><strong>1,000 Students</strong></li>
+    </ul>
+    <div class="plan-footer">
+      <button class="select-btn" data-plan="pro">Select Plan</button>
+      <button class="details-btn" onclick="alert('Pro: Automated CRICOS checks, advanced reporting, AI assistant, priority support.')">Details</button>
+    </div>
+  </div>
+</div>
+
+
+      <div class="plan" data-plan="enterprise" id="card-enterprise">
+        <div class="head">
+          <div class="name">Enterprise</div>
+          <div class="price">$999/mo</div>
+        </div>
+        <ul class="features">
+          <li>5 Admins</li>
+          <li>10 Supervisors</li>
+          <li>100 Trainers</li>
+          <li>10 Finance Officers</li>
+          <li>50 Admissions Staff</li>
+          <li><strong>5,000 Students</strong></li>
+        </ul>
+        <div class="plan-footer">
+          <button class="select-btn" data-plan="enterprise">Select Plan</button>
+          <button class="details-btn" onclick="alert('Enterprise: Custom integrations, dedicated CSM, advanced SLAs and audit packaging.')">Details</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="table-wrap">
+      <h3 style="margin-top:0">Feature comparison</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Starter</th>
+            <th>Pro</th>
+            <th>Enterprise</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Max students</td><td>200</td><td>1,000</td><td>Unlimited</td></tr>
+          <tr><td>Compliance tools</td><td>Basic exports</td><td>Automated CRICOS checks</td><td>Enterprise audit bundles</td></tr>
+          <tr><td>Reporting</td><td>Basic</td><td>Advanced analytics</td><td>Custom reporting</td></tr>
+          <tr><td>Audit-ready evidence bundles</td><td class="dash">—</td><td class="tick">Partial</td><td class="tick">Full</td></tr>
+          <tr><td>SSO & API</td><td class="dash">—</td><td class="tick">Limited</td><td class="tick">Full</td></tr>
+          <tr><td>Student chatbot (AI)</td><td class="dash">—</td><td class="tick">Included</td><td class="tick">Advanced</td></tr>
+          <tr><td>Monthly AI credits included</td><td>200</td><td>800</td><td>2000</td></tr>
+          <tr><td>Priority support</td><td class="dash">Email</td><td class="tick">Phone & Email</td><td class="tick">Dedicated CSM</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="calculator" id="calculator">
+      <div class="calc-left">
+        <h3 style="margin-top:0">Role-aware extra-cost calculator</h3>
+        <p class="small">Select your current plan, then enter how many team members / students will be <strong>above</strong> that plan's included quota (e.g. Trainers +5). This simulates the extra monthly charge vs upgrading.</p>
+
+        <div style="margin-top:12px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <div class="small"><strong>Selected plan:</strong> <span id="selectedPlanLabel">Pro</span></div>
+          <div class="small sep" style="width:6px"></div>
+          <div class="small">Base prices shown monthly</div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="calc-row">
+          <div class="field"><label>Admins above included</label><input id="extraAdmins" type="number" min="0" value="0" /></div>
+          <div class="field"><label>Supervisors above included</label><input id="extraSupervisors" type="number" min="0" value="0" /></div>
+        </div>
+        <div class="calc-row">
+          <div class="field"><label>Trainers above included</label><input id="extraTrainers" type="number" min="0" value="0" /></div>
+          <div class="field"><label>Finance officers above included</label><input id="extraFinance" type="number" min="0" value="0" /></div>
+        </div>
+        <div class="calc-row">
+          <div class="field"><label>Admissions / Support staff above included</label><input id="extraStaff" type="number" min="0" value="0" /></div>
+          <div class="field"><label>Students above included</label><input id="extraStudents" type="number" min="0" value="0" /></div>
+        </div>
+
+        <div style="margin-top:8px">
+          <div class="small">Per-unit extra pricing</div>
+          <div class="quota-grid" style="margin-top:8px">
+            <div class="quota-item">Admin: $50/unit</div>
+            <div class="quota-item">Supervisor: $30/unit</div>
+            <div class="quota-item">Trainer: $20/unit</div>
+            <div class="quota-item">Finance: $25/unit</div>
+            <div class="quota-item">Staff: $10/unit</div>
+            <div class="quota-item">Student: $2/unit</div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px; display:flex; gap:8px">
+          <button id="calcReset" class="details-btn" style="padding:10px 12px">Reset extras</button>
+          <button id="checkoutBtn" class="select-btn" style="width:auto" >Proceed to Checkout</button>
+        </div>
+      </div>
+
+      <div class="calc-right">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div class="small">Included quotas (selected plan)</div>
+            <div id="quotaList" style="margin-top:8px"></div>
+          </div>
+          <div style="text-align:right">
+            <div class="small">Current plan base</div>
+            <div id="basePrice" style="font-weight:700; font-size:20px">$499 /mo</div>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="results">
+          <div class="result-block">
+            <div class="small">Current plan — estimated monthly</div>
+            <div class="result-row"><div>Base</div><div id="curBase">$0</div></div>
+            <div class="result-row"><div>Extra charges</div><div id="curExtra">$0</div></div>
+            <div class="result-row summary"><div>Total (current)</div><div id="curTotal">$0</div></div>
+            <div class="hint" id="breakdownCur"></div>
+          </div>
+
+          <div class="result-block" id="upgradeBlock">
+            <div class="small">If you upgrade to next plan</div>
+            <div class="result-row"><div>Next plan base</div><div id="nextBase">$0</div></div>
+            <div class="result-row"><div>Extra charges after upgrade</div><div id="nextExtra">$0</div></div>
+            <div class="result-row summary"><div>Total (upgrade)</div><div id="nextTotal">$0</div></div>
+            <div id="upgradeAdvice" class="hint"></div>
+          </div>
+
+          <div class="result-block" id="enterpriseBlock" style="display:none">
+            <div class="small">Enterprise / Contact Sales</div>
+            <div class="hint">For very large volumes, Enterprise pricing and custom integrations may be cheaper. Contact sales for a tailored quote.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="modal" id="modal">
+      <div class="modal-card">
+        <h3 id="modalTitle">Mock Checkout</h3>
+        <div id="modalBody" class="muted">Summary will appear here.</div>
+        <div style="margin-top:12px; display:flex; gap:8px; justify-content:flex-end">
+          <button onclick="closeModal()" class="details-btn">Close</button>
+          <button onclick="confirmMock()" class="select-btn">Confirm (Mock)</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+/* ----- Plan definitions (hardcoded sample quotas & prices) ----- */
+const quotas = {
+  starter: { price: 199, admins:1, supervisors:2, trainers:10, finance:2, staff:5, students:200 },
+  pro:     { price: 499, admins:2, supervisors:5, trainers:30, finance:5, staff:15, students:1000 },
+  enterprise:{ price: 999, admins:5, supervisors:10, trainers:100, finance:10, staff:50, students:5000 }
+};
+const extras = { admins:50, supervisors:30, trainers:20, finance:25, staff:10, students:2 };
+const planOrder = ['starter','pro','enterprise'];
+
+/* ----- state ----- */
+let selectedPlan = 'pro'; // default selection
+/* ----- helpers ----- */
+const $ = id => document.getElementById(id);
+function money(v){ return '$' + Number(v).toLocaleString(undefined,{maximumFractionDigits:0}) + ('' + v).includes('.') ? '' : ''; }
+function setText(id, txt){ const el = $(id); if(el) el.textContent = txt; }
+
+/* ----- UI wiring: plan select buttons ----- */
+document.querySelectorAll('.select-btn[data-plan]').forEach(btn=>{
+  btn.addEventListener('click', (e)=>{
+    const p = btn.getAttribute('data-plan');
+    selectPlan(p);
+    // scroll to calculator
+    document.getElementById('calculator').scrollIntoView({behavior:'smooth', block:'center'});
+  });
+});
+
+/* make cards clickable too */
+document.querySelectorAll('.plan').forEach(card=>{
+  card.addEventListener('click', (ev)=>{
+    // ignore clicks on detail / button
+    if(ev.target.closest('.details-btn') || ev.target.closest('.select-btn')) return;
+    const p = card.getAttribute('data-plan');
+    selectPlan(p);
+  });
+});
+
+function selectPlan(planKey){
+  selectedPlan = planKey;
+  document.querySelectorAll('.plan').forEach(c=>c.classList.remove('selected'));
+  const card = document.querySelector(`.plan[data-plan="${planKey}"]`);
+  if(card) card.classList.add('selected');
+  // update label and base price
+  $('selectedPlanLabel').textContent = capitalize(planKey);
+  $('basePrice').textContent = `$${quotas[planKey].price}/mo`;
+  // populate included quotas list
+  renderQuotas(planKey);
+  // recalc
+  updateCosts();
+}
+
+function renderQuotas(planKey){
+  const q = quotas[planKey];
+  const container = $('quotaList');
+  container.innerHTML = '';
+  const keys = ['admins','supervisors','trainers','finance','staff','students'];
+  keys.forEach(k=>{
+    const item = document.createElement('div');
+    item.className='quota-item';
+    let label = k === 'students' ? 'Students' : capitalize(k);
+    item.textContent = `${label}: ${q[k]}`;
+    container.appendChild(item);
+  });
+}
+
+/* ----- calculator inputs ----- */
+const inputs = ['Admins','Supervisors','Trainers','Finance','Staff','Students'];
+inputs.forEach(name=>{
+  const id = 'extra' + name;
+  const el = $(id);
+  if(el){
+    el.addEventListener('input', updateCosts);
+    el.addEventListener('change', ()=>{ if(el.value < 0) el.value = 0; updateCosts(); });
+  }
+});
+$('calcReset').addEventListener('click', ()=>{
+  inputs.forEach(name => { const el = $('extra'+name); if(el) el.value = 0; });
+  updateCosts();
+});
+$('checkoutBtn').addEventListener('click', ()=> openModalForCheckout());
+
+/* ----- calculations & rendering ----- */
+function updateCosts(){
+  // gather extras as numbers (these are units ABOVE included quotas)
+  const extra = {
+    admins: Math.max(0, Number($('extraAdmins').value) || 0),
+    supervisors: Math.max(0, Number($('extraSupervisors').value) || 0),
+    trainers: Math.max(0, Number($('extraTrainers').value) || 0),
+    finance: Math.max(0, Number($('extraFinance').value) || 0),
+    staff: Math.max(0, Number($('extraStaff').value) || 0),
+    students: Math.max(0, Number($('extraStudents').value) || 0)
+  };
+
+  // Current plan totals
+  const curQuota = quotas[selectedPlan];
+  const curBase = curQuota.price;
+  let curExtraCost = 0;
+  const breakdownLines = [];
+  for(const k in extra){
+    if(extra[k] > 0){
+      const c = extra[k] * extras[k];
+      curExtraCost += c;
+      breakdownLines.push(`${capitalize(k)} +${extra[k]} → ${formatMoney(c)}`);
+    }
+  }
+  const curTotal = curBase + curExtraCost;
+  setText('curBase', `$${curBase}`);
+  setText('curExtra', `$${curExtraCost}`);
+  setText('curTotal', `$${curTotal}`);
+  $('breakdownCur').textContent = breakdownLines.length ? breakdownLines.join(' • ') : 'No extra units — no added charge.';
+
+  // Next plan evaluation
+  const idx = planOrder.indexOf(selectedPlan);
+  const nextIdx = idx + 1;
+  if(nextIdx >= planOrder.length){
+    // Enterprise or last plan -> show contact sales suggestion
+    $('upgradeBlock').style.display = 'none';
+    $('enterpriseBlock').style.display = 'block';
+  } else {
+    $('enterpriseBlock').style.display = 'none';
+    $('upgradeBlock').style.display = 'block';
+    const nextPlan = planOrder[nextIdx];
+    const nextQuota = quotas[nextPlan];
+    const nextBase = nextQuota.price;
+
+    // compute present totals (included + extras)
+    const presentTotals = {};
+    for(const k in extra) presentTotals[k] = curQuota[k] + extra[k];
+
+    // extras required after upgrade = max(0, presentTotals - nextQuota)
+    const extrasAfter = {};
+    let nextExtraCost = 0;
+    const afterLines = [];
+    for(const k in extra){
+      extrasAfter[k] = Math.max(0, presentTotals[k] - nextQuota[k]);
+      if(extrasAfter[k] > 0){
+        const c = extrasAfter[k] * extras[k];
+        nextExtraCost += c;
+        afterLines.push(`${capitalize(k)} +${extrasAfter[k]} → ${formatMoney(c)}`);
+      }
+    }
+    const nextTotal = nextBase + nextExtraCost;
+    setText('nextBase', `$${nextBase}`);
+    setText('nextExtra', `$${nextExtraCost}`);
+    setText('nextTotal', `$${nextTotal}`);
+
+    // advice: cheaper or not?
+    const diff = nextTotal - curTotal; // positive => upgrade costs more
+    const adviceEl = $('upgradeAdvice');
+    if(diff < 0){
+      adviceEl.innerHTML = `<span class="green">Upgrade saves ${formatMoney(Math.abs(diff))} /mo</span> — because next plan includes more quota and reduces extra charges. <div class="small" style="margin-top:6px">${afterLines.length ? afterLines.join(' • ') : 'No extra units after upgrade.'}</div>`;
+    } else if (diff === 0){
+      adviceEl.innerHTML = `<span class="small">Costs about the same as paying extras each month.</span>`;
+    } else {
+      adviceEl.innerHTML = `<span class="small">Staying on current plan is cheaper by ${formatMoney(diff)} /mo than upgrading to ${capitalize(planOrder[nextIdx])}.</span><div class="small" style="margin-top:6px">${afterLines.length ? afterLines.join(' • ') : 'No extra units after upgrade.'}</div>`;
+    }
+  }
+}
+
+/* ----- modal / checkout (mock) ----- */
+function openModalForCheckout(){
+  const curTotal = $('curTotal').textContent;
+  const base = $('curBase').textContent;
+  const extrasTxt = $('curExtra').textContent;
+  $('modalTitle').textContent = `Checkout — ${capitalize(selectedPlan)} plan`;
+  $('modalBody').innerHTML = `<div><strong>Monthly estimate:</strong> ${curTotal}</div><div class="muted" style="margin-top:8px">Base: ${base} • Extras: ${extrasTxt}</div><div class="hint">This is a mock checkout. We can wire Stripe/PayPal in next step.</div>`;
+  $('modal').style.display = 'flex';
+}
+function closeModal(){ $('modal').style.display = 'none'; }
+function confirmMock(){ alert('Mock purchase confirmed. In reality this will call your payments backend.'); closeModal(); }
+
+/* ----- utilities ----- */
+function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1) }
+function formatMoney(v){ return '$' + Number(v).toLocaleString(); }
+
+/* ----- init ----- */
+selectPlan(selectedPlan);
+updateCosts();
+
+document.getElementById("checkoutBtn").addEventListener("click", function() {
+    window.location.href = "SubscriptionAccountSetup.html";
+});
+</script>
+</body>
+</html>
