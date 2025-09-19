@@ -485,7 +485,11 @@ function openModalForCheckout(){
   $('modal').style.display = 'flex';
 }
 function closeModal(){ $('modal').style.display = 'none'; }
-function confirmMock(){ alert('Mock purchase confirmed. In reality this will call your payments backend.'); closeModal(); }
+function confirmMock(){
+    // Redirect to SubscriptionPayment.html
+    window.location.href = 'SubscriptionPayment.html';
+    // Close the modal if needed
+    closeModal();
 
 /* ----- utilities ----- */
 function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1) }
@@ -500,4 +504,5 @@ document.getElementById("checkoutBtn").addEventListener("click", function() {
 });
 </script>
 </body>
+
 </html>
