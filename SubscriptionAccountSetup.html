@@ -301,14 +301,10 @@
 
 <script>
   function handleNext(e) {
-    e.preventDefault();
-    alert('Account setup saved! Redirecting to billing page...');
-  }
-  
-  document.querySelector('.btn-primary').addEventListener('click', function() {
-    // Optional: Add validation here
+    e.preventDefault(); // This is good practice to prevent the default form submission.
     window.location.href = 'SubscriptionBilling.html';
-});
+  }
+  ;
 </script>
 
 </body>
