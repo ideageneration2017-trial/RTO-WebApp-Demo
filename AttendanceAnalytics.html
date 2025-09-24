@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Attendance Analytics — Trainer Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+:root {
+  --sidebar-bg:#eaf6fb;
+  --accent:#e53935;
+  --brand-1:#0f766e;
+  --card-bg:#fff;
+  --muted:#6b7280;
+  --success:#22c55e;
+  --warning:#f59e0b;
+  --danger:#ef4444;
+  --shadow:0 6px 20px rgba(18,38,63,0.08);
+  --radius:12px;
+  --max-width:1200px;
+}
+html,body{height:100%;margin:0;}
+body{font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica Neue,Arial; background:#f7fafc;color:#111827;line-height:1.3;}
+a{color:inherit;text-decoration:none;}
+.app{display:flex;min-height:100vh;gap:24px;}
+.sidebar{width:260px;background:var(--sidebar-bg);padding:20px 18px;border-right:1px solid rgba(15,23,42,0.03); display:flex;flex-direction:column;gap:16px;}
+.nav{display:flex;flex-direction:column;gap:6px;margin-top:6px;overflow:auto;}
+.nav a{display:flex;gap:12px;align-items:center;padding:10px 10px;border-radius:8px;font-size:14px;color:#0f1724;}
+.nav a:hover{background: rgba(15,23,42,0.03);}
+.group-title{color:var(--muted);font-size:12px;padding:10px 6px 2px;font-weight:600;text-transform:uppercase;}
+
+.main{flex:1;display:flex;flex-direction:column;padding:28px;max-width:calc(var(--max-width)-40px);margin:0 auto;width:100%;}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:20px;}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.hamburger{display:none;}
+.profile-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #fff;box-shadow:0 4px 12px rgba(2,6,23,0.08);}
+.profile-container{position:relative;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;}
+.profile-dropdown-menu{position:absolute;right:0;top:100%;margin-top:12px;width:260px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 10px 30px rgba(2,6,23,0.12);z-index:50;padding-bottom:8px;display:none;}
+.profile-dropdown-menu.shown{display:block;}
+.dropdown-arrow{color:#9ca3af;transition: transform .18s ease;}
+
+.page-header{padding-bottom:14px;}
+.page-header h1{margin:0;font-size:20px;font-weight:700;}
+.page-header p{margin:6px 0 0;color:var(--muted);font-size:13px;}
+
+/* analytics layout */
+.analytics-grid{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start;}
+.card{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;}
+.kpi-row{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+.kpi{flex:1;min-width:140px;background:#fff;border-radius:10px;padding:12px;box-shadow:0 6px 16px rgba(2,6,23,0.06);display:flex;align-items:center;justify-content:space-between;}
+.kpi .label{color:var(--muted);font-size:12px;}
+.kpi .value{font-weight:700;font-size:20px;}
+.filters{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+.filters select,.filters input{padding:8px 10px;border-radius:8px;border:1px solid #e2e8f0;}
+
+.chart-holder{height:280px;}
+.heatmap{margin-top:12px;}
+
+.session-table{width:100%;border-collapse:collapse;margin-top:12px;}
+.session-table th,.session-table td{text-align:left;padding:10px 8px;border-bottom:1px solid #eef2f7;font-size:14px;}
+.session-table th{color:var(--muted);font-weight:600;font-size:12px;}
+.badge{padding:6px 10px;border-radius:999px;font-weight:600;font-size:12px;}
+.badge.good{background:#ecfdf5;color:var(--success);}
+.badge.warn{background:#fffbeb;color:var(--warning);}
+.badge.bad{background:#fff1f2;color:var(--danger);}
+
+/* right column */
+.right-col{display:flex;flex-direction:column;gap:12px;}
+.small-card{padding:12px;border-radius:10px;background:#fff;box-shadow:0 6px 12px rgba(2,6,23,0.04);}
+.risk-list{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow:auto;}
+.risk-item{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;background:#fff;box-shadow:0 6px 12px rgba(2,6,23,0.04);}
+.risk-item img{width:36px;height:36px;border-radius:50%;}
+.actions{display:flex;gap:8px;}
+.btn{border:1px solid transparent;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;}
+.btn.ghost{background:none;border:1px solid #e2e8f0;color:#334155;}
+.btn.primary{background:#007bff;color:#fff;}
+
+/* drawer */
+.drawer{position:fixed;right:0;top:0;height:100vh;width:420px;transform:translateX(110%);transition:transform .28s cubic-bezier(.2,.9,.3,1);box-shadow:-20px 0 40px rgba(2,6,23,0.12);z-index:120;background:#fff;display:flex;flex-direction:column;}
+.drawer.open{transform:translateX(0);}
+.drawer .drawer-header{padding:16px;border-bottom:1px solid #eef2f7;display:flex;align-items:center;justify-content:space-between;}
+.drawer .drawer-body{padding:16px;overflow:auto;flex:1;}
+.student-row{display:flex;align-items:center;gap:12px;padding:10px;border-radius:8px;background:#fff;margin-bottom:8px;border:1px solid #f1f5f9;}
+
+  /* footer */
+ .footer { margin-top:auto; padding-top:18px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+
+/* nav submenu indent */
+.nav-link-group{display:flex;flex-direction:column;}
+.nav-link-group a{justify-content:space-between;}
+.nav-link-group ul{list-style-type:none;padding:0;margin:0;display:none;}
+.nav-link-group ul.open{padding-left:24px;display:block;}
+.nav-link-group ul li a{padding-left:36px;}
+
+/* responsive */
+@media (max-width:1000px){.analytics-grid{grid-template-columns:1fr;}.drawer{width:100%;}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div style="padding:16px;display:flex;justify-content:center;align-items:center;height:80px;overflow:hidden;">
+      <img src="isoft.jpg" alt="ISoft Logo" style="max-height:56px;width:auto;object-fit:contain;">
+    </div>
+    <nav class="nav" aria-label="Main navigation">
+      <div class="group-title">Main</div>
+      <a href="TrainerDashboard.html"><span class="material-icons">dashboard</span>Dashboard</a>
+      <a href="TrainerMyClasses.html"><span class="material-icons">calendar_month</span>My Classes</a>
+      <a href="#"><span class="material-icons">groups</span>My Students</a>
+      <a href="#"><span class="material-icons">assignment</span>Assessments</a>
+
+      <div class="nav-link-group">
+        <a href="#" id="attendance-toggle">
+          <span style="display:flex; align-items:center; gap:12px;">
+            <span class="material-icons">event_available</span>Attendance
+          </span>
+          <span class="material-icons expand-icon">expand_more</span>
+        </a>
+        <ul id="attendance-submenu" class="open submenu">
+          <li><a href="TrainerMarkAttendance.html">Mark Attendance</a></li>
+          <li><a href="TrainerViewAttendance.html" class="active">View Attendance</a></li>
+          
+        </ul>
+      </div>
+      <div class="group-title">Admin</div>
+      <a href="#"><span class="material-icons">folder</span>Documents & Evidence</a>
+      <a href="#"><span class="material-icons">bar_chart</span>Reports & Analytics</a>
+      <a href="#"><span class="material-icons">mail</span>Messages</a>
+      <div class="group-title">Compliance</div>
+      <a href="#"><span class="material-icons">info</span>CRICOS & Visa Alerts</a>
+      <div class="group-title">Support</div>
+      <a href="#"><span class="material-icons">smart_toy</span>Ask AI</a>
+      <a href="#"><span class="material-icons">support_agent</span>Contact Admin</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="toggleSidebar()"><span class="material-icons">menu</span></button>
+      </div>
+      <div class="user">
+        <div class="profile-container" id="profile-root">
+          <div id="profile-menu-button" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+            <img src="owner.jpg" alt="avatar" class="profile-avatar">
+            <div style="font-weight:600;color:#0f1724;">William Smith</div>
+            <span id="dropdown-arrow" class="material-icons">expand_more</span>
+          </div>
+          <div id="profile-dropdown-menu" class="profile-dropdown-menu" aria-hidden="true">
+            <div style="padding:16px;border-bottom:1px solid #e5e7eb;">
+              <div style="font-weight:bold;color:#1f2937;">Hi, William</div>
+              <div style="font-size:14px;color:#6b7280;">william.smith@isoftanz.com.au</div>
+            </div>
+            <ul style="list-style:none;margin:0;padding:0;">
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;"><span class="material-icons" style="margin-right:8px;">person</span>Edit Profile</a></li>
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;"><span class="material-icons" style="margin-right:8px;">settings</span>Account settings</a></li>
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;"><span class="material-icons" style="margin-right:8px;">help_outline</span>Support</a></li>
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;border-top:1px solid #e5e7eb;margin-top:4px;"><span class="material-icons" style="margin-right:8px;">logout</span>Sign out</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-header">
+      <h1>Attendance Analytics</h1>
+      <p>High-level attendance insights, risk predictions and quick session actions.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:18px;">
+      <div class="filters">
+        <select id="rangeSelect">
+          <option value="7">Last 7 days</option>
+          <option value="28" selected>Last 28 days</option>
+          <option value="90">Last 90 days</option>
+        </select>
+        <select id="courseSelect">
+          <option value="all">All courses</option>
+          <option value="BSB40120">BSB40120 Certificate IV in Business</option>
+          <option value="SIT30616">SIT30616 Certificate III in Hospitality</option>
+        </select>
+        <select id="trainerSelect">
+          <option value="all">All trainers</option>
+          <option value="wsmith">William Smith</option>
+          <option value="ajones">Ava Jones</option>
+        </select>
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+          <button class="btn ghost" onclick="exportCSV()">Export CSV</button>
+          <button class="btn primary" onclick="openEvidencePack()">Create evidence pack</button>
+        </div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi">
+          <div>
+            <div class="label">Today present %</div>
+            <div class="value" id="kpiPresent">84%</div>
+          </div>
+          <div style="text-align:right;color:var(--muted);font-size:12px;">▲ 3%</div>
+        </div>
+        <div class="kpi">
+          <div>
+            <div class="label">Chronic absent</div>
+            <div class="value" id="kpiChronic">6</div>
+          </div>
+          <div style="text-align:right;color:var(--muted);font-size:12px;">Last 28d</div>
+        </div>
+        <div class="kpi">
+          <div>
+            <div class="label">At-risk (pred)</div>
+            <div class="value" id="kpiRisk">4</div>
+          </div>
+          <div style="text-align:right;color:var(--muted);font-size:12px;">AI</div>
+        </div>
+        <div class="kpi">
+          <div>
+            <div class="label">Compliance flags</div>
+            <div class="value" id="kpiFlags">2</div>
+          </div>
+          <div style="text-align:right;color:var(--muted);font-size:12px;">CRICOS</div>
+        </div>
+      </div>
+
+      <div class="analytics-grid">
+        <div>
+          <div class="card" style="margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <div style="font-weight:700;">Attendance Trends</div>
+              <div style="color:var(--muted);font-size:13px;">Present / Late / Absent</div>
+            </div>
+            <div class="chart-holder">
+              <canvas id="trendChart" style="width:100%;height:100%;"></canvas>
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <div style="font-weight:700;">Sessions (click to open)</div>
+              <div style="color:var(--muted);font-size:13px;">Sorted by date</div>
+            </div>
+            <table class="session-table">
+              <thead>
+                <tr><th>Session</th><th>Attendance</th><th>Present</th><th>Flag</th><th></th></tr>
+              </thead>
+              <tbody id="sessionTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <aside class="right-col">
+
+          <!-- Attendance Heatmap -->
+          <div class="card small-card">
+            <div style="font-weight:700;margin-bottom:8px;">Attendance Heatmap</div>
+            <div class="heatmap">
+              <svg width="320" height="120" viewBox="0 0 320 120">
+                <g font-size="11" fill="#374151">
+                  <text x="6" y="18">BSB40120</text>
+                  <text x="6" y="48">SIT30616</text>
+                  <text x="6" y="78">CHC30113</text>
+                </g>
+                <rect x="80" y="4" width="28" height="28" rx="6" fill="#d1fae5"></rect>
+                <rect x="112" y="4" width="28" height="28" rx="6" fill="#fef3c7"></rect>
+                <rect x="144" y="4" width="28" height="28" rx="6" fill="#fee2e2"></rect>
+                <rect x="80" y="34" width="28" height="28" rx="6" fill="#bbf7d0"></rect>
+                <rect x="112" y="34" width="28" height="28" rx="6" fill="#fde68a"></rect>
+                <rect x="144" y="34" width="28" height="28" rx="6" fill="#fecaca"></rect>
+                <rect x="80" y="64" width="28" height="28" rx="6" fill="#ecfccb"></rect>
+                <rect x="112" y="64" width="28" height="28" rx="6" fill="#fff7ed"></rect>
+                <rect x="144" y="64" width="28" height="28" rx="6" fill="#fee2e2"></rect>
+              </svg>
+            </div>
+          </div>
+
+          <!-- At-Risk Students -->
+          <div class="card small-card">
+          <div style="font-weight:700;margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+  <input type="checkbox" id="selectAllRisk" title="Select All">
+ 
+  <span>At-risk students</span>
+</div>
+
+
+
+            <div id="riskList" class="risk-list"></div>
+            <div class="actions" style="margin-top:8px;">
+              <button class="btn ghost" onclick="bulkMessage()">Message selected</button>
+              <button class="btn primary" onclick="escalate()">Escalate</button>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="card small-card">
+            <div style="font-weight:700;margin-bottom:8px;">Quick Actions</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <button class="btn ghost" onclick="openAttendanceMark()">Open Mark Attendance</button>
+              <button class="btn ghost" onclick="openAttendanceView()">Open Attendance View</button>
+              <button class="btn primary" onclick="openEvidencePack()">Create Evidence Pack</button>
+            </div>
+          </div>
+
+        </aside>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="quick-links">
+        <a class="small text-muted" href="#">Help center</a>
+        <a class="small text-muted" href="#">Policies</a>
+        <a class="small text-muted" href="#">Contact support</a>
+      </div>
+      <div class="small text-muted">2025 iSOFT Trainer portal</div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Drawer -->
+<div id="sessionDrawer" class="drawer" aria-hidden="true">
+  <div class="drawer-header">
+    <div>
+      <div id="drawerSessionTitle" style="font-weight:700;">Session details</div>
+      <div id="drawerSessionMeta" style="font-size:13px;color:var(--muted);">Course · Trainer · Date</div>
+    </div>
+    <div>
+      <button class="btn ghost" onclick="closeDrawer()">Close</button>
+    </div>
+  </div>
+  <div class="drawer-body">
+    <div style="margin-bottom:12px;display:flex;gap:8px;align-items:center;">
+      <button class="btn primary" onclick="messageAbsentees()">Message absentees</button>
+      <button class="btn ghost" onclick="createCase()">Create case</button>
+    </div>
+    <div id="drawerStudentList"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const profileMenuButton = document.getElementById('profile-menu-button');
+const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+const dropdownArrow = document.getElementById('dropdown-arrow');
+if(profileMenuButton){
+  profileMenuButton.addEventListener('click', function(e){
+    e.stopPropagation();
+    profileDropdownMenu.classList.toggle('shown');
+    profileDropdownMenu.setAttribute('aria-hidden', !profileDropdownMenu.classList.contains('shown'));
+    dropdownArrow.style.transform = profileDropdownMenu.classList.contains('shown') ? 'rotate(180deg)' : 'rotate(0deg)';
+  });
+  window.addEventListener('click', function(event){
+    if(!profileMenuButton.contains(event.target) && !profileDropdownMenu.contains(event.target)){
+      profileDropdownMenu.classList.remove('shown');
+      profileDropdownMenu.setAttribute('aria-hidden',"true");
+      dropdownArrow.style.transform='rotate(0deg)';
+    }
+  });
+}
+
+// Attendance sub-menu
+const attendanceToggle = document.getElementById('attendance-toggle');
+const attendanceSubmenu = document.getElementById('attendance-submenu');
+const expandIcon = attendanceToggle.querySelector('.expand-icon');
+if(attendanceToggle){
+  attendanceToggle.addEventListener('click', (e)=>{
+    e.preventDefault();
+    attendanceSubmenu.classList.toggle('open');
+    expandIcon.classList.toggle('rotated');
+  });
+}
+
+// Dummy sessions
+const sessions=[
+  { id:1, title:'BSB40120 — 15 Oct 2025, 9:00 AM', course:'BSB40120', trainer:'William Smith', date:'2025-10-15', present:22, total:26, flag: false },
+  { id:2, title:'SIT30616 — 15 Oct 2025, 1:00 PM', course:'SIT30616', trainer:'Ava Jones', date:'2025-10-15', present:12, total:18, flag: true },
+  { id:3, title:'CHC30113 — 16 Oct 2025, 10:30 AM', course:'CHC30113', trainer:'William Smith', date:'2025-10-16', present:9, total:12, flag:false },
+  { id:4, title:'BSB40120 — 17 Oct 2025, 9:00 AM', course:'BSB40120', trainer:'Ava Jones', date:'2025-10-17', present:18, total:26, flag:false }
+];
+
+const studentsBySession={
+  1:[
+    {id:101,name:'Alice Johnson',photo:'https://i.pravatar.cc/150?u=a1',status:'present'},
+    {id:102,name:'Bob Williams',photo:'https://i.pravatar.cc/150?u=b1',status:'absent'},
+    {id:103,name:'Charlie Brown',photo:'https://i.pravatar.cc/150?u=c1',status:'present'},
+    {id:104,name:'Diana Prince',photo:'https://i.pravatar.cc/150?u=d1',status:'late'}
+  ],
+  2:[
+    {id:201,name:'Eva Green',photo:'https://i.pravatar.cc/150?u=e1',status:'absent'},
+    {id:202,name:'Frank White',photo:'https://i.pravatar.cc/150?u=f1',status:'absent'}
+  ],
+  3:[
+    {id:301,name:'Grace Taylor',photo:'https://i.pravatar.cc/150?u=g1',status:'present'},
+    {id:302,name:'Harry Potter',photo:'https://i.pravatar.cc/150?u=h1',status:'present'}
+  ],
+  4:[
+    {id:401,name:'Ivy Adams',photo:'https://i.pravatar.cc/150?u=i1',status:'present'},
+    {id:402,name:'Jack Black',photo:'https://i.pravatar.cc/150?u=j1',status:'late'}
+  ]
+};
+
+// Render session table
+function renderSessionTable(){
+  const tbody=document.getElementById('sessionTableBody');
+  tbody.innerHTML='';
+  sessions.forEach(s=>{
+    const tr=document.createElement('tr');
+    const attendancePct=Math.round((s.present/s.total)*100);
+    tr.innerHTML=`
+      <td>${s.title}</td>
+      <td><div class="badge ${attendancePct>=85?'good':attendancePct<75?'bad':'warn'}">${attendancePct}%</div></td>
+      <td>${s.present}/${s.total}</td>
+      <td>${s.flag?'<span style="color:var(--danger);font-weight:700;">CRICOS</span>':''}</td>
+      <td style="text-align:right;"><button class="btn ghost" onclick="openDrawer(${s.id})">Open</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// Render risk list
+const riskStudents=[
+  {id:101,name:'Alice Johnson',photo:'https://i.pravatar.cc/150?u=a1'},
+  {id:102,name:'Bob Williams',photo:'https://i.pravatar.cc/150?u=b1'},
+  {id:103,name:'Charlie Brown',photo:'https://i.pravatar.cc/150?u=c1'},
+  {id:104,name:'Diana Prince',photo:'https://i.pravatar.cc/150?u=d1'}
+];
+
+function renderRiskList(){
+  const container=document.getElementById('riskList');
+  container.innerHTML='';
+  riskStudents.forEach(s=>{
+    const div=document.createElement('div');
+    div.className='risk-item';
+    div.innerHTML=`
+      <input type="checkbox" class="risk-checkbox" data-id="${s.id}">
+      <img src="${s.photo}" alt="${s.name}">
+      <div><div style="font-weight:700;">${s.name}</div></div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// Select All checkbox
+document.getElementById('selectAllRisk').addEventListener('change', function(){
+  document.querySelectorAll('.risk-checkbox').forEach(cb=>{
+    cb.checked=this.checked;
+  });
+});
+
+function getSelectedRiskStudents(){
+  const selected=[];
+  document.querySelectorAll('.risk-checkbox:checked').forEach(cb=>{
+    const studentName=cb.nextElementSibling.nextElementSibling.querySelector('div').innerText;
+    selected.push({id:cb.dataset.id,name:studentName});
+  });
+  return selected;
+}
+
+function bulkMessage(){
+  const selected=getSelectedRiskStudents();
+  if(selected.length===0){alert("Select at least one student.");return;}
+  alert(`Message sent to: ${selected.map(s=>s.name).join(', ')}`);
+}
+
+function escalate(){
+  const selected=getSelectedRiskStudents();
+  if(selected.length===0){alert("Select at least one student.");return;}
+  alert(`Escalated for: ${selected.map(s=>s.name).join(', ')}`);
+}
+
+// Drawer functions
+const drawer=document.getElementById('sessionDrawer');
+function openDrawer(id){
+  const s=sessions.find(x=>x.id===id);
+  document.getElementById('drawerSessionTitle').innerText=s.title;
+  document.getElementById('drawerSessionMeta').innerText=s.course+' · '+s.trainer+' · '+s.date;
+  const list=document.getElementById('drawerStudentList');
+  list.innerHTML='';
+  (studentsBySession[id]||[]).forEach(st=>{
+    const r=document.createElement('div');
+    r.className='student-row';
+    r.innerHTML=`<img src="${st.photo}" alt="${st.name}"><div style="flex:1;"><div style="font-weight:700;">${st.name}</div><div style="font-size:13px;color:var(--muted);">Status: ${st.status}</div></div>
+    <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+      <button class="btn ghost" onclick="markPresent(${id},${st.id})">Present</button>
+      <button class="btn ghost" onclick="markAbsent(${id},${st.id})">Absent</button>
+    </div>`;
+    list.appendChild(r);
+  });
+  drawer.classList.add('open');
+  drawer.setAttribute('aria-hidden','false');
+}
+function closeDrawer(){drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true');}
+
+function markPresent(sessionId,studentId){alert('Marked present: '+studentId);}
+function markAbsent(sessionId,studentId){alert('Marked absent: '+studentId);}
+function messageAbsentees(){alert('Message sent to absentees (dummy)');}
+function createCase(){alert('Case created (dummy)');}
+function exportCSV(){alert('Export CSV (dummy)');}
+function openAttendanceMark(){window.location.href='AttendanceMark.html';}
+function openAttendanceView(){window.location.href='AttendanceView.html';}
+function openEvidencePack(){alert('Evidence pack created (dummy)');}
+
+// Initialize
+renderSessionTable();
+renderRiskList();
+
+// Chart.js trend chart
+const ctx=document.getElementById('trendChart').getContext('2d');
+new Chart(ctx,{
+  type:'line',
+  data:{
+    labels:['2025-09-20','2025-09-21','2025-09-22','2025-09-23','2025-09-24','2025-09-25','2025-09-26'],
+    datasets:[
+      {label:'Present %', data:[85,84,83,86,82,80,84], tension:0.3, fill:false, borderWidth:2, borderColor:'#22c55e'},
+      {label:'Late %', data:[5,6,7,4,6,7,5], tension:0.3, fill:false, borderWidth:2, borderColor:'#f59e0b'},
+      {label:'Absent %', data:[10,10,10,10,12,13,11], tension:0.3, fill:false, borderWidth:2, borderColor:'#ef4444'}
+    ]
+  },
+  options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'top'}}, scales:{y:{beginAtZero:true, max:100}}}
+});
+</script>
+</body>
+</html>

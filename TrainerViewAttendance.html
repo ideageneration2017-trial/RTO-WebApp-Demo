@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>View Attendance - Trainer Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    :root {
+      --sidebar-bg: #eaf6fb;
+      --accent: #e53935;
+      --brand-1: #0f766e;
+      --card-bg: #fff;
+      --muted: #6b7280;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --shadow: 0 6px 20px rgba(18, 38, 63, 0.08);
+      --radius: 12px;
+      --max-width: 1200px;
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial;
+      background: #f7fafc;
+      color: #111827;
+      line-height: 1.3;
+    }
+    a { color: inherit; text-decoration: none; }
+    .app {
+      display: flex;
+      min-height: 100vh;
+      gap: 24px;
+    }
+    .sidebar {
+      width: 260px;
+      background: var(--sidebar-bg);
+      padding: 20px 18px;
+      border-right: 1px solid rgba(15,23,42,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 6px;
+      overflow: auto;
+    }
+    .nav a {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 10px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #0f1724;
+    }
+    .nav a:hover {
+      background: rgba(15,23,42,0.03);
+    }
+    .nav .group-title {
+      color: var(--muted);
+      font-size: 12px;
+      padding: 10px 6px 2px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .main {
+      flex: 1;
+      padding: 28px;
+      max-width: calc(var(--max-width) - 40px);
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .main-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hamburger { display: none; }
+    .profile-avatar {
+      width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+      border: 2px solid #fff;
+      box-shadow: 0 4px 12px rgba(2, 6, 23, 0.08);
+    }
+    .profile-container { position: relative; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+    .profile-dropdown-menu {
+      position: absolute;
+      right: 0; top: 100%; margin-top: 12px; width: 260px;
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.12); z-index: 50;
+      padding-bottom: 8px;
+      display: none;
+    }
+    .profile-dropdown-menu.shown { display: block;}
+    .dropdown-arrow { color: #9ca3af; transition: transform .18s ease; }
+    .page-header { padding-bottom: 14px; }
+    .page-header h1 { margin: 0; font-size: 20px; font-weight: 700; }
+    .page-header p { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #1e293b;
+    }
+    .filters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .filter-group label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #334155;
+    }
+    select, input, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-family: 'Inter', sans-serif;
+        background-color: #f9fafb;
+    }
+    .btn {
+      border: 1px solid transparent;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+    .btn.primary {
+      background: #2196F3;
+      color: #fff;
+    }
+    .btn.primary:hover {
+      background: #1976D2;
+    }
+    .btn.ghost {
+      background: none;
+      border-color: #e2e8f0;
+      color: #334155;
+    }
+    .btn.ghost:hover {
+      background: #e2e8f0;
+    }
+    .table-container {
+      overflow-x: auto;
+    }
+    .attendance-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .attendance-table th, .attendance-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .attendance-table th {
+      background-color: #f1f5f9;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 12px;
+    }
+    .status-badge.present { background: #dcfce7; color: #15803d; }
+    .status-badge.late { background: #fefce8; color: #a16207; }
+    .status-badge.absent { background: #fee2e2; color: #b91c1c; }
+    .status-badge.excused { background: #e2e8f0; color: #4b5563; }
+    .footer {
+      margin-top: auto;
+      padding-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    /* New styles for the collapsible menu */
+    .nav-link-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .nav-link-group a {
+      justify-content: space-between;
+    }
+    .nav-link-group a:hover {
+      background: rgba(15,23,42,0.03);
+    }
+    .nav-link-group a.active {
+      background-color:#60a5fa;
+      color:#fff;
+    }
+    .nav-link-group ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: none; /* Initially hidden */
+    }
+    .nav-link-group ul.open {
+	padding-left: 24px;
+      display: block;
+    }
+    .nav-link-group ul li a {
+      padding-left: 36px; /* Indent sub-menu items */
+    }
+    .nav-link-group .expand-icon {
+      transition: transform 0.2s ease-in-out;
+    }
+    .nav-link-group .expand-icon.rotated {
+      transform: rotate(180deg);
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div style="padding:16px;display:flex;justify-content:center;align-items:center;height:80px;overflow:hidden;">
+      <img src="isoft.jpg" alt="ISoft Logo" style="max-height: 56px; width:auto; object-fit:contain;">
+    </div>
+    <nav class="nav" aria-label="Main navigation">
+      <div class="group-title">Main</div>
+      <a href="TrainerDashboard.html"><span class="material-icons">dashboard</span>Dashboard</a>
+      <a href="TrainerMyClasses.html"><span class="material-icons">calendar_month</span>My Classes</a>
+      <a href="#"><span class="material-icons">groups</span>My Students</a>
+      <a href="#"><span class="material-icons">assignment</span>Assessments</a>
+      
+      <div class="nav-link-group">
+		<a href="#" id="attendance-toggle">
+			<span style="display:flex; align-items:center; gap:12px;">
+			<span class="material-icons">event_available</span>
+			  Attendance
+			</span>
+			<span class="material-icons expand-icon">expand_more</span>
+		 </a>
+		 <ul id="attendance-submenu" class="open submenu">
+			<li><a href="TrainerMarkAttendance.html">Mark Attendance</a></li>
+			<li><a href="TrainerViewAttendance.html" class="active">View Attendance</a></li>
+			
+		  </ul>
+		</div>
+
+      <div class="group-title">Admin</div>
+      <a href="#"><span class="material-icons">folder</span>Documents & Evidence</a>
+      <a href="#"><span class="material-icons">bar_chart</span>Reports & Analytics</a>
+      <a href="#"><span class="material-icons">mail</span>Messages</a>
+      <div class="group-title">Compliance</div>
+      <a href="#"><span class="material-icons">info</span>CRICOS & Visa Alerts</a>
+      <div class="group-title">Support</div>
+      <a href="#"><span class="material-icons">smart_toy</span>Ask AI</a>
+      <a href="#"><span class="material-icons">support_agent</span>Contact Admin</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="toggleSidebar()">
+          <span class="material-icons">menu</span>
+        </button>
+      </div>
+      <div class="user">
+        <div class="profile-container" id="profile-root">
+          <div id="profile-menu-button" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+            <img src="owner.jpg" alt="avatar" class="profile-avatar">
+            <div style="font-weight:600;color:#0f1724;">William Smith</div>
+            <span id="dropdown-arrow" class="material-icons">expand_more</span>
+          </div>
+          <div id="profile-dropdown-menu" class="profile-dropdown-menu" aria-hidden="true">
+            <div style="padding:16px;border-bottom:1px solid #e5e7eb;">
+              <div style="font-weight:bold;color:#1f2937;">Hi, William</div>
+              <div style="font-size:14px;color:#6b7280;">william.smith@isoftanz.com.au</div>
+            </div>
+            <ul style="list-style:none;margin:0;padding:0;">
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;"><span class="material-icons" style="margin-right:8px;">person</span>Edit Profile</a></li>
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;"><span class="material-icons" style="margin-right:8px;">settings</span>Account settings</a></li>
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;"><span class="material-icons" style="margin-right:8px;">help_outline</span>Support</a></li>
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;border-top:1px solid #e5e7eb;margin-top:4px;"><span class="material-icons" style="margin-right:8px;">logout</span>Sign out</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;">
+  <div>
+    <h1>View Attendance</h1>
+    <p>Filter and view attendance records for your courses and students.</p>
+  </div>
+  <button class="btn primary" onclick="window.location.href='AttendanceAnalytics.html'">Advanced Analytics</button>
+</div>
+
+    <div class="main-content">
+      <div class="card">
+        <div class="card-title">Attendance Filters</div>
+        <div class="filters-grid">
+          <div class="filter-group">
+            <label for="courseFilter">Course</label>
+            <select id="courseFilter">
+              <option value="all">All Courses</option>
+              <option value="BSB40120">BSB40120 Certificate IV in Business</option>
+              <option value="SIT30616">SIT30616 Certificate III in Hospitality</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="unitFilter">Unit</label>
+            <select id="unitFilter">
+              <option value="all">All Units</option>
+              <option value="BSBTEC101">BSBTEC101 - Work with business technology</option>
+              <option value="SITHIND002">SITHIND002 - Use hygienic practices for food safety</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="studentFilter">Student</label>
+            <select id="studentFilter">
+              <option value="all">All Students</option>
+              <option value="101">Alice Johnson</option>
+              <option value="102">Bob Williams</option>
+              <option value="201">Eva Green</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="timePeriodFilter">Time Period</label>
+            <select id="timePeriodFilter">
+              <option value="last_week">Last 7 Days</option>
+              <option value="last_month">Last 30 Days</option>
+              <option value="last_90">Last 90 Days</option>
+              <option value="all_time">All Time</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn primary" onclick="applyFilters()">Apply Filters</button>
+      </div>
+
+      <div class="card" id="attendanceResultsCard" style="display:none;">
+        <div class="card-title">Attendance Records</div>
+        <div class="table-container">
+          <table class="attendance-table">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Unit</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="attendanceTableBody">
+              </tbody>
+          </table>
+        </div>
+        <div id="noRecordsMessage" style="text-align:center; padding:20px; color:var(--muted); display:none;">No records found for the selected filters.</div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <div class="quick-links">
+        <a class="small text-muted" href="#">Help center</a>
+        <a class="small text-muted" href="#">Policies</a>
+        <a class="small text-muted" href="#">Contact support</a>
+      </div>
+      <div class="small text-muted">2025 iSOFT Trainer portal</div>
+    </div>
+  </main>
+</div>
+<script>
+  // Profile dropdown logic
+  const profileMenuButton = document.getElementById('profile-menu-button');
+  const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+  const dropdownArrow = document.getElementById('dropdown-arrow');
+  if(profileMenuButton) {
+    profileMenuButton.addEventListener('click', function(e) {
+      e.stopPropagation();
+      profileDropdownMenu.classList.toggle('shown');
+      profileDropdownMenu.setAttribute('aria-hidden', !profileDropdownMenu.classList.contains('shown'));
+      dropdownArrow.style.transform = profileDropdownMenu.classList.contains('shown') ? 'rotate(180deg)' : 'rotate(0deg)';
+    });
+    window.addEventListener('click', function(event) {
+      if (!profileMenuButton.contains(event.target) && !profileDropdownMenu.contains(event.target)) {
+        profileDropdownMenu.classList.remove('shown');
+        profileDropdownMenu.setAttribute('aria-hidden', "true");
+        dropdownArrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  }
+
+  // Attendance Sub-menu Logic
+  const attendanceToggle = document.getElementById('attendance-toggle');
+  const attendanceSubmenu = document.getElementById('attendance-submenu');
+  const expandIcon = attendanceToggle.querySelector('.expand-icon');
+
+  if (attendanceToggle) {
+    attendanceToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      attendanceSubmenu.classList.toggle('open');
+      expandIcon.classList.toggle('rotated');
+    });
+  }
+  
+  // Dummy data for attendance records
+  const attendanceRecords = [
+    { student: 'Alice Johnson', course: 'BSB40120 Certificate IV in Business', unit: 'BSBTEC101', date: '2025-09-18', status: 'present' },
+    { student: 'Bob Williams', course: 'BSB40120 Certificate IV in Business', unit: 'BSBTEC101', date: '2025-09-18', status: 'present' },
+    { student: 'Eva Green', course: 'SIT30616 Certificate III in Hospitality', unit: 'SITHIND002', date: '2025-09-18', status: 'late' },
+    { student: 'Alice Johnson', course: 'BSB40120 Certificate IV in Business', unit: 'BSBTEC101', date: '2025-09-25', status: 'absent' },
+    { student: 'Bob Williams', course: 'BSB40120 Certificate IV in Business', unit: 'BSBTEC101', date: '2025-09-25', status: 'excused' },
+    { student: 'Eva Green', course: 'SIT30616 Certificate III in Hospitality', unit: 'SITHIND002', date: '2025-09-25', status: 'present' },
+  ];
+
+  function applyFilters() {
+    const courseFilter = document.getElementById('courseFilter').value;
+    const unitFilter = document.getElementById('unitFilter').value;
+    const studentFilter = document.getElementById('studentFilter').value;
+    const timePeriodFilter = document.getElementById('timePeriodFilter').value;
+    
+    const now = new Date();
+    let startDate;
+    switch(timePeriodFilter) {
+      case 'last_week':
+        startDate = new Date(now.setDate(now.getDate() - 7));
+        break;
+      case 'last_month':
+        startDate = new Date(now.setDate(now.getDate() - 30));
+        break;
+      case 'last_90':
+        startDate = new Date(now.setDate(now.getDate() - 90));
+        break;
+      case 'all_time':
+      default:
+        startDate = new Date('2000-01-01');
+    }
+
+    const filteredRecords = attendanceRecords.filter(record => {
+      const recordDate = new Date(record.date);
+      const courseMatch = courseFilter === 'all' || record.course.includes(courseFilter);
+      const unitMatch = unitFilter === 'all' || record.unit.includes(unitFilter);
+      const studentMatch = studentFilter === 'all' || record.student.includes(studentFilter);
+      const timeMatch = recordDate >= startDate;
+
+      return courseMatch && unitMatch && studentMatch && timeMatch;
+    });
+
+    renderAttendanceTable(filteredRecords);
+  }
+
+  function renderAttendanceTable(records) {
+    const tableBody = document.getElementById('attendanceTableBody');
+    const resultsCard = document.getElementById('attendanceResultsCard');
+    const noRecordsMessage = document.getElementById('noRecordsMessage');
+
+    tableBody.innerHTML = '';
+    
+    if (records.length === 0) {
+      noRecordsMessage.style.display = 'block';
+      resultsCard.style.display = 'block';
+    } else {
+      noRecordsMessage.style.display = 'none';
+      resultsCard.style.display = 'block';
+      records.forEach(record => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${record.student}</td>
+          <td>${record.course}</td>
+          <td>${record.unit}</td>
+          <td>${new Date(record.date).toLocaleDateString('en-AU')}</td>
+          <td><span class="status-badge ${record.status}">${record.status.charAt(0).toUpperCase() + record.status.slice(1)}</span></td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+  }
+</script>
+
+</body>
+</html>

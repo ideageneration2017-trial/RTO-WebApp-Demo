@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Trainer Dashboard</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+    /* Theme variables (same as student) */
+    :root{
+      --sidebar-bg: #eaf6fb;
+      --accent: #e53935;
+      --brand-1: #0f766e;
+      --card-bg: #ffffff;
+      --muted: #6b7280;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --shadow: 0 6px 20px rgba(18,38,63,0.08);
+      --radius: 12px;
+      --max-width: 1200px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background:#f7fafc;
+      color:#111827;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.3;
+    }
+    a{color:inherit;text-decoration:none}
+
+    .app{display:flex;min-height:100vh;gap:24px}
+
+    /* Sidebar */
+    .sidebar{
+      width:260px;
+      background:var(--sidebar-bg);
+      padding:20px 18px;
+      border-right:1px solid rgba(15,23,42,0.03);
+      display:flex;flex-direction:column;gap:16px;
+    }
+    .nav{display:flex;flex-direction:column;gap:6px;margin-top:6px;overflow:auto}
+    .nav a{display:flex;gap:12px;align-items:center;padding:10px 10px;border-radius:8px;font-size:14px;color:#0f1724}
+    .nav a:hover{background:rgba(15,23,42,0.03)}
+    .nav .group-title{color:var(--muted);font-size:12px;padding:10px 6px 2px;font-weight:600;text-transform:uppercase}
+
+    /* Main */
+    .main{flex:1;padding:28px;max-width:calc(var(--max-width) - 40px);margin:0 auto;width:100%}
+
+    /* Topbar */
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:20px}
+    .topbar-left{display:flex;align-items:center;gap:12px}
+    .hamburger{display:none;width:38px;height:38px;background:white;border-radius:10px;box-shadow:var(--shadow);align-items:center;justify-content:center;cursor:pointer}
+
+    .user{display:flex;gap:12px;align-items:center}
+    .avatar{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid white;box-shadow:var(--shadow)}
+    .avatar img{width:100%;height:100%;object-fit:cover}
+
+    /* Tiles */
+    .hero-row{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:18px}
+    .tile{background:var(--card-bg);padding:18px;border-radius:var(--radius);box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center;min-height:86px}
+    .tile .label{font-size:13px;color:var(--muted)}
+    .tile .value{font-size:24px;font-weight:700;color:#0f1724;margin-top:6px}
+
+    /* Grid layout */
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+    .card{background:var(--card-bg);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:18px}
+    .card h3{margin:0 0 10px;font-size:16px}
+    .muted{color:var(--muted);font-size:13px}
+    .unit-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+    .unit{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:rgba(15,23,42,0.02)}
+
+    .msg-list{display:flex;flex-direction:column;gap:8px}
+    .msg{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:rgba(15,23,42,0.02)}
+    .small{font-size:13px}
+    .text-muted{color:var(--muted)}
+    
+    /* New styles for dropdown */
+    .profile-avatar{
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      object-fit:cover;
+      border:2px solid white; 
+      box-shadow:0 4px 12px rgba(2,6,23,0.08);
+    }
+    .profile-container{
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      user-select:none;
+    }
+    #profile-dropdown-menu{
+      position:absolute;
+      right:0;
+      top:100%;
+      margin-top:12px;
+      width:260px;
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:8px;
+      box-shadow:0 10px 30px rgba(2,6,23,0.12);
+      z-index:50;
+      padding-bottom:8px;
+    }
+    #profile-dropdown-menu.hidden{
+      display:none;
+    }
+    #dropdown-arrow{
+      color:#9ca3af;
+      transition:transform .18s ease;
+    }
+
+    /* Responsive */
+    @media(max-width:1100px){.grid{grid-template-columns:1fr 320px}.hero-row{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:880px){
+      .sidebar{display:none}
+      .hamburger{display:flex}
+      .main{padding:16px}
+      .hero-row{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .topbar .search{display:none}
+    }
+	
+	 /* New styles for the collapsible menu */
+    .nav-link-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .nav-link-group a {
+      justify-content: space-between;
+    }
+    .nav-link-group a:hover {
+      background: rgba(15,23,42,0.03);
+    }
+    .nav-link-group a.active {
+      background-color:#60a5fa;
+      color:#fff;
+    }
+    .nav-link-group ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: none; /* Initially hidden */
+    }
+    .nav-link-group ul.open {
+	padding-left: 24px;
+      display: block;
+    }
+    .nav-link-group ul li a {
+      padding-left: 36px; /* Indent sub-menu items */
+    }
+    .nav-link-group .expand-icon {
+      transition: transform 0.2s ease-in-out;
+    }
+    .nav-link-group .expand-icon.rotated {
+      transform: rotate(180deg);
+    }
+	 .footer {
+      margin-top: auto;
+      padding-top: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+	  background: #f9f9f9; 
+	  border-top: 1px solid #ddd;
+	  }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div style="padding:16px;display:flex;justify-content:center;align-items:center;height:80px;overflow:hidden;">
+        <img src="isoft.jpg" alt="ISoft Logo" style="max-height:56px;width:auto;object-fit:contain;" />
+      </div>
+      <nav class="nav" aria-label="Main navigation">
+        <div class="group-title">Main</div>
+        <a href="TrainerDashboard.html" style="background-color:#60a5fa;color:white">🏠 Dashboard</a>
+        <a href="TrainerMyClasses.html">📅 My Classes</a>
+        <a href="#">👩‍🎓 My Students</a>
+        <a href="#">📝 Assessments</a>
+       <div class="nav-link-group">
+		<a href="#" id="attendance-toggle">
+			<span style="display:flex; align-items:center; gap:12px;">
+			<span class="material-icons">event_available</span>
+			  Attendance
+			</span>
+			<span class="material-icons expand-icon">expand_more</span>
+		 </a>
+		 <ul id="attendance-submenu" class="open submenu">
+			<li><a href="TrainerMarkAttendance.html">Mark Attendance</a></li>
+			<li><a href="TrainerViewAttendance.html">View Attendance</a></li>
+			
+		  </ul>
+		</div>
+
+        <div class="group-title">Admin</div>
+        <a href="#">📂 Documents & Evidence</a>
+        <a href="#">📊 Reports & Analytics</a>
+        <a href="#">💬 Messages</a>
+
+        <div class="group-title">Compliance</div>
+        <a href="#">🛂 CRICOS & Visa Alerts</a>
+
+        <div class="group-title">Support</div>
+        <a href="#">🤖 Ask AI</a>
+        <a href="#">📞 Contact Admin</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" onclick="toggleSidebar()">☰</button>
+          <div>
+            <h1 style="margin:0;font-size:20px;font-weight:700">Trainer Dashboard</h1>
+            <div class="muted" style="font-size:13px">Overview of your classes, assessments, and students</div>
+          </div>
+        </div>
+        <div class="user">
+          <div class="profile-container" id="profile-root">
+            <div id="profile-menu-button" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+              <img src="owner.jpg" alt="avatar" class="profile-avatar">
+              <div style="font-weight:600;color:#0f1724">William Smith</div>
+              <span id="dropdown-arrow" class="material-icons">expand_more</span>
+            </div>
+    
+            <div id="profile-dropdown-menu" class="hidden" aria-hidden="true">
+              <div style="padding:16px;border-bottom:1px solid #e5e7eb">
+                <div style="font-weight:bold;color:#1f2937">Hi, William</div>
+                <div style="font-size:14px;color:#6b7280">william.smith@isoftanz.com.au</div>
+              </div>
+              <ul style="list-style:none;margin:0;padding:0">
+                <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+                  <span class="material-icons" style="margin-right:8px">person</span>Edit Profile</a></li>
+                <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+                  <span class="material-icons" style="margin-right:8px">settings</span>Account settings</a></li>
+                <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+                  <span class="material-icons" style="margin-right:8px">help_outline</span>Support</a></li>
+                <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;border-top:1px solid #e5e7eb;margin-top:4px">
+                  <span class="material-icons" style="margin-right:8px">logout</span>Sign out</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-row">
+        <div class="tile"><div><div class="label">Classes Today</div><div class="value">3</div></div><div>📅</div></div>
+        <div class="tile"><div><div class="label">Pending Assessments</div><div class="value">12</div></div><div>📝</div></div>
+        <div class="tile"><div><div class="label">Students At Risk</div><div class="value" style="color:var(--danger)">5</div></div><div>⚠️</div></div>
+        <div class="tile"><div><div class="label">Messages</div><div class="value">4</div></div><div>💬</div></div>
+      </div>
+
+      <div class="grid">
+        <div>
+          <section class="card">
+            <h3>Assessment Inbox</h3>
+            <div class="muted small">Submissions awaiting marking</div>
+            <ul class="unit-list">
+              <li class="unit"><div><div style="font-weight:500">BSBTEC101 — Business Comm</div><div class="small text-muted">Student: John Smith</div></div><button style="padding:6px 10px;border-radius:8px;background:var(--brand-1);color:white;border:0;cursor:pointer">Open</button></li>
+              <li class="unit"><div><div style="font-weight:500">SITXWHS101 — Safety</div><div class="small text-muted">Student: Maria Lopez</div></div><div class="text-muted small">Overdue</div></li>
+            </ul>
+          </section>
+          <section class="card">
+            <h3>Upcoming Classes</h3>
+            <div class="muted small">Your schedule this week</div>
+            <ul class="unit-list">
+              <li class="unit"><strong>Monday 10am</strong> — Business Communication (Room 202)</li>
+              <li class="unit"><strong>Wednesday 2pm</strong> — Workplace Safety (Online)</li>
+            </ul>
+          </section>
+        </div>
+
+        <aside>
+          <div class="card">
+            <h3>Students At Risk</h3>
+            <div class="muted small">Low attendance / overdue work</div>
+            <div class="msg-list" style="margin-top:10px">
+              <div class="msg"><div><div style="font-weight:700">Jane Doe</div><div class="small text-muted">Attendance 60%</div></div></div>
+              <div class="msg"><div><div style="font-weight:700">Ali Khan</div><div class="small text-muted">2 overdue assessments</div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Messages</h3>
+            <div class="muted small">Latest from students/admin</div>
+            <div class="msg-list" style="margin-top:10px">
+              <div class="msg"><div><div style="font-weight:700">Admin</div><div class="small text-muted">CRICOS attendance report due</div></div></div>
+              <div class="msg"><div><div style="font-weight:700">Student: John S.</div><div class="small text-muted">Requesting extension</div></div></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div class="quick-links">
+          <a class="small text-muted" href="#">Help center</a>
+          <a class="small text-muted" href="#">Policies</a>
+          <a class="small text-muted" href="#">Contact support</a>
+        </div>
+        <div class="small text-muted">© 2025 iSOFT — Trainer portal</div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar(){
+      const sb=document.querySelector('.sidebar');
+      if(sb) sb.classList.toggle('mobile-open');
+    }
+	
+	 // Attendance Sub-menu Logic
+  const attendanceToggle = document.getElementById('attendance-toggle');
+  const attendanceSubmenu = document.getElementById('attendance-submenu');
+  const expandIcon = attendanceToggle.querySelector('.expand-icon');
+
+  if (attendanceToggle) {
+    attendanceToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      attendanceSubmenu.classList.toggle('open');
+      expandIcon.classList.toggle('rotated');
+    });
+  }
+
+    // Profile dropdown logic from StudentAssessmentDetails.html
+    const profileMenuButton = document.getElementById('profile-menu-button');
+    const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+    const dropdownArrow = document.getElementById('dropdown-arrow');
+
+    profileMenuButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isHidden = profileDropdownMenu.classList.toggle('hidden');
+      profileDropdownMenu.setAttribute('aria-hidden', isHidden ? 'true' : 'false');
+      dropdownArrow.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+    });
+
+    window.addEventListener('click', (event) => {
+      if (!profileMenuButton.contains(event.target) && !profileDropdownMenu.contains(event.target)) {
+        profileDropdownMenu.classList.add('hidden');
+        profileDropdownMenu.setAttribute('aria-hidden','true');
+        dropdownArrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  </script>
+</body>
+</html>

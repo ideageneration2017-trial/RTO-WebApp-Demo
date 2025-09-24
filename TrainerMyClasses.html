@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>My Courses - Trainer Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    :root {
+      --sidebar-bg: #eaf6fb;
+      --accent: #e53935;
+      --brand-1: #0f766e;
+      --card-bg: #fff;
+      --muted: #6b7280;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --shadow: 0 6px 20px rgba(18, 38, 63, 0.08);
+      --radius: 12px;
+      --max-width: 1200px;
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial;
+      background: #f7fafc;
+      color: #111827;
+      line-height: 1.3;
+    }
+    a { color: inherit; text-decoration: none; }
+    .app {
+      display: flex;
+      min-height: 100vh;
+      gap: 24px;
+    }
+    .sidebar {
+      width: 260px;
+      background: var(--sidebar-bg);
+      padding: 20px 18px;
+      border-right: 1px solid rgba(15,23,42,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 6px;
+      overflow: auto;
+    }
+    .nav a {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 10px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #0f1724;
+    }
+    .nav a:hover {
+      background: rgba(15,23,42,0.03);
+    }
+    .nav .group-title {
+      color: var(--muted);
+      font-size: 12px;
+      padding: 10px 6px 2px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .main {
+      flex: 1;
+      padding: 28px;
+      max-width: calc(var(--max-width) - 40px);
+      margin: 0 auto;
+      width: 100%;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hamburger { display: none; }
+    .profile-avatar {
+      width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+      border: 2px solid #fff;
+      box-shadow: 0 4px 12px rgba(2, 6, 23, 0.08);
+    }
+    .profile-container { position: relative; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+    .profile-dropdown-menu {
+      position: absolute;
+      right: 0; top: 100%; margin-top: 12px; width: 260px;
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.12); z-index: 50;
+      padding-bottom: 8px;
+      display: none;
+    }
+    .profile-dropdown-menu.shown { display: block;}
+    .dropdown-arrow { color: #9ca3af; transition: transform .18s ease; }
+    .page-header { padding-bottom: 14px; }
+    .page-header h1 { margin: 0; font-size: 20px; font-weight: 700; }
+    .page-header p { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 20px;
+      align-items: start;
+      margin-top: 24px;
+    }
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+    .calendar-panel {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      min-height: 500px;
+    }
+    .calendar-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: 60px repeat(7, 1fr);
+      gap: 2px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+      max-height: 350px;
+    }
+    .day-header, .time-label, .day-cell {
+      padding: 6px 4px;
+      font-size: 12px; font-weight: 600; text-align: center;
+      border-right: 1px solid #e5e7eb;
+      border-bottom: 1px solid #e5e7eb;
+      background: #f9fafb;
+      position: relative;
+    }
+    .time-label {
+      background: #f1f5f9;
+      font-weight: 500;
+      text-align: right;
+      height: 28px;
+      min-height: 26px;
+      max-height: 30px;
+    }
+    .day-cell {
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      height: 28px;
+      min-height: 26px;
+      max-height: 30px;
+      position: relative;
+      cursor: pointer;
+    }
+    .day-cell:hover {
+      background: #f0f4f7;
+    }
+    .event-block {
+      position: absolute;
+      left: 4px; right: 4px;
+      top: 0;
+      height: 100%;
+      background: #a7f3d0;
+      color: #047857;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.10);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .panel {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .filters { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+    .select, .search {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      padding: 10px 14px; border-radius: 8px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .search input, .select select {
+      border: none; background: transparent; flex: 1; outline: none;
+    }
+    .upcoming {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .course-card {
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(15,23,42,0.02);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .course-card:hover {
+      background: rgba(15,23,42,0.07);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+    }
+    .session-title { font-weight: 600; font-size: 15px;}
+    .session-meta { font-size: 13px; color: var(--muted);}
+    .detail-panel { display: flex; flex-direction: column; gap: 10px;}
+    .detail-row { display: flex; justify-content: space-between; align-items: center;}
+    .detail-row .label { font-weight: 600; }
+    .small { font-size: 12px; color: var(--muted);}
+    .text-muted { color: var(--muted);}
+    @media (max-width: 880px) {
+      .sidebar { display: none; }
+      .main { padding: 16px; }
+    }
+	
+	 /* New styles for the collapsible menu */
+    .nav-link-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .nav-link-group a {
+      justify-content: space-between;
+    }
+    .nav-link-group a:hover {
+      background: rgba(15,23,42,0.03);
+    }
+    .nav-link-group a.active {
+      background-color:#60a5fa;
+      color:#fff;
+    }
+    .nav-link-group ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: none; /* Initially hidden */
+    }
+    .nav-link-group ul.open {
+	padding-left: 24px;
+      display: block;
+    }
+    .nav-link-group ul li a {
+      padding-left: 36px; /* Indent sub-menu items */
+    }
+    .nav-link-group .expand-icon {
+      transition: transform 0.2s ease-in-out;
+    }
+    .nav-link-group .expand-icon.rotated {
+      transform: rotate(180deg);
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <!-- Sidebar (unchanged) -->
+  <aside class="sidebar">
+    <div style="padding:16px;display:flex;justify-content:center;align-items:center;height:80px;overflow:hidden;">
+      <img src="isoft.jpg" alt="ISoft Logo" style="max-height: 56px; width:auto; object-fit:contain;">
+    </div>
+    <nav class="nav" aria-label="Main navigation">
+      <div class="group-title">Main</div>
+      <a href="TrainerDashboard.html"><span class="material-icons">dashboard</span>Dashboard</a>
+      <a href="TrainerMyClasses.html" style="background-color:#60a5fa;color:#fff;"><span class="material-icons">calendar_month</span>My Classes</a>
+      <a href="#"><span class="material-icons">groups</span>My Students</a>
+      <a href="#"><span class="material-icons">assignment</span>Assessments</a>
+      <div class="nav-link-group">
+		<a href="#" id="attendance-toggle">
+			<span style="display:flex; align-items:center; gap:12px;">
+			<span class="material-icons">event_available</span>
+			  Attendance
+			</span>
+			<span class="material-icons expand-icon">expand_more</span>
+		 </a>
+		 <ul id="attendance-submenu" class="open submenu">
+			<li><a href="TrainerMarkAttendance.html">Mark Attendance</a></li>
+			<li><a href="TrainerMarkAttendance.html">View Attendance</a></li>
+			
+		  </ul>
+		</div>
+      <div class="group-title">Admin</div>
+      <a href="#"><span class="material-icons">folder</span>Documents & Evidence</a>
+      <a href="#"><span class="material-icons">bar_chart</span>Reports & Analytics</a>
+      <a href="#"><span class="material-icons">mail</span>Messages</a>
+      <div class="group-title">Compliance</div>
+      <a href="#"><span class="material-icons">info</span>CRICOS & Visa Alerts</a>
+      <div class="group-title">Support</div>
+      <a href="#"><span class="material-icons">smart_toy</span>Ask AI</a>
+      <a href="#"><span class="material-icons">support_agent</span>Contact Admin</a>
+    </nav>
+  </aside>
+  <main class="main">
+    <!-- Topbar (unchanged) -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="toggleSidebar()">
+          <span class="material-icons">menu</span>
+        </button>
+       
+      </div>
+      <div class="user">
+        <div class="profile-container" id="profile-root">
+          <div id="profile-menu-button" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+            <img src="owner.jpg" alt="avatar" class="profile-avatar">
+            <div style="font-weight:600;color:#0f1724;">William Smith</div>
+            <span id="dropdown-arrow" class="material-icons">expand_more</span>
+          </div>
+          <div id="profile-dropdown-menu" class="profile-dropdown-menu" aria-hidden="true">
+            <div style="padding:16px;border-bottom:1px solid #e5e7eb;">
+              <div style="font-weight:bold;color:#1f2937;">Hi, William</div>
+              <div style="font-size:14px;color:#6b7280;">william.smith@isoftanz.com.au</div>
+            </div>
+            <ul style="list-style:none;margin:0;padding:0;">
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;"><span class="material-icons" style="margin-right:8px;">person</span>Edit Profile</a></li>
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;"><span class="material-icons" style="margin-right:8px;">settings</span>Account settings</a></li>
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;"><span class="material-icons" style="margin-right:8px;">help_outline</span>Support</a></li>
+              <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;border-top:1px solid #e5e7eb;margin-top:4px;"><span class="material-icons" style="margin-right:8px;">logout</span>Sign out</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <h1>My Classes</h1>
+      <p>See, filter, and manage the classes assigned to you. View your schedule and track student participation.</p>
+    </div>
+    <!-- Main Layout: Calendar and Details Panel -->
+    <div class="layout">
+      <!-- Calendar Panel (left) -->
+      <section class="calendar-panel">
+        <div class="calendar-nav">
+          <button class="btn ghost" onclick="changeWeek(-1)">&larr; Prev Week</button>
+          <div id="weekRange" style="font-weight:600">Sep 15 - Sep 21</div>
+          <button class="btn ghost" onclick="changeWeek(1)">Next Week &rarr;</button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid">
+          <!-- JS will generate the timetable grid dynamically -->
+        </div>
+      </section>
+      <!-- Details/Filter Panel (right) -->
+      <aside>
+        <div class="panel">
+          <div style="font-weight:700;font-size:16px;">Filter & Upcoming</div>
+          <div class="filters">
+            <div class="search" role="search">
+              <span class="material-icons">search</span>
+              <input type="text" id="search" placeholder="Search course, unit, or student">
+            </div>
+            <div style="display:flex;gap:8px;">
+              <div class="select" style="flex:1;">
+                <span class="material-icons">menu_book</span>
+                <select id="courseSelect">
+                  <option value="all">All courses</option>
+                  <option value="BSB50120">Diploma of Business</option>
+                  <option value="ICT40120">Cert IV in IT</option>
+                </select>
+              </div>
+              <div class="select" style="width:110px;">
+                <span class="material-icons">layers</span>
+                <select id="mode">
+                  <option value="all">All</option>
+                  <option value="online">Online</option>
+                  <option value="face">Face-to-face</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:20px;font-weight:700;">Upcoming classes</div>
+          <div class="upcoming" id="upcomingList" aria-live="polite">
+            <!-- JS populates upcoming sessions for trainers here -->
+          </div>
+        </div>
+        <div class="panel detail-panel" id="selectedDetail" style="margin-top:14px;">
+          <div style="font-weight:700;font-size:16px;">Session Details</div>
+          <div id="sessionInfo">
+            <div style="text-align:center; color:var(--muted);">Select a session to see details.</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div class="quick-links">
+        <a class="small text-muted" href="#">Help center</a>
+        <a class="small text-muted" href="#">Policies</a>
+        <a class="small text-muted" href="#">Contact support</a>
+      </div>
+      <div class="small text-muted">2025 iSOFT Trainer portal</div>
+    </div>
+  </main>
+</div>
+<script>
+  // Sidebar toggle for mobile (optional)
+  function toggleSidebar() {
+    const sb = document.querySelector('.sidebar');
+    if(sb) sb.classList.toggle('mobile-open');
+  }
+  // Profile dropdown logic
+  const profileMenuButton = document.getElementById('profile-menu-button');
+  const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+  const dropdownArrow = document.getElementById('dropdown-arrow');
+  if(profileMenuButton) {
+    profileMenuButton.addEventListener('click', function(e) {
+      e.stopPropagation();
+      profileDropdownMenu.classList.toggle('shown');
+      profileDropdownMenu.setAttribute('aria-hidden', !profileDropdownMenu.classList.contains('shown'));
+      dropdownArrow.style.transform = profileDropdownMenu.classList.contains('shown') ? 'rotate(180deg)' : 'rotate(0deg)';
+    });
+    window.addEventListener('click', function(event) {
+      if (!profileMenuButton.contains(event.target) && !profileDropdownMenu.contains(event.target)) {
+        profileDropdownMenu.classList.remove('shown');
+        profileDropdownMenu.setAttribute('aria-hidden', "true");
+        dropdownArrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  }
+
+  // Sample class data
+  const sessions = [
+    {
+      id: 1,
+      course: 'Diploma of Business',
+      code: 'BSB50120',
+      unit: 'SITXWHS101',
+      title: 'Business Communication',
+      start: '2025-09-22T09:00',
+      end: '2025-09-22T12:00',
+      location: 'Room 202, Campus A',
+      mode: 'face',
+      notes: 'Weekly lecture - bring safety form',
+    },
+    {
+      id: 2,
+      course: 'Diploma of Business',
+      code: 'BSB50120',
+      unit: 'BSBTEC101',
+      title: 'Workplace Technology',
+      start: '2025-09-23T14:00',
+      end: '2025-09-23T17:00',
+      location: 'Zoom link',
+      mode: 'online',
+      notes: 'Important group activity in breakout rooms',
+    },
+    {
+      id: 3,
+      course: 'Cert IV in IT',
+      code: 'ICT40120',
+      unit: 'ICTWEB431',
+      title: 'Web Application Build',
+      start: '2025-09-24T13:00',
+      end: '2025-09-24T16:00',
+      location: 'Lab 3, Campus B',
+      mode: 'face',
+      notes: 'Lab computers reserved for session',
+    }
+  ];
+  // Helper functions for week
+  let weekOffset = 0;
+  function getStartOfWeek(date, offset) {
+    const curr = new Date(date);
+    const day = curr.getDay();
+    const diff = curr.getDate() - day + (day === 0 ? -6 : 1); // Monday as first day ISO
+    const monday = new Date(curr.setDate(diff));
+    monday.setHours(0,0,0,0);
+    const target = new Date(monday);
+    target.setDate(monday.getDate() + 7 * offset);
+    return target;
+  }
+  function renderWeek() {
+    const baseDate = new Date(sessions[0].start);
+    const startOfWeek = getStartOfWeek(baseDate, weekOffset);
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    document.getElementById('weekRange').textContent =
+      startOfWeek.toLocaleDateString('en-AU', { month: 'short', day: 'numeric' }) +
+      ' - ' +
+      endOfWeek.toLocaleDateString('en-AU', { month: 'short', day: 'numeric' });
+
+    // Render headers (Monday to Sunday)
+    let grid = '<div class="day-header" style="visibility:hidden; border:none; background:none;"></div>';
+    for (let i=0; i<7; i++) {
+      const day = new Date(startOfWeek);
+      day.setDate(day.getDate() + i);
+      grid += `<div class="day-header">${
+        day.toLocaleDateString('en-AU', { weekday: 'short', month: 'short', day: 'numeric' })
+      }</div>`;
+    }
+    // Render time (8am to 6pm)
+    for (let hour=8; hour<=18; hour++) {
+      let hourLabel = `${hour < 10 ? '0' : ''}${hour}:00`;
+      grid += `<div class="time-label">${hourLabel}</div>`;
+      for (let i=0; i<7; i++) {
+        const day = new Date(startOfWeek);
+        day.setDate(day.getDate() + i);
+        grid += `<div class="day-cell" data-day="${day.toISOString().slice(0,10)}" data-hour="${hour}"></div>`;
+      }
+    }
+    document.getElementById('calendarGrid').innerHTML = grid;
+
+    // Place events over correct time slots (spanning multiple cells)
+    sessions.forEach(s => {
+      const sDate = new Date(s.start);
+      const eDate = new Date(s.end);
+      if (
+        sDate >= startOfWeek &&
+        sDate <= endOfWeek
+      ) {
+        const col = sDate.getDay() === 0 ? 6 : sDate.getDay() - 1; // Monday = 0
+        const startHour = sDate.getHours();
+        const endHour = eDate.getHours();
+        const grid = document.getElementById('calendarGrid');
+        // Find the index of the start cell
+        const rowsPerDay = 11; // time slots from 8am–6pm
+        const rowStart = startHour - 8 + 1; // start row (skip header)
+        const rowEnd = endHour - 8 + 1;
+        for(let r=rowStart; r<=rowEnd; r++) {
+          const index = (1 + col) + (r * 8); // 1 extra col for time
+          const cell = grid.children[index];
+          if(cell) {
+            // Only render the event block for the top cell of the block
+            if(r === rowStart){
+              let durationText = sDate.toLocaleTimeString('en-AU', { hour:'2-digit', minute:'2-digit' }) +
+                ' - ' +
+                eDate.toLocaleTimeString('en-AU', { hour:'2-digit', minute:'2-digit' });
+              cell.innerHTML = `<div class="event-block" style="height:${(rowEnd-rowStart+1)*28}px;" onclick="selectSession(${s.id})" title="${s.title}">
+                <div>${s.title}</div>
+                <div style="font-weight:400; font-size:11px;">${s.unit} • ${s.mode === 'online' ? 'Online' : 'Face-to-face'}</div>
+                <div style="font-weight:400; font-size:11px;">${durationText}</div>
+              </div>`;
+              cell.style.position = 'relative';
+            }
+          }
+        }
+      }
+    });
+  }
+  function changeWeek(n) {
+    weekOffset += n;
+    renderWeek();
+  }
+  // Render upcoming sessions
+  function renderUpcoming() {
+    const code = document.getElementById('courseSelect').value;
+    const mode = document.getElementById('mode').value;
+    const search = document.getElementById('search').value.toLowerCase();
+    let filtered = sessions.filter(s =>
+      (code === 'all' || s.code === code) &&
+      (mode === 'all' || s.mode === mode) &&
+      (
+        s.course.toLowerCase().includes(search) ||
+        s.unit.toLowerCase().includes(search) ||
+        s.title.toLowerCase().includes(search)
+      )
+    );
+    filtered.sort((a,b) => new Date(a.start) - new Date(b.start));
+    const list = document.getElementById('upcomingList');
+    list.innerHTML = '';
+    filtered.forEach(s => {
+      const el = document.createElement('div');
+      el.className = 'course-card';
+      el.tabIndex = 0;
+      el.innerHTML = `
+        <div class="session-title">${s.title} <span class="session-meta">(${s.unit})</span></div>
+        <div class="session-meta">${s.course} — ${s.code}</div>
+        <div class="session-meta">${new Date(s.start).toLocaleDateString('en-AU', { weekday: 'short', hour: '2-digit', minute:'2-digit' })} to
+        ${new Date(s.end).toLocaleTimeString('en-AU', { hour:'2-digit', minute:'2-digit' })}</div>
+        <div class="session-meta">${s.mode === 'online' ? 'Online' : 'Face-to-face'} | ${s.location}</div>
+      `;
+      el.onclick = function() { selectSession(s.id); };
+      list.appendChild(el);
+    });
+    if(filtered.length === 0) {
+      list.innerHTML = '<div class="small">No sessions found.</div>';
+    }
+  }
+  function selectSession(id) {
+    const s = sessions.find(x => x.id === id);
+    if(!s) return;
+    document.getElementById('sessionInfo').innerHTML = `
+      <div class="detail-row"><div class="label">Course</div><div class="small">${s.course} (${s.code})</div></div>
+      <div class="detail-row"><div class="label">Unit</div><div class="small">${s.unit}</div></div>
+      <div class="detail-row"><div class="label">Session</div><div class="small">${s.title}</div></div>
+      <div class="detail-row"><div class="label">Location</div><div class="small">${s.location} (${s.mode === 'online' ? 'Online' : 'Face-to-face'})</div></div>
+      <div class="detail-row"><div class="label">When</div><div class="small">${new Date(s.start).toLocaleString('en-AU')} - ${new Date(s.end).toLocaleTimeString('en-AU', { hour:'2-digit', minute:'2-digit' })}</div></div>
+      <div style="margin-top:10px;"><span class="small" style="font-weight:700;">Notes</span></div>
+      <div class="small" style="background:rgba(15,23,42,0.02);padding:8px;border-radius:8px;">${s.notes}</div>
+      <div style="display:flex;gap:8px;margin-top:16px;">
+        <button class="btn primary btn-md" onclick="alert('Open attendance entry (to link API)')">Mark attendance</button>
+        <button class="btn ghost btn-md" onclick="alert('View student list for this session')">View students</button>
+        <button class="btn ghost btn-md" onclick="alert('Go to assessment marking page')">Mark assessments</button>
+      </div>
+    `;
+    document.getElementById('selectedDetail').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  document.getElementById('courseSelect').addEventListener('change', renderUpcoming);
+  document.getElementById('mode').addEventListener('change', renderUpcoming);
+  document.getElementById('search').addEventListener('input', renderUpcoming);
+  // Initial rendering
+  renderWeek();
+  renderUpcoming();
+  
+   // Attendance Sub-menu Logic
+  const attendanceToggle = document.getElementById('attendance-toggle');
+  const attendanceSubmenu = document.getElementById('attendance-submenu');
+  const expandIcon = attendanceToggle.querySelector('.expand-icon');
+
+  if (attendanceToggle) {
+    attendanceToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      attendanceSubmenu.classList.toggle('open');
+      expandIcon.classList.toggle('rotated');
+    });
+  }
+</script>
+</body>
+</html>
