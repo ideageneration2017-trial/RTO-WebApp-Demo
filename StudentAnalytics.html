@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Student Analytics</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <style>
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background:#f7fafc;
+      color:#111827;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.3;
+    }
+    a{color:inherit;text-decoration:none}
+
+    .app{display:flex;min-height:100vh;gap:24px}
+	
+    /* Sidebar */
+    .sidebar{
+      width:260px;
+      background:var(--sidebar-bg);
+      padding:20px 18px;
+      border-right:1px solid rgba(15,23,42,0.03);
+      display:flex;flex-direction:column;gap:16px;
+    }
+    .nav{display:flex;flex-direction:column;gap:6px;margin-top:6px;overflow:auto}
+    .nav a{display:flex;gap:12px;align-items:center;padding:10px 10px;border-radius:8px;font-size:14px;color:#0f1724}
+    .nav a:hover{background:rgba(15,23,42,0.03)}
+    .nav .group-title{color:var(--muted);font-size:12px;padding:10px 6px 2px;font-weight:600;text-transform:uppercase}
+	
+     /* Main */
+    .main{flex:1;padding:28px;max-width:calc(var(--max-width) - 40px);margin:0 auto;width:100%}
+
+    /* Topbar */
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:20px}
+    .topbar-left{display:flex;align-items:center;gap:12px}
+    .hamburger{display:none;width:38px;height:38px;background:white;border-radius:10px;box-shadow:var(--shadow);align-items:center;justify-content:center;cursor:pointer}
+   
+    .user{display:flex;gap:12px;align-items:center}
+    .avatar{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid white;box-shadow:var(--shadow)}
+    .avatar img{width:100%;height:100%;object-fit:cover}
+	
+	    
+    /* New styles for dropdown */
+    .profile-avatar{
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      object-fit:cover;
+      border:2px solid white; 
+      box-shadow:0 4px 12px rgba(2,6,23,0.08);
+    }
+    .profile-container{
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      user-select:none;
+    }
+    #profile-dropdown-menu{
+      position:absolute;
+      right:0;
+      top:100%;
+      margin-top:12px;
+      width:260px;
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:8px;
+      box-shadow:0 10px 30px rgba(2,6,23,0.12);
+      z-index:50;
+      padding-bottom:8px;
+    }
+    #profile-dropdown-menu.hidden{
+      display:none;
+    }
+    #dropdown-arrow{
+      color:#9ca3af;
+      transition:transform .18s ease;
+    }
+	
+	 /* New styles for the collapsible menu */
+    .nav-link-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .nav-link-group a {
+      justify-content: space-between;
+    }
+    .nav-link-group a:hover {
+      background: rgba(15,23,42,0.03);
+    }
+    .nav-link-group a.active {
+      background-color:#60a5fa;
+      color:#fff;
+    }
+    .nav-link-group ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: none; /* Initially hidden */
+    }
+    .nav-link-group ul.open {
+	padding-left: 24px;
+      display: block;
+    }
+    .nav-link-group ul li a {
+      padding-left: 36px; /* Indent sub-menu items */
+    }
+    .nav-link-group .expand-icon {
+      transition: transform 0.2s ease-in-out;
+    }
+    .nav-link-group .expand-icon.rotated {
+      transform: rotate(180deg);
+    }
+	
+	 .footer {
+      margin-top: auto;
+      padding-top: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+	  background: #f9f9f9; 
+	  border-top: 1px solid #ddd;
+	  }
+   h1{margin:0;font-size:20px;font-weight:700}
+    .muted{color:#6b7280;font-size:13px}
+    .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(18,38,63,0.08);margin-bottom:18px}
+    .kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-bottom:20px}
+    .kpi{background:#fff;border-radius:12px;padding:16px;box-shadow:0 4px 12px rgba(18,38,63,0.06)}
+    .kpi h3{margin:0;font-size:14px;color:#6b7280}
+    .kpi p{margin:6px 0 0;font-size:20px;font-weight:700}
+    .grid{display:grid;grid-template-columns:2fr 1fr;gap:18px}
+    .msg-list{display:flex;flex-direction:column;gap:8px}
+    .msg{padding:10px;border-radius:8px;background:rgba(15,23,42,0.02);font-size:13px;cursor:pointer;transition:0.2s}
+    .msg:hover{background:rgba(37,99,235,0.1)}
+   
+    .hidden { display: none !important; }
+    .filters{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+    .filters select, .filters input{padding:6px 10px;border-radius:6px;border:1px solid #d1d5db;font-size:14px}
+    .filters button{padding:6px 14px;border:none;border-radius:6px;background:#2563EB;color:#fff;font-weight:600;cursor:pointer}
+    canvas{width:100%!important;height:300px!important}
+    .badge{display:inline-block;padding:2px 6px;border-radius:6px;font-size:12px;font-weight:600;color:#fff;margin-left:4px}
+    .low{background:#22c55e}
+    .medium{background:#f59e0b}
+    .high{background:#ef4444}
+	
+	.parent-row {
+  width: 100%;
+  padding: 0; /* Or minimal left/right padding */
+}
+
+  </style>
+</head>
+<body>
+  <div class="app">
+  <aside class="sidebar">
+      <div style="padding:16px;display:flex;justify-content:center;align-items:center;height:80px;overflow:hidden;">
+        <img src="isoft.jpg" alt="ISoft Logo" style="max-height:56px;width:auto;object-fit:contain;" />
+      </div>
+      <nav class="nav" aria-label="Main navigation">
+        <div class="group-title">Main</div>
+        <a href="TrainerDashboard.html">🏠 Dashboard</a>
+        <a href="TrainerMyClasses.html">📅 My Classes</a>
+        <a href="TrainerMyStudents.html"  style="background-color:#60a5fa;color:white">👩‍🎓 My Students</a>
+        <a href="#">📝 Assessments</a>
+       <div class="nav-link-group">
+		<a href="#" id="attendance-toggle">
+			<span style="display:flex; align-items:center; gap:12px;">
+			<span class="material-icons">event_available</span>
+			  Attendance
+			</span>
+			<span class="material-icons expand-icon">expand_more</span>
+		 </a>
+		 <ul id="attendance-submenu" class="open submenu">
+			<li><a href="TrainerMarkAttendance.html">Mark Attendance</a></li>
+			<li><a href="TrainerViewAttendance.html">View Attendance</a></li>
+			
+		  </ul>
+		</div>
+
+        <div class="group-title">Admin</div>
+        <a href="#">📂 Documents & Evidence</a>
+        <a href="#">📊 Reports & Analytics</a>
+        <a href="#">💬 Messages</a>
+
+        <div class="group-title">Compliance</div>
+        <a href="#">🛂 CRICOS & Visa Alerts</a>
+
+        <div class="group-title">Support</div>
+        <a href="#">🤖 Ask AI</a>
+        <a href="#">📞 Contact Admin</a>
+      </nav>
+    </aside>
+
+  <main class="main">
+      <div class="topbar">
+        <div>
+          <h1>Student Analytics</h1>
+          <div class="muted">Performance, compliance & engagement trends</div>
+        </div>
+        <div class="user">
+          <div class="profile-container" id="profile-root">
+            <div id="profile-menu-button" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+              <img src="owner.jpg" alt="avatar" class="profile-avatar">
+              <div style="font-weight:600;color:#0f1724">William Smith</div>
+              <span id="dropdown-arrow" class="material-icons">expand_more</span>
+            </div>
+            <div id="profile-dropdown-menu" class="hidden" aria-hidden="true">
+              <div style="padding:16px;border-bottom:1px solid #e5e7eb">
+                <div style="font-weight:bold;color:#1f2937">Hi, William</div>
+                <div style="font-size:14px;color:#6b7280">william.smith@isoftanz.com.au</div>
+              </div>
+              <ul style="list-style:none;margin:0;padding:0">
+                <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151"><span class="material-icons" style="margin-right:8px">person</span>Edit Profile</a></li>
+                <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151"><span class="material-icons" style="margin-right:8px">settings</span>Account settings</a></li>
+                <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151"><span class="material-icons" style="margin-right:8px">help_outline</span>Support</a></li>
+                <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;border-top:1px solid #e5e7eb;margin-top:4px"><span class="material-icons" style="margin-right:8px">logout</span>Sign out</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi"><h3>Total Students</h3><p>1,248</p></div>
+        <div class="kpi"><h3>Visa/CRICOS Risk</h3><p>42</p></div>
+        <div class="kpi"><h3>Failing Units</h3><p>15%</p></div>
+        <div class="kpi"><h3>Engagement Drop</h3><p>8%</p></div>
+        <div class="kpi"><h3>Compliance Alerts</h3><p>23</p></div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters">
+        <select id="courseFilter">
+          <option>All Courses</option>
+          <option>Business</option>
+          <option>IT</option>
+          <option>Nursing</option>
+          <option>Hospitality</option>
+        </select>
+        <select id="studentFilter">
+          <option>All Students</option>
+          <option>Student 1</option>
+          <option>Student 2</option>
+        </select>
+        <input type="month" id="monthFilter" />
+        <button onclick="applyFilters()">Apply Filters</button>
+      </div>
+
+      <div class="grid">
+        <section>
+          <div class="card">
+            <h3>Student Performance Trends</h3>
+            <div id="performanceChart"></div>
+          </div>
+		
+        </section>
+
+        <aside>
+          <div class="card">
+            <h3>AI Insights</h3>
+            <div class="muted small">Predictions & compliance suggestions</div>
+            <div class="msg-list" style="margin-top:12px">
+              <div class="msg" onclick="toggleDetail(this)">⚠️ 12 students predicted to breach CRICOS <span class="badge high">High</span></div>
+              <div class="msg" onclick="toggleDetail(this)">📉 Engagement falling for Business Comm <span class="badge medium">Medium</span></div>
+              <div class="msg" onclick="toggleDetail(this)">✅ 8 students improved unit progression last month <span class="badge low">Low</span></div>
+              <div class="msg" onclick="toggleDetail(this)">📂 Suggestion: Generate compliance pack for audit <span class="badge medium">Medium</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+	    <div class="parent-row">
+          <div class="card" style="float:left; width:48%; margin-right:4%;">
+            <h3>Engagement by Course</h3>
+            <div id="engagementChart"></div>
+          </div>
+          <div class="card" style="float:left; width:48%;">
+            <h3>Visa / CRICOS Risk Breakdown</h3>
+            <div id="riskChart"></div>
+          </div>
+		  </div>
+          <div class="card" style="float:left; width:48%; margin-right:4%;">
+            <h3>Progression Funnel</h3>
+            <div id="funnelChart"></div>
+          </div>
+    </main>
+  </div>
+
+  <script>
+ function toggleSidebar(){
+      const sb=document.querySelector('.sidebar');
+      if(sb) sb.classList.toggle('mobile-open');
+    }
+	
+	 // Attendance Sub-menu Logic
+  const attendanceToggle = document.getElementById('attendance-toggle');
+  const attendanceSubmenu = document.getElementById('attendance-submenu');
+  const expandIcon = attendanceToggle.querySelector('.expand-icon');
+
+  if (attendanceToggle) {
+    attendanceToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      attendanceSubmenu.classList.toggle('open');
+      expandIcon.classList.toggle('rotated');
+    });
+  }
+	
+	 // Profile dropdown logic 
+    const profileMenuButton = document.getElementById('profile-menu-button');
+    const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+    const dropdownArrow = document.getElementById('dropdown-arrow');
+
+    profileMenuButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isHidden = profileDropdownMenu.classList.toggle('hidden');
+      profileDropdownMenu.setAttribute('aria-hidden', isHidden ? 'true' : 'false');
+      dropdownArrow.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+    });
+
+    window.addEventListener('click', (event) => {
+      if (!profileMenuButton.contains(event.target) && !profileDropdownMenu.contains(event.target)) {
+        profileDropdownMenu.classList.add('hidden');
+        profileDropdownMenu.setAttribute('aria-hidden','true');
+        dropdownArrow.style.transform = 'rotate(0deg)';
+      }
+    });
+   
+   function toggleDetail(el){
+      if(el.style.backgroundColor==='rgba(37,99,235,0.1)'){
+        el.style.backgroundColor='rgba(15,23,42,0.02)';
+      } else {
+        el.style.backgroundColor='rgba(37,99,235,0.1)';
+      }
+    }
+
+   function applyFilters() {
+      const course = document.getElementById('courseFilter').value;
+      const student = document.getElementById('studentFilter').value;
+      const month = document.getElementById('monthFilter').value;
+      let performanceData = [72,74,71,78,80,82];
+      let engagementData = [85,70,90,65];
+      let riskData = [75,15,10];
+      let funnelData = [1248,1100,950,600];
+      if(course==='Business') engagementData = [90,65,85,70];
+      if(student==='Student 1') performanceData = [75,78,72,80,83,85];
+      performanceChart.updateSeries([{data: performanceData}]);
+      engagementChart.updateSeries([{data: engagementData}]);
+      riskChart.updateSeries(riskData);
+      funnelChart.updateSeries([{data: funnelData}]);
+    }
+
+    // ApexCharts
+    var performanceChartOptions = {
+      chart: { type:'area', height:300, toolbar:{show:false} },
+      series:[{ name:'Average Grade %', data:[72,74,71,78,80,82] }],
+      xaxis:{ categories:['Jan','Feb','Mar','Apr','May','Jun'] },
+      stroke:{ curve:'smooth', width:3 },
+      fill:{ type:'gradient', gradient:{ shade:'light', opacityFrom:0.4, opacityTo:0.1 } },
+      markers:{ size:5 },
+      tooltip:{ theme:'dark' }
+    };
+    var performanceChart = new ApexCharts(document.querySelector("#performanceChart"), performanceChartOptions);
+    performanceChart.render();
+
+   var engagementChartOptions = {
+      chart:{ type:'bar', height:300, toolbar:{show:false} },
+      series:[{ name:'Engagement %', data:[85,70,90,65] }],
+      xaxis:{ categories:['Business','IT','Nursing','Hospitality'] },
+      plotOptions:{ bar:{borderRadius:6,horizontal:false} },
+      colors:['#3B82F6'],
+      dataLabels:{ enabled:true, style:{colors:['#fff']} },
+      tooltip:{ theme:'dark' }
+    };
+    var engagementChart = new ApexCharts(document.querySelector("#engagementChart"), engagementChartOptions);
+    engagementChart.render();
+
+   var riskChartOptions = {
+      chart:{ type:'donut', height:300 },
+      series:[75,15,10],
+      labels:['Low Risk','Medium Risk','High Risk'],
+      colors:['#22c55e','#f59e0b','#ef4444'],
+      legend:{ position:'bottom' },
+      tooltip:{ theme:'dark' }
+    };
+    var riskChart = new ApexCharts(document.querySelector("#riskChart"), riskChartOptions);
+    riskChart.render();
+
+var funnelChartOptions = {
+      chart:{ type:'bar', height:300, toolbar:{show:false} },
+      series:[{ name:'Students', data:[1248,1100,950,600] }],
+      plotOptions:{ bar:{borderRadius:6,horizontal:true} },
+      xaxis:{ categories:['Enrolled','Active','On-Track','Completed'] },
+      colors:['#2563EB'],
+      dataLabels:{ enabled:true, style:{colors:['#fff']} },
+      tooltip:{ theme:'dark' }
+    };
+    var funnelChart = new ApexCharts(document.querySelector("#funnelChart"), funnelChartOptions);
+    funnelChart.render();
+	
+	
+  </script>
+</body>
+</html>
