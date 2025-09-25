@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Trainer - Assessments</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+     /* Theme variables (same as student) */
+    :root{
+      --sidebar-bg: #eaf6fb;
+      --accent: #e53935;
+      --brand-1: #0f766e;
+      --card-bg: #ffffff;
+      --muted: #6b7280;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --shadow: 0 6px 20px rgba(18,38,63,0.08);
+      --radius: 12px;
+      --max-width: 1200px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background:#f7fafc;
+      color:#111827;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.3;
+    }
+    a{color:inherit;text-decoration:none}
+
+    .app{display:flex;min-height:100vh;gap:24px}
+
+    /* Sidebar */
+    .sidebar{
+      width:260px;
+      background:var(--sidebar-bg);
+      padding:20px 18px;
+      border-right:1px solid rgba(15,23,42,0.03);
+      display:flex;flex-direction:column;gap:16px;
+    }
+    .nav{display:flex;flex-direction:column;gap:6px;margin-top:6px;overflow:auto}
+    .nav a{display:flex;gap:12px;align-items:center;padding:10px 10px;border-radius:8px;font-size:14px;color:#0f1724}
+    .nav a:hover{background:rgba(15,23,42,0.03)}
+    .nav .group-title{color:var(--muted);font-size:12px;padding:10px 6px 2px;font-weight:600;text-transform:uppercase}
+
+    /* Main */
+    .main{flex:1;padding:28px;max-width:calc(var(--max-width) - 40px);margin:0 auto;width:100%}
+
+    /* Topbar */
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:20px}
+    .topbar-left{display:flex;align-items:center;gap:12px}
+    .hamburger{display:none;width:38px;height:38px;background:white;border-radius:10px;box-shadow:var(--shadow);align-items:center;justify-content:center;cursor:pointer}
+
+    .user{display:flex;gap:12px;align-items:center}
+    .avatar{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid white;box-shadow:var(--shadow)}
+    .avatar img{width:100%;height:100%;object-fit:cover}
+
+    /* Tiles */
+    .hero-row{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:18px}
+    .tile{background:var(--card-bg);padding:18px;border-radius:var(--radius);box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center;min-height:86px}
+    .tile .label{font-size:13px;color:var(--muted)}
+    .tile .value{font-size:24px;font-weight:700;color:#0f1724;margin-top:6px}
+
+    /* Grid layout */
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+    .card{background:var(--card-bg);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:18px}
+    .card h3{margin:0 0 10px;font-size:16px}
+    .muted{color:var(--muted);font-size:13px}
+    .unit-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+    .unit{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:rgba(15,23,42,0.02)}
+
+    .msg-list{display:flex;flex-direction:column;gap:8px}
+    .msg{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:rgba(15,23,42,0.02); font-size:13px; }
+    .small{font-size:13px}
+    .text-muted{color:var(--muted)}
+    
+    /* New styles for dropdown */
+    .profile-avatar{
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      object-fit:cover;
+      border:2px solid white; 
+      box-shadow:0 4px 12px rgba(2,6,23,0.08);
+    }
+    .profile-container{
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      user-select:none;
+    }
+    #profile-dropdown-menu{
+      position:absolute;
+      right:0;
+      top:100%;
+      margin-top:12px;
+      width:260px;
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:8px;
+      box-shadow:0 10px 30px rgba(2,6,23,0.12);
+      z-index:50;
+      padding-bottom:8px;
+    }
+    #profile-dropdown-menu.hidden{
+      display:none;
+    }
+    #dropdown-arrow{
+      color:#9ca3af;
+      transition:transform .18s ease;
+    }
+
+    /* Responsive */
+    @media(max-width:1100px){.grid{grid-template-columns:1fr 320px}.hero-row{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:880px){
+      .sidebar{display:none}
+      .hamburger{display:flex}
+      .main{padding:16px}
+      .hero-row{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .topbar .search{display:none}
+    }
+	
+	 /* New styles for the collapsible menu */
+    .nav-link-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .nav-link-group a {
+      justify-content: space-between;
+    }
+    .nav-link-group a:hover {
+      background: rgba(15,23,42,0.03);
+    }
+    .nav-link-group a.active {
+      background-color:#60a5fa;
+      color:#fff;
+    }
+    .nav-link-group ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: none; /* Initially hidden */
+    }
+    .nav-link-group ul.open {
+	padding-left: 24px;
+      display: block;
+    }
+    .nav-link-group ul li a {
+      padding-left: 36px; /* Indent sub-menu items */
+    }
+    .nav-link-group .expand-icon {
+      transition: transform 0.2s ease-in-out;
+    }
+    .nav-link-group .expand-icon.rotated {
+      transform: rotate(180deg);
+    }
+	 .footer {
+      margin-top: auto;
+      padding-top: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+	  background: #f9f9f9; 
+	  border-top: 1px solid #ddd;
+	  }
+
+    /* ---------- My Students specific styles (added below so topbar/sidebar are untouched) ---------- */
+    .content-header { display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px }
+    .content-header h2 { margin:0;font-size:18px }
+    .controls { display:flex; gap:10px; align-items:center; flex-wrap:wrap }
+    .search { padding:8px 12px; border:1px solid #e5e7eb; border-radius:8px; width:240px }
+    .filter-select { padding:8px 12px; border:1px solid #e5e7eb; border-radius:8px }
+    .btn { padding:8px 12px; border-radius:8px; border:0; cursor:pointer; font-weight:600 }
+    .btn-primary { background:var(--brand-1); color:white }
+    .btn-ghost { background:transparent; border:1px solid #e5e7eb }
+
+    table.students { width:100%; border-collapse:collapse; margin-top:12px; background:white; border-radius:8px; overflow:hidden }
+    table.students thead th { text-align:left; padding:12px 14px; font-size:13px; background:#fbfdff; color:#374151; font-weight:600 }
+    table.students tbody tr { border-bottom:1px solid #f3f4f6 }
+    table.students td { padding:12px 14px; vertical-align:middle; font-size:14px }
+    .student-name { display:flex; align-items:center; gap:10px; font-weight:600 }
+    .student-avatar { width:36px; height:36px; border-radius:50%; object-fit:cover; box-shadow:0 6px 20px rgba(18,38,63,0.04) }
+
+    .progress { height:8px; border-radius:10px; background:#eef2f7; width:160px; overflow:hidden; }
+    .progress-bar { height:8px; border-radius:8px }
+
+    .pill { padding:6px 10px; border-radius:16px; font-size:12px; font-weight:700 }
+    .pill.low { background:#ecfdf5; color:#166534 }
+    .pill.medium { background:#fffbeb; color:#92400e }
+    .pill.high { background:#fff1f2; color:#9f1239 }
+
+    .actions button { margin-right:6px; padding:6px 10px; border-radius:8px; border:0; cursor:pointer }
+    .actions .view { background:#2563EB;color:#fff }
+    .actions .msg { background:#f3f4f6;color:#111 }
+    .no-data { padding:24px; text-align:center; color:var(--muted) }
+	
+	.progress-wrapper {
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.progress-wrapper span {
+  font-size:13px;
+  font-weight:600;
+  color:#374151;
+}
+    /* Add assessment-specific styles */
+    .assessment-row {background:#fff; padding:16px; border-radius:12px; box-shadow:var(--shadow); margin-bottom:12px; cursor:pointer;}
+    .assessment-header {display:flex; justify-content:space-between; align-items:center;}
+    .assessment-title {font-weight:600; font-size:15px;}
+    .assessment-meta {font-size:13px; color:var(--muted);}
+    .expand {font-size:20px; color:var(--muted);}
+    .student-sublist {margin-top:10px; border-top:1px solid #eee; padding-top:8px; display:none;}
+    .student-sublist.open {display:block;}
+    .student-item {display:flex; justify-content:space-between; padding:6px 0; font-size:14px;}
+    .progress {height:8px; border-radius:10px; background:#eef2f7; flex:1; margin:0 8px; overflow:hidden;}
+    .progress-bar {height:8px; border-radius:8px;}
+	
+	.student-item { 
+    display:flex; 
+    justify-content:space-between; 
+    align-items:center;
+    padding:6px 0; 
+    font-size:14px;
+  }
+  .student-status {
+    display:flex; 
+    align-items:center; 
+    gap:10px;
+  }
+  .action-btn {
+    padding:4px 10px;
+    border:none;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .btn-open { background:#2563eb; color:#fff; }
+  .btn-reminder { background:#f59e0b; color:#fff; }
+  .btn-escalate { background:#ef4444; color:#fff; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div style="padding:16px;display:flex;justify-content:center;align-items:center;height:80px;overflow:hidden;">
+        <img src="isoft.jpg" alt="ISoft Logo" style="max-height:56px;width:auto;object-fit:contain;" />
+      </div>
+      <nav class="nav" aria-label="Main navigation">
+        <div class="group-title">Main</div>
+        <a href="TrainerDashboard.html">🏠 Dashboard</a>
+        <a href="TrainerMyClasses.html">📅 My Classes</a>
+        <a href="TrainerMyStudents.html">👩‍🎓 My Students</a>
+        <a href="TrainerMyAssessments.html" style="background-color:#60a5fa;color:white">📝 Assessments</a>
+       <div class="nav-link-group">
+		<a href="#" id="attendance-toggle">
+			<span style="display:flex; align-items:center; gap:12px;">
+			<span class="material-icons">event_available</span>
+			  Attendance
+			</span>
+			<span class="material-icons expand-icon">expand_more</span>
+		 </a>
+		 <ul id="attendance-submenu" class="open submenu">
+			<li><a href="TrainerMarkAttendance.html">Mark Attendance</a></li>
+			<li><a href="TrainerViewAttendance.html">View Attendance</a></li>
+			
+		  </ul>
+		</div>
+
+        <div class="group-title">Admin</div>
+        <a href="#">📂 Documents & Evidence</a>
+        <a href="#">📊 Reports & Analytics</a>
+        <a href="#">💬 Messages</a>
+
+        <div class="group-title">Compliance</div>
+        <a href="#">🛂 CRICOS & Visa Alerts</a>
+
+        <div class="group-title">Support</div>
+        <a href="#">🤖 Ask AI</a>
+        <a href="#">📞 Contact Admin</a>
+      </nav>
+    </aside>
+    <main class="main">
+      <!-- Topbar (exact copy) -->
+      <div class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" onclick="toggleSidebar()">☰</button>
+          <div>
+            <h1 style="margin:0;font-size:20px;font-weight:700">Assessments</h1>
+            <div class="muted" style="font-size:13px">Manage and track assessments across your courses</div>
+          </div>
+        </div>
+        <div class="user">
+          <div class="profile-container" id="profile-root">
+            <div id="profile-menu-button" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+              <img src="owner.jpg" alt="avatar" class="profile-avatar">
+              <div style="font-weight:600;color:#0f1724">William Smith</div>
+              <span id="dropdown-arrow" class="material-icons">expand_more</span>
+            </div>
+    
+            <div id="profile-dropdown-menu" class="hidden" aria-hidden="true">
+              <div style="padding:16px;border-bottom:1px solid #e5e7eb">
+                <div style="font-weight:bold;color:#1f2937">Hi, William</div>
+                <div style="font-size:14px;color:#6b7280">william.smith@isoftanz.com.au</div>
+              </div>
+              <ul style="list-style:none;margin:0;padding:0">
+                <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+                  <span class="material-icons" style="margin-right:8px">person</span>Edit Profile</a></li>
+                <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+                  <span class="material-icons" style="margin-right:8px">settings</span>Account settings</a></li>
+                <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151">
+                  <span class="material-icons" style="margin-right:8px">help_outline</span>Support</a></li>
+                <li><a href="#" style="display:flex;align-items:center;padding:10px 16px;color:#374151;border-top:1px solid #e5e7eb;margin-top:4px">
+                  <span class="material-icons" style="margin-right:8px">logout</span>Sign out</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="card" style="margin-bottom:18px">
+        <div class="controls" style="display:flex;gap:12px;flex-wrap:wrap">
+          <input class="search" placeholder="Search assessments...">
+          <select class="filter-select">
+            <option>All courses</option>
+            <option>Business Comm</option>
+            <option>Workplace Safety</option>
+            <option>IT Fundamentals</option>
+          </select>
+          <select class="filter-select">
+            <option>All statuses</option>
+            <option>On track</option>
+            <option>Pending</option>
+            <option>Overdue</option>
+          </select>
+          <button class="btn btn-primary">Export CSV</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 340px;gap:18px">
+        <!-- Left: Assessments list -->
+        <div>
+         <div class="assessment-row">
+			  <div class="assessment-header">
+				<div>
+				  <div class="assessment-title">Assignment 1</div>
+				  <div class="assessment-meta">Business Communication • Due 29 Sep 2025</div>
+				</div>
+				<div style="display:flex;align-items:center;gap:10px">
+				  <span style="font-size:13px">80% complete</span>
+				  <div class="progress" style="width:120px">
+					<div class="progress-bar" style="width:80%;background:var(--success)"></div>
+				  </div>
+				  <!-- Expand icon is now the ONLY trigger -->
+				  <span class="material-icons expand" onclick="toggleExpand(this)">expand_more</span>
+				</div>
+			  </div>
+
+			  <div class="student-sublist">
+				<div class="student-item">
+				  <span>Ali Khan</span>
+				  <div class="student-status">
+					<span>Pending</span>
+					<button class="action-btn btn-reminder">Reminder</button>
+				  </div>
+				</div>
+				<div class="student-item">
+				  <span>Sara mathews</span>
+				  <div class="student-status">
+					<span>Submitted</span>
+					<button class="action-btn btn-open">Open</button>
+				  </div>
+				</div>
+				<div class="student-item">
+				  <span>Ron Wisely</span>
+				  <div class="student-status">
+					<span>Submitted</span>
+					<button class="action-btn btn-open">Open</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  
+		   <div class="assessment-row">
+			  <div class="assessment-header">
+				<div>
+				  <div class="assessment-title">Assignment 3</div>
+				  <div class="assessment-meta">Workplace Technology • Due 28 Oct 2025</div>
+				</div>
+				<div style="display:flex;align-items:center;gap:10px">
+				  <span style="font-size:13px">50% complete</span>
+				  <div class="progress" style="width:120px">
+					<div class="progress-bar" style="width:50%;background:var(--warning)"></div>
+				  </div>
+				  <!-- Expand icon is now the ONLY trigger -->
+				  <span class="material-icons expand" onclick="toggleExpand(this)">expand_more</span>
+				</div>
+			  </div>
+
+			  <div class="student-sublist">
+				<div class="student-item">
+				  <span>John Doe</span>
+				  <div class="student-status">
+					<span>Submitted</span>
+				<button class="action-btn btn-open">Open</button>
+				  </div>
+				</div>
+				<div class="student-item">
+				  <span>Harry Potter</span>
+				  <div class="student-status">
+					<span>Pending</span>
+					<button class="action-btn btn-reminder">Reminder</button>
+				  </div>
+				</div>
+				<div class="student-item">
+				  <span>Hermione Granger</span>
+				  <div class="student-status">
+					<span>Overdue</span>
+					<button class="action-btn btn-escalate">Escalate</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+
+
+          <div class="assessment-row">
+            <div class="assessment-header">
+              <div>
+                <div class="assessment-title">Quiz 2</div>
+                <div class="assessment-meta">Workplace Safety • Due 15 Sep 2025</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-size:13px;color:var(--danger)">Overdue</span>
+                <div class="progress" style="width:120px">
+                  <div class="progress-bar" style="width:40%;background:var(--danger)"></div>
+                </div>
+                <span class="material-icons expand" onclick="toggleExpand(this)">expand_more</span>
+              </div>
+            </div>
+           <div class="student-sublist">
+				<div class="student-item">
+				  <span>John Doe</span>
+				  <div class="student-status">
+					<span>Overdue</span>
+					<button class="action-btn btn-escalate">Escalate</button>
+				  </div>
+				</div>
+				<div class="student-item">
+				  <span>Harry Potter</span>
+				  <div class="student-status">
+					<span>Overdue</span>
+					<button class="action-btn btn-escalate">Escalate</button>
+				  </div>
+				</div>
+			</div>
+          </div>
+        </div>
+
+        <!-- Right: Summary + AI -->
+        <div>
+          <div class="card">
+            <h3>Quick summary</h3>
+            <div class="muted" style="margin-bottom:10px">Assessment snapshot</div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+              <div style="background:#fff;padding:12px;border-radius:8px;box-shadow:var(--shadow);min-width:140px">
+                <div style="font-size:12px;color:var(--muted)">Total assessments</div>
+                <div style="font-weight:700;font-size:20px;margin-top:6px">24</div>
+              </div>
+              <div style="background:#fff;padding:12px;border-radius:8px;box-shadow:var(--shadow);min-width:140px">
+                <div style="font-size:12px;color:var(--muted)">Overdue</div>
+                <div style="font-weight:700;font-size:20px;margin-top:6px;color:var(--danger)">5</div>
+              </div>
+              <div style="background:#fff;padding:12px;border-radius:8px;box-shadow:var(--shadow);min-width:140px">
+                <div style="font-size:12px;color:var(--muted)">Avg completion</div>
+                <div style="font-weight:700;font-size:20px;margin-top:6px;color:var(--success)">78%</div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="card">
+            <h3>AI Insights</h3>
+            <div class="muted" style="font-size:13px">Predictions & suggestions</div>
+            <div class="msg-list" style="margin-top:12px">
+              <div class="msg">⚠️ 3 students at risk of missing Assignment 1.</div>
+              <div class="msg">🤖 Suggested: Send reminders to 6 pending students.</div>
+              <div class="msg">📊 Trend: Quiz scores dropped 10% this term.</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+      function toggleSidebar(){
+      const sb=document.querySelector('.sidebar');
+      if(sb) sb.classList.toggle('mobile-open');
+    }
+	
+	 // Attendance Sub-menu Logic
+  const attendanceToggle = document.getElementById('attendance-toggle');
+  const attendanceSubmenu = document.getElementById('attendance-submenu');
+  const expandIcon = attendanceToggle.querySelector('.expand-icon');
+
+  if (attendanceToggle) {
+    attendanceToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      attendanceSubmenu.classList.toggle('open');
+      expandIcon.classList.toggle('rotated');
+    });
+  }
+
+    // Profile dropdown logic from TrainerDashboard.html (unchanged)
+    const profileMenuButton = document.getElementById('profile-menu-button');
+    const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+    const dropdownArrow = document.getElementById('dropdown-arrow');
+
+    profileMenuButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isHidden = profileDropdownMenu.classList.toggle('hidden');
+      profileDropdownMenu.setAttribute('aria-hidden', isHidden ? 'true' : 'false');
+      dropdownArrow.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+    });
+
+    window.addEventListener('click', (event) => {
+      if (!profileMenuButton.contains(event.target) && !profileDropdownMenu.contains(event.target)) {
+        profileDropdownMenu.classList.add('hidden');
+        profileDropdownMenu.setAttribute('aria-hidden','true');
+        dropdownArrow.style.transform = 'rotate(0deg)';
+      }
+    });
+	// expand / collapse logic
+function toggleExpand(icon){
+  const row = icon.closest('.assessment-row');
+  const sub = row.querySelector('.student-sublist');
+  sub.classList.toggle('open');
+  icon.style.transform = sub.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+
+// button actions (no DOMContentLoaded needed since script is at bottom)
+document.querySelectorAll('.action-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation(); // prevent collapsing
+
+    if (btn.classList.contains('btn-open')) {
+      window.location.href = "AssessmentFeedback.html";  // ✅ redirect now works
+    } else if (btn.classList.contains('btn-reminder')) {
+      alert("Reminder sent!");
+    } else if (btn.classList.contains('btn-escalate')) {
+      alert("Escalation triggered!");
+    }
+  });
+});
+	
+	   // Export (simple CSV of visible rows)
+    document.getElementById('exportBtn').addEventListener('click', () => {
+      const rows = Array.from(tbody.rows).filter(r => r.style.display !== 'none');
+      if (!rows.length) { alert('No rows to export'); return; }
+      const csv = [['Name','Email','Course','Attendance','Assessments','Risk']];
+      rows.forEach(r => {
+        const name = r.cells[0].innerText.replace(/\n/g,' ').trim();
+        const course = r.cells[1].innerText.trim();
+        const attendance = r.cells[2].innerText.trim();
+        const assessments = r.cells[3].innerText.trim();
+        const risk = r.cells[4].innerText.trim();
+        csv.push([`"${name}"`, `"${course}"`, `"${attendance}"`, `"${assessments}"`, `"${risk}"`]);
+      });
+      const csvStr = csv.map(r=>r.join(',')).join('\n');
+      const blob = new Blob([csvStr], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'students-export.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+	
+
+  </script>
+</body>
+</html>
