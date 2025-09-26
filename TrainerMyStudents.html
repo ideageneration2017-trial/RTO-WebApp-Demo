@@ -232,7 +232,7 @@
         <a href="TrainerDashboard.html">🏠 Dashboard</a>
         <a href="TrainerMyClasses.html">📅 My Classes</a>
         <a href="TrainerMyStudents.html" style="background-color:#60a5fa;color:white">👩‍🎓 My Students</a>
-        <a href="TrainerMyAssessments.html">📝 Assessments</a>
+        <a href="#">📝 Assessments</a>
        <div class="nav-link-group">
 		<a href="#" id="attendance-toggle">
 			<span style="display:flex; align-items:center; gap:12px;">
@@ -299,7 +299,39 @@
         </div>
       </div>
 
-      <!-- ---------- My Students main content (only this area changed) ---------- -->
+      <!-- ---------- My Students main content  ---------- -->
+	  
+	   <!-- Right column: AI Insights and Quick links (kept in grid layout style) -->
+      <div style="display:grid;grid-template-columns:1fr 340px;gap:18px;margin-top:18px">
+        <div class="card">
+          <h3>Quick summary</h3>
+          <div class="muted" style="margin-bottom:10px">Snapshot for your assigned students</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <div style="background:#fff;padding:12px;border-radius:8px;box-shadow:0 6px 20px rgba(18,38,63,0.04);min-width:160px">
+              <div style="font-size:12px;color:var(--muted)">Total students</div>
+              <div style="font-weight:700;font-size:20px;margin-top:6px">34</div>
+            </div>
+            <div style="background:#fff;padding:12px;border-radius:8px;box-shadow:0 6px 20px rgba(18,38,63,0.04);min-width:160px">
+              <div style="font-size:12px;color:var(--muted)">Students at high risk</div>
+              <div style="font-weight:700;font-size:20px;margin-top:6px; color:var(--danger)">3</div>
+            </div>
+            <div style="background:#fff;padding:12px;border-radius:8px;box-shadow:0 6px 20px rgba(18,38,63,0.04);min-width:160px">
+              <div style="font-size:12px;color:var(--muted)">Avg attendance</div>
+              <div style="font-weight:700;font-size:20px;margin-top:6px">82%</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="card">
+          <h3>AI Insights</h3>
+          <div class="muted" style="font-size:13px">Model-based predictions & suggestions</div>
+          <div class="msg-list" style="margin-top:12px">
+            <div class="msg">⚠️ 2 students likely to fall below CRICOS attendance limit in next 14 days.</div>
+            <div class="msg">📩 Suggestion: Send reminder to 4 students with overdue assessments.</div>
+            <div class="msg">🔍 Trend: Engagement for Workplace Safety cohort down 8% month-on-month.</div>
+          </div>
+        </aside>
+      </div>
       <div class="card">
         <div class="content-header">
           
@@ -427,37 +459,7 @@
         </div>
       </div>
 
-      <!-- Right column: AI Insights and Quick links (kept in grid layout style) -->
-      <div style="display:grid;grid-template-columns:1fr 340px;gap:18px;margin-top:18px">
-        <div class="card">
-          <h3>Quick summary</h3>
-          <div class="muted" style="margin-bottom:10px">Snapshot for your assigned students</div>
-          <div style="display:flex;gap:12px;flex-wrap:wrap">
-            <div style="background:#fff;padding:12px;border-radius:8px;box-shadow:0 6px 20px rgba(18,38,63,0.04);min-width:160px">
-              <div style="font-size:12px;color:var(--muted)">Total students</div>
-              <div style="font-weight:700;font-size:20px;margin-top:6px">34</div>
-            </div>
-            <div style="background:#fff;padding:12px;border-radius:8px;box-shadow:0 6px 20px rgba(18,38,63,0.04);min-width:160px">
-              <div style="font-size:12px;color:var(--muted)">Students at high risk</div>
-              <div style="font-weight:700;font-size:20px;margin-top:6px; color:var(--danger)">3</div>
-            </div>
-            <div style="background:#fff;padding:12px;border-radius:8px;box-shadow:0 6px 20px rgba(18,38,63,0.04);min-width:160px">
-              <div style="font-size:12px;color:var(--muted)">Avg attendance</div>
-              <div style="font-weight:700;font-size:20px;margin-top:6px">82%</div>
-            </div>
-          </div>
-        </div>
-
-        <aside class="card">
-          <h3>AI Insights</h3>
-          <div class="muted" style="font-size:13px">Model-based predictions & suggestions</div>
-          <div class="msg-list" style="margin-top:12px">
-            <div class="msg">⚠️ 2 students likely to fall below CRICOS attendance limit in next 14 days.</div>
-            <div class="msg">📩 Suggestion: Send reminder to 4 students with overdue assessments.</div>
-            <div class="msg">🔍 Trend: Engagement for Workplace Safety cohort down 8% month-on-month.</div>
-          </div>
-        </aside>
-      </div>
+     
 
       <div style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
         <div class="quick-links">
@@ -585,4 +587,3 @@
   </script>
 </body>
 </html>
-
